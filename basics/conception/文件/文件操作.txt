@@ -1,0 +1,107 @@
+一、读写文本文件
+
+    1、读文件
+        步骤——
+            打开文件
+            读取内容
+            关闭文件
+        一般形式——
+            try:
+                f = open('/path/to/file', 'r')  # 打开文件
+                data = f.read()     # 读取文件内容
+            finally:                # 无论try里面的语句是否异常，都会执行，若用with as语句，可以不用考虑
+                if f :              # 只要变量内容不是None，都是True
+                    f.close()       # 确保任何情况下文件都能被关闭
+        常用模式——
+            r       读模式
+            w       写模式
+            a       追加模式
+            b       二进制模式（可添加到其他模式中使用）
+            +       读写模式（可添加到其他模式中使用）
+        with..as..——
+            可以自动调用close方法，出现异常的情况自动关闭文件
+            eg: with open('/path/to/file', 'r') as f:
+                    data = f.read()
+        方式——
+            读取所有内容      read()  readlines()
+            按字节读取        read(size)
+            按行读取          readline()
+    2、读取所有内容
+        read()
+        readlines()——
+            将文件读入一个字符串列表，列表中的每个字符串代表文件中的每一行
+            eg: 文件data.txt
+                10  1   9
+                6   3   2
+                with open('data.txt', 'r') as f:
+                    lines = f.readlines()
+                    print lines
+
+                ['10\t1\t9\n', '6\t3\t2]
+    3、按字节读取内容
+        对于文件大的内容，需要构造一个固定长度的缓冲区，来不断读取文件内容
+        read(size)
+        eg: with open('test.txt', 'r') as f:
+                while True:
+                    piece = f.read(1024)        # 每次读取1024个字节（1kb）内容
+                    if not piece:
+                        break
+                    print piece
+        结合yield使用
+        eg: def read_size(f, size = 1024):
+                while True:
+                    data = f.read(size)
+                    if not data:
+                        break
+                    yield data
+                with open('test.txt', 'r') as f:
+                    for piece in read(f):
+                        print piece
+    4、逐行读取
+        readline()——
+    5、文件迭代器
+        文件对象可迭代
+    6、写文件
+        write()——
+            eg: with open('test.txt', 'w') as f:
+                    f.write('one\n')    # 若文件已存在，会清空原内容并覆盖，若文件不存在，会新建一个存在
+
+        在已存在的文件追加内容，用'a'追加模式
+二、读写二进制文件
+
+    1、读取二进制文件
+        rb模式——
+            eg: with open ('test.txt', 'rb') as f:
+                    data = f.read()     # 格式为字节字符串格式，而不是文本字符串格式
+        可对字节字符串进行编码
+            base64编码
+            eg: import base64
+                with open('test.txt', 'rb') as f:
+                    data = f.read()
+                    base64_data = base64.b64encode(data)    # 使用base64编码
+                    print base64_data
+    2、写入二进制文件
+        wb模式——
+            eg: with open('test.txt', 'rb') as f:
+                    data = f.read()
+                with open('test1.txt', 'wb') as f:
+                    f.write(data)
+    3、os模块
+        常见文件和目录的操作
+        os.mkdir————创建目录
+        os.rmdir————删除目录
+        os.rename————重命名
+        os.remove————删除文件
+        os.getcwd————获取当前工作路径
+        os.walk————遍历目录
+        os.path.join————连接目录与文件名
+        os.path.split————分割文件名和目录
+        os.path.abspath————获取绝对路径
+        os.path.dirname————获取路径
+        os.path.basename————获取文件名或文件夹名
+        os.path.splitext————分离文件名与扩展名
+        os.path.isfile————判断给出路径是否是一个文件
+        os.path.isdir————判断给出路径是否是一个目录
+        eg: os.path.abspath('.')        # 当前目录的绝对路径
+            os.walk 返回一个包含3个元素的元素
+            dirpath（绝对路径），dirnames（每一个绝对路径下的文件夹名），filenames（以列表形式返回该路径所有文件名）

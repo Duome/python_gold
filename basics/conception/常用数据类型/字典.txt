@@ -1,0 +1,78 @@
+字典
+
+    1、特点：
+        映射类型，有键（key）和值（value）构成
+        键必须是不可变类型，不可重复，值可变
+    2、基本操作
+        创建字典——
+            dict(key1 = 'value', key2 = value) # 注意此为调用函数，key为函数参数，只能是字母
+            dict([('key1', 'value'), ('key2, value)])
+            eg: dict(name = 'duome', age = 19)
+                {'name':'duome, 'age':19}
+                dict([(1, 'a'), ('b', 'c')])
+                {1:'a', 'b':'c'}
+        遍历字典——
+            for key in {dict}:    # 不能再其中删字典的某一项
+            for key in {dict}.key():     # 可以删除字典的某一项，dict.key()得到键的列表
+            ps: 建议不要在遍历的时候删元素的值
+        判断键存在性——
+            key in {dict}
+            返回True为存在，返回False为不存在
+    3、常用方法
+        clear清空——
+            {dict}.clear()
+            清空字典所有项，原地操作，无返回值，原字典变为空字典
+            eg: d = {'a':1, 'b':2}
+                a = d
+                d.clear()
+                d
+                {}
+                a
+                {}
+                d = {'a':1, 'b':2}
+                a = d
+                d = {}
+                a
+                {'a':1, 'b':2}
+        copy浅复制——
+            {newdict} = {olddict}.copy()
+            可变对象修改保持同步
+            不可变对象修稿保持独立
+            eg: dict = {'name':'duome, 'books':[1, 2, 3]}
+                dict2 = dict.copy()
+                dict['name'] = 'xiaofan'
+                dict['books'].remove(2)
+        get访问——
+            dict.get(key, 'default')
+            访问字典键的值，当不存在键时，使用默认值，无默认值时，返回None
+        setdefault初设置始——
+            {dict}.setdefault(key, default = None)
+            为字典设置键和值，不存在的值，更新后返回值，已存在的值，返回已有值
+        update合并——
+            {newdict}.update({dict})
+            将一个字典，添加到一个字典，变为一个新字典
+            存在相同键的，覆盖
+            eg: d = {}
+                d1 = {'a':1}
+                d.update(d1)
+                d
+                {'a':1}
+        pop移除——
+            {dict}.pop(key)
+            移除某键（和值），返回此键的值
+        popitem移除——
+            {dict}.popitem()
+            随机移除某键（和值），返回此键的键对（键和值），
+        keys/iterkeys——
+            {dict}.keys()
+            {dict}.iterkeys()
+            返回字典的键，key返回列表，iterkeys返回迭代器
+        value/itervalues——
+            {dict}.values()
+            {dict}.itervalues()
+            返回字典的值，values返回列表，iterkeys返回迭代器
+        items/iteritems——
+            {dict}.items()
+            {dict}.iteritems()
+            返回键值对（元祖形式），items返回列表，iteritems返回迭代器
+        fromkeys——

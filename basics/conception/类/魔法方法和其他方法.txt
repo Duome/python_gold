@@ -1,0 +1,390 @@
+五、定制类和魔法方法
+
+    1、魔法方法
+        以双下划线__包裹起来的方法，称为魔法方法/特殊方法
+    2、常用特殊方法
+        ^^^__new__返回实例
+            与__init__不同
+                __new__在__init__之前调用
+                __new__是类方法，__init__是实例方法
+                重写（覆写）__new__方法，需要返回类的实例
+                eg: class A(object):
+                        _dict = dict()
+                        def __new__(cls):
+                            if 'key' in A.dict:
+                                print 'Exists'
+                                return A.dict['key]
+                            else:
+                                print 'New'
+                                return object.__new__(cls)
+                        def __init__(self):
+                            print 'INIT'
+                            A._dict['key'] = self
+                        a1 = A()
+                        NEW
+                        INIT
+                        A2
+                        a2 = A()
+                        EXISTS
+                        INIT
+        ^^^__str__&__repr__显示字符串
+            例子——
+                class Foo(object):
+                    def __init__(self, name):
+                        self.name = name
+                print Foo('ethan')
+                <__main__.Foo object at 0x10c37aa50>
+            若想打印更多信息，需要在类中加入__str__
+                eg: class Foo(object):
+                        def __init__(self, name):
+                            self.name = name
+                        def __str__（self）:
+                            return 'Foo object(name: %s)' % self.name
+                    print Foo('ethan')              # 使用print
+                    Foo object (name:ethan)
+                    str(Foo('ethan'))               # 使用str
+                    'Foo object(name:ethan)'
+                    Foo('ethan')                    # 直接显示
+                    <__main__.Foo at 0x10c37a490>
+            若希望修改其输出，需要在类中加__repr__
+                eg: class Foo(object):
+                        def __init__(self, name):
+                            self.name = name
+                        def __str__（self）:
+                            return 'Foo object(name: %s)' % self.name
+                        def __repr__（self）:
+                            return 'Foo object(name: %s)' % self.name
+            综上精简——
+                eg: class Foo(object):
+                        def __init__(self, name):
+                            self.name = name
+                        def __str__（self）:
+                            return 'Foo object(name: %s)' % self.name
+                        __repr__ = __str__
+        ^^^__iter__迭代
+            使用情况——
+                希望实例对象可被用于for循环，迭代的原理
+                eg: class A(object):
+                        def __init__(self):
+                            self.a, self.b = 0, 1
+                        def __iter__(self):
+                            return self         # 返回迭代器本省
+                        def next(self):
+                            self.a, self.b = self.b, self.a + self.b
+                            return self.a       # 返回容器下一个元素
+                    a = A()
+                    for i in a:
+                        if i > 10:
+                            break
+                        print i
+        ^^^__getitem__取值
+            使用情况——
+                希望使用obj[n]方法对实例对象取值，[]取值的原理
+                eg: class A(object):
+                        def __geritem__(self, n):       #传入一个整数
+                            a, b = 1, 1
+                            for x in xrange(n):
+                                a, b = b, a + b
+                            return a
+                    a = A()
+                    A[0]，A[1], A[2],A[3]
+                    (1, 1, 2, 3,)
+                希望支持objectp[1:3]这种切片方法取值，[:]切片原理
+                eg: class A(object):
+                        def __getitem__(self, n):
+                            if isinstance(n, slice):        # 如果n是slice对象
+                                a, b = 1, 1
+                                start, stop = n.start, n.stop
+                                L = []
+                                for i in xrange(stop):
+                                    if i >= start:
+                                        L.append(a)
+                                    a, b = b, a + b
+                                    return L
+                            if isinstance(n, int):      # 如果n是int
+                                a, b = 1, 1
+                                for i in xrange(n):
+                                    a, b = b, a + b
+                                return a
+                ps: 这些操作没有对负数的处理，不支持带step参数的切片
+            其他类似操作——
+                __getitem__获取值
+                __setitem__设置值
+                __delitem__删除值
+                eg: class A(object):
+                        def __init__(self):
+                            self.coordinate = {}
+                        def __str__(self)：
+                            return 'point(%s)' % self.coordinate
+                        def __getitem__(self, key):
+                            return self.coordinate.get(key)
+                        def __setitem__(self, key, value):
+                            self.coordinate[key] = value
+                        def __delitem__(self, key):
+                            del self.coordinate[key]
+                            print 'delete %s' % key
+                        def __len__(self):
+                            return len(self.coordinate)
+                        __repr__ = __str__
+                        p = A()
+                        p['x'] = 2
+                        p['y'] = 5
+                        p
+                        point({'y':5,'x':2})
+                        len(p)
+                        2
+                        p['x']
+                        2
+                        p['y']
+                        5
+                        del p['x']
+                        delete x
+                        p
+                        point({'y':5})
+                        len(p)
+                        1
+        ^^^__getattr__获取属性
+            使用方法——
+                属性不存在时，使不抛异常
+                eg: class A(object):
+                        def __init__(self, x = 0, y = 0):
+                            self.x = x
+                            self.y = y
+                    p = A()
+                    p.z
+                    抛AttributeError
+                    class A(object):
+                        def __init__(self. x = 0, y = 0):
+                            self.x = x
+                            self.y = y
+                        def __getattr__(self, attr):
+                            if attr == 'z':
+                                return 0
+                    p = A()
+                    p.z
+                    0
+                    ps: 以上情况，只有属性为'z'时，返回0，其他属性，则返回None
+                只响应几个特定的属性，可加入异常
+                    def __gatattr__(self.attr):
+                        if attr == 'z'
+                            return 0
+                        raise AttributeError('Point object has no attribute %s' % attr)
+            其他类似的方法——
+                __setattr__
+                __delattr__
+                eg: class A(object):
+                        def __init__(self, x = 0, y = 0):
+                            self.x = x
+                            self.y = y
+                        def __gatattr__(self, attr):
+                            if attr == 'z':
+                                return 0
+                            raise AttibuteError('Point object has no attribute %s' % attr)
+                        def __setattr__(self, %args, **kwargs):
+                            print 'call func set attr (%s, %s)' % (args, kwargs)
+                            return object.__setattr__(self, *aegs, **kwargs)
+                        def __delattr__(self, *argd, **kwargs):
+                            print 'call func del attr (%s, %s)' % (args, kwargs)
+                             return object.__delattr__(self, *args, **kwargs)
+                    p = A(3, 4)
+                    call func set attr (('x', 3), {})
+                    call func set attr (('y', 4), {})
+                    p.z
+                    0
+                    p.w
+                    抛异常
+                    p.w = 8
+                    call func set attr(('w', 8), {})
+                    p.w
+                    8
+                    del p.w
+                    call func del attr (('w',), {})
+                    p.__dict__
+                    {'y':4, 'x':3, 'z':7}
+        ^^^__call__直接使用实例本身调用对象方法
+            使用方法——
+            eg: class A(object):
+                    def __init__(self, x, y):
+                        self.x, self.y = x, y
+                    def __call__(self, z):
+                        return self.x + self.y + z
+                p = A()
+                callable(p)     # 使用callable判断对象是否能被调用
+                True
+                p(6)            # 传入参数，对实例进行调用，对应p.__call__(6)
+                13
+六、slots魔法
+
+    设定一个固定集合的属性分配空间，使不能绑定新属性，可节约内存
+    eg: class A(object):
+            __slots__ = ('x', 'y')      # 只允许使用x和y
+            def __init__(self, x = 0, y = 0):
+                self.x = x
+                self.y = y
+        p = A()
+        p.z
+        抛异常
+    ps: __slots__设置的属性仅对当前类有效，对继承的子类无效
+七、使用@property
+
+    使用property装饰器将不想对外公开的属性封装起来，只提供方法给用户操作。
+    eg: class Exam(object):
+            def __init__(self, score):
+                self._score = score
+            @property       # 装饰器
+            def score(self):
+                return self._score
+            @score.setter       # 新的装饰器，可以把被装饰的方法变成属性来赋值
+            def score(self, val):       # 若无此项，score是只读属性，不能设置值
+                if val < 0:
+                    self._score = 0
+                elif val > 100:
+                    self._score = 100
+                else:
+                    self._score = val
+八、super
+
+    1、定义
+        子类中重定义了某个方法，希望同时实现父类的功能
+    2、使用方法
+    调用父类重定义方法————
+    eg: class A(object):
+            def __init__(self, name):
+                self.name = name
+            def greet(self):
+                print 'hello, %s.' % self.name
+        class D(A):
+            def greet(self):
+                super(D, self).greet()
+                print 'wangwang...'
+        d = D('dog')
+        d.greet()
+        hello, dog.
+        wangwang...
+    调用父类初始化方法————
+    eg: class A(object):
+            def __init__(self, a, b):
+                self.a = a
+                self.b = b
+        class B(A):
+            def __init__(self, a, b, c):
+                super(A, self).__init__(a, b)
+                self.c = c
+    super和父类没有实质性的关联————
+    eg: class Base(object):
+            def __init__(self):
+                print 'enter base'
+                print 'leave base'
+        class A(Base):
+            def __init__(self):
+                print 'enter a'
+                super(A, self).__init__()
+                print 'leave a'
+        class B(Base):
+            def __init_(self):
+                print 'enter b'
+                super(B, self).__init__()
+                print 'leave b'
+        class C(A, B):              # 菱形继承
+            def __init__(self):
+                print 'enter c'
+                super(C, self).__init__()
+                print 'enter c'
+        c = C()
+        enter C
+        enter A
+        enter B
+        enter Base
+        leave Base
+        leave B
+        leave A
+        leave C
+    MRO列表————
+    方法解析顺序列表，代表类继承的顺序
+    eg: C.mro()     # or C.__mro__ or C().__class__.mro()
+        [__main__.C, __mian__.A, __main__.B, __main__.Base, object]
+    原则
+    子类永远在父类前面
+    如果有多个父类，根据在列表的顺序被检查
+    如果对下一个雷存在两个合法选择，选择第一个父类
+    super工作原理————
+    def super(cls, inst):       # cls代表类，inst代表实例
+        mro = inst.__class__.mro()      # 获取inst的MRO列表
+        return mro[mro.index(cls) + 1]      # super的实质是获得cls在inst的MRO列表中的下一各类
+    当转到A时，self也是当前C的实例
+九、元类metaclass
+
+    1、类也是对象
+        Python中一切皆对象。类也是对象，
+        特点——
+            类可赋值给变量
+            类可作为函数参数进行传递
+            类可作为函数返回值
+            运行时动态创建类
+    2、type动态创建类
+        type(类名，父类和元祖（针对继承的情况，可以为空），包含属性和方法的字典（名称和值）)
+        最简单的情况——
+        eg: class A(object):
+                pass
+            A = type('A', (object, ), {})       # 使用type创建了一个类对象
+            'A'————类名
+            (object)————所有父类
+            {}————定义属性和方法       # 在这里没有属性和方法
+        有属性有方法的情况——
+        eg: class A(object):
+                a = True
+                def greet(self):
+                    print 'hello'
+                    print self.a
+                a = type('A', (object, ),{'a':True, 'greet':greet})
+        继承情况——
+        eg: class Base(object):
+                pass
+            class A(Base):
+                a = True
+            a = type('A', (Base, ), {'a':True})
+    3、元类metaclass
+        概念——
+            定义————元类是用来创建类（对象）的可调用对象
+            类与元类————类是实例对象的模板，元类是类的模板。type就是有一个元类
+            目的————控制类的创建行为
+        使用——
+            eg: ^^希望类的方法和属性名称前面加上my_，并加入echo方法
+                class A(object):
+                    name = 'a'
+                    def bar(self):
+                        print 'bar'
+                ^^定义一个元类（类名需以Metaclass结尾）
+                class PrefixMetaclass(type):
+                    def __new__(cls, name, bases, attrs):   # 给所有属性方法前加my_
+                        _attrs = (('my_' + name, value) for name, value in attr.items())
+                        _attrs = dict((name, value) for name, value in _attrs)  # 转化为字典
+                        _attrs['echo'] = lambda self, phrase:phrase    # 增加一个echo方法
+                        return type.__new__(cls, name, bases, _attrs)   # 返回创建后的类
+                ps: PrefixMetaclass类从type继承
+                    __new__用来创建对象并返回创建后对象
+                        cls————准备创建的类
+                        name————类的名字
+                        bases————类的父类集合
+                        attrs————类的属性和方法字典
+                ^^在类中使用PrefixMetaclass定制类
+                class A(object):
+                    __metaclass__ = PrefixMetaclass
+                    name = 'a'
+                    def bar(self):
+                        print 'bar'
+                class A(metaclass=PerfixMetaclass):    # python3中方法
+                    name = 'a'
+                    def bar(self):
+                        print 'bar'
+                a = A()
+                a.name      # name属性已经改变
+                抛异常
+                a.my_name
+                'a'
+                a.my_bar
+                bar
+                a.echo('hello')
+                'hello'
+                ps: 当继承时，也会根据定制类的模板，属性方法前面加上'my_'
+                    在执行子类是，会在子类中找__metaclass__，若没找到，会在所有父类中找__metaclass__，若都没有，会用type创建类

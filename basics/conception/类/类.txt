@@ -1,0 +1,102 @@
+一、特点
+
+    1、Polymorphism多态
+        不同类对象对同一消息会做不同的响应
+    2、Encapsulation封装
+        对外部隐藏对象的工作细节
+    3、Inheritance继承
+        对已有的类为基础建立专门的类对象
+二、类和实例
+
+    1、定义
+        类相当于具有相同属性和方法的对象的集合
+        实例是一个具体的对象
+    2、构成
+        class Animal(object):
+            pass
+        关键字——class
+        类名——Animal            # 通常类名的首字母大写，多单词时每个单词首字母都大写
+        所继承的类——(object)     # 所有类最终都会继承自object类
+        创建实例——animal = Animal()      # 创建实例对象
+        对象初始化——定义__init__方法     # 类似C++中的构造函数
+        eg: class Animal(object):
+                def __init__(self, name):
+                    self.name = name    # 特殊方法
+                def greet(self):
+                    print 'hello, %s.' % self.name    # 自定义的方法
+        方法的第一个参数都是self，指向实例本身，指其是和实例绑定的函数，即为方法
+    3、访问限制
+        可以在属性或方法的名称前面加上两个下划线
+        eg: class Animal(object):
+                def __init__(self, name):
+                    self.__name = name
+           animal = Animal('dog')
+           animal.__name    # 不能访问
+        ps: 以两个下划线开始并以此结尾的是特殊变量，可以直接访问
+           如果变量名前只有一个下划线，可以直接访问，但不要随意访问
+    4、获取对象信息
+        type(obj)————
+           type(animal)
+           __main__.Animal
+        isinstance(obj, type)————
+           isinstance(animal, Animal)
+           True
+        hasattr/getattr/setattr————
+           hasattr(obj, attr)——判断对象是否具有指定属性/方向
+           getattr(obj, attr[, default])——获取属性/方法的值，没有返回default值（若有）/抛AE异常
+           setattr(obj, attr, value)——设定属性/方法的值，似obj.attr = value
+           eg: hasattr(animal, 'name')
+                True
+                getattr(animal, 'name')
+                dog
+                setattr(animal, 'age', 12)
+                animal.age
+                12
+        dir————
+           dir(obj)
+           返回相应对象的所有属性和方法名的列表
+三、继承和多态
+
+    1、继承
+        定义——
+           创建一个类，希望添加或修改几个方法可以从原来的类派生出一个新的类
+           原来的类称为父类/基类，派生出的类称为子类，子类继承了父类的所有数据方法
+        使用——
+           将需要修改的或添加的加载子类中，object换为父类的类名
+    2、多态
+        定义——
+            对不同类型的变量进行相同的操作，根据对象/类的类型不同表现出不同的行为
+        特点——
+           不同类型的对象对同一消息会作出不同的响应
+    3、联系
+        继承可以得到父类的所有数据和方法，子类可以重写父类的方法，可新增自己特有的方法
+        有了继承，才有了多态，不同类的对象对同一消息会作出不同的相应
+四、类方法和静态方法
+
+    1、类方法
+        可以不用通过实例，直接调用类方法，使用classmethod装饰
+        obj.method()
+        eg: class A(object):
+               bar = 1
+               @classmethod
+               def class_foo(cls):      # 参数cls代表类本身
+               print 'hello', cls
+               print cls.bar
+
+               A.class_foo()
+               hello, (class '__main__'A)
+               1
+    2、静态方法
+        定义——
+        在类中，与类有关，但不会改变类和实例状态的方法，使用staticmethod装饰
+        eg: class A(object):
+               bar = 1
+               @statecmethod
+               def static_foo():
+                   print 'hello,',A.bar
+
+               a = A()
+               a.static_foo()
+               hello,1
+               A.static_foo()
+               hello,1

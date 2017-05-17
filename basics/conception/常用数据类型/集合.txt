@@ -1,0 +1,28 @@
+集合
+
+    1、特点
+        一组key的集合，key不能重复
+    2、常用操作
+        创建集合——
+            {set} = set([list])
+            括号里可以是字符串，相当于list（字符串）
+        遍历集合——
+            for i in {set}：
+        添加元素——
+            {set}.add('ele')
+            元素可以是重复的，但是没有效果
+        删除元素——
+            {set}.remove('ele')
+            删除元素不存在是，显示错误
+        交集——
+            {set} & {set}
+        并集——
+            {set} | {set}
+        差集——
+            {set} -　{set}
+        子集判断——
+            {set1}.issubset({set2})
+            判断set1是否为set2的子集，是返回True，不是返回False
+        超集判断——
+            {set1}.issuperset(set2)
+            判断set1是否是set2的超集，是返回True，不是返回False

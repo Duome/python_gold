@@ -1,0 +1,84 @@
+一、定义函数
+
+    1、定义
+        def语句
+    2、构成
+        函数名
+        函数参数（可以没有）
+        函数返回值（return可以没有返回，默认为None）
+        ps:当返回多个值时，值的类型是元祖
+        eg: def hello(name):
+                return name
+            r = hello('duome')
+            r
+            duome
+            def hello():
+                print 'hello!'
+            r = greet()
+            'hello!'
+            r
+            None                 # 默认为None
+            def hello():
+                return 1, 2, 3
+            （回车结束函数内容）
+            r = hello()
+            type(r)
+            <type'tuple'>        # 返回多个值时，值类型为元祖
+二、函数参数
+
+    1、分类
+        必选参数
+        默认参数
+        可变参数
+        关键字参数
+    2、必选参数
+        调用函数是需要传入数量一致的参数
+        eg: def add(x, y):
+    3、默认参数
+        在定义函数时提供一些默认值，没传参数是，自动使用默认值
+        eg: def add(x, y, z = 1):
+            add(1, 2, 3)
+            add(1, 2)
+        ps: 默认参数在必选参数后面
+            默认参数为不可变参数（当其为可变参数时，调用没有传参数的函数时，若对参数值进行改变，下次使用默认值，使用的是改变后的默认值）
+    4、可变参数
+        定义函数时无法估计参数数量，可以使用可变参数，参数前加*
+        eg: def add(*args):
+            add(1)
+            add(1, 2)
+            def add(x, y, z):
+            a = [1, 2, 3]
+            b = (1, 2, 3)
+            add(a[0], a[1], a[2])
+            add(*a)
+            add(*b)
+    5、关键字参数
+        将不定长度的键值对，作为参数传递给函数
+        eg: def add(**kwargs):
+                return kwarge
+            add()
+            {}
+            add(x = 1, y = 2)
+            {'x':1, 'y':2}
+            dict = {'z':3, 'x':1, 'Y':2}
+            add(**dict)
+            def add(x, y, z):
+                return x + y + z
+            dict = {'z':3, 'x':1, 'Y':2}
+            add(dict['x'], dict['y'], dict['z'])
+            add(**dict)
+    6、参数组合
+        eg: def a(x, y, z = 1, *args, **kwargs):
+                print x
+                print y
+                print z
+                print args
+                print kwargs
+            b = (1, 2, 3)
+            c = {'u':5, 'v':6}
+            a(*b, **c)
+            1
+            2
+            3
+            ()
+            {'u':5, 'v':6}

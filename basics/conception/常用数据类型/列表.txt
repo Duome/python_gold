@@ -1,0 +1,86 @@
+列表
+
+    1、特点
+        列表是可变得（字符串和元祖不可变，可用list（）转换成列表）
+    2、常用方法
+        index索引——
+            [list].index(ele)
+            找出元素位置，返回其索引，若有多个元素，返回第一个元素位置
+            eg: nums = [1, 2, 4, 4]
+                nums.index(4)
+                2
+        count计数——
+            [list].count(ele)
+            统计某个元素出现的次数
+            eg: nums.count(4)
+                2
+        append追加——
+            [list].append(ele)
+            在列表末尾新增某元素
+            eg:nums.append(5)
+               [1, 2, 4, 4, 5]
+               b = [1, 2]
+               nums.append(b)
+               nums
+               [1, 2, 4, 4, 5, [1, 2]]
+               ps: 也可以接受列表，但该列表作为一个元素添加到原列表中
+        extend合并——
+            [list].extend([list])
+            将新列表的元素添加到原列表中
+            eg: a = [1, 2]
+                b = [3, 4]
+                a.extend(b)
+                a
+                [1, 2, 3, 4]
+        insert插入——
+            [list].insert(index, cont)
+            将某个元素插入到某个位置
+            eg: nums = [1, 2, 3, 4]
+                nums.insert(1, 'a')
+                [1, 'a', 3, 4]
+        pop删位——
+            [list].pop(index)
+            将某位置的元素移除，返回移除的元素，默认是最后一个
+            eg: nums = [1, 2, 3]
+                nums.pop()      # 默认最后一个
+                3
+                nums.pop(0)
+                1
+                nums
+                [2]
+        remove移除——
+            [list].remove(ele)
+            将某元素移除，若有多个，移除第一个
+            eg: nums = [1, 2, 3, 4, 5, 4]
+                nums.remove(4)
+                nums
+                [1, 2, 3, 5, 4]
+        reverse反转——
+            [list].reverse()
+            将列表中的元素反转
+        sort排序——
+            [list].sort() 原列表改变为新的列表
+            [newlist] = sorted([oldlist]) 返回一个排序后的列表,得到一个列表
+            默认排序-升序排序
+            可以通过制定排序参数，改为降序
+                添加reverse = True（反转）
+                   key = len（使用len作为键函数，根据元素长度排序）
+            eg: a = [2, 3, 1]
+                b = a.sort()
+                a
+                [1, 2, 3]
+                a = [2, 3, 1]
+                b = sorted(a)
+                b
+                [1, 2, 3]
+                a = [2, 1, 3]
+                a.sort(reverse = True)
+                /sorted(a, reverse = True)
+                a = ['a', 'aa', 'aaa']
+                a.sort(key = len)
+                /sorted(a, key = len)
+                a = (1, 3, 2)
+                sorted(a)
+                [1, 2, 3]
+        ps：以上那些直接在原列表基础上进行数据改变的，返回值都为None
+            其不能作为lambda冒号右边的值，否则返回None

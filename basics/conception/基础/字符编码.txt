@@ -1,0 +1,80 @@
+一、字符编码
+
+    1——常见字符集
+       ASCII——包含显示字符（英文大小写字符、阿拉伯数字）和控制字符（空格键、回车）
+       GB2312——中国国家标准的简体中文字符集（简化汉字、一般符号、数字）
+    Unicode——世界各国语言所使用的所有字符
+    2——字符编码
+       定义——将字符集中的字符编码为特定的二进制数
+       常见编码——ASCII、UTF—8、GBK
+       字节——计算机中存储数据的单元，一个8位（bit）二进制数
+       默认编码——python2（ASCII）、python3（UTF-8）
+       按照一定规则将字符储存在计算机中——编码，将储存在计算机中的二进制数解析显示出来——解码
+    3——字符类型
+       basestring
+           str——ASCII、gbk、utf-8……
+               ^        |
+               |encode  |decode
+               |编码，   |解码
+               |        v
+           Unicode——u'……'       # Unicode为编码的基础类型
+       utf-8——>Unicode
+           u'字符串'
+           '中文字符串'.decode('utf-8')
+           u'\u4e2d\u6587'
+       Unicode——>utf-8
+           u'中文字符串'.encode('utf-8')
+           '\xe4\xb8\xad\xe6\x96\x87'
+       Unicode是字符集，UTF-32/ UTF-16/ UTF-8是三种字符编码方案
+       .decode('gbk')————已知是GBK编码，解码程Unicode
+       .encode('utf-8')————编码程UTF-8的str
+    4——错误根源
+       ^^^UnicodeDecodeError
+          同时存在str类型和Unicode类型的运算，Python2将把str解码decode成Unicode再运算
+       ^^^UnicodeEncodeError
+          当对象（函数/类）接受的是str类型，但传入的是Unicode，Python2将使用ASCII对其编码程str类型再运算
+       代码里面混合使用了str类型和Unicode类型的字符串
+       python会默认使用ASCII编码尝试对Unicode类型的字符串编码（encode），或对str类型的字符串解码（decode）
+       在同时包含str和Unicode类型的字符操作时，一律都把str解码（decode）成Unicode再运算，容易出现error
+       open方式打开的文件，只能写入str类型
+           import codecs
+           codecs.open('test.txt', 'a', 'utf-8')
+           指定一个编码打开文件，读取返回的为Unicode
+       eg:
+           s = '你好'     # str类型，utf-8编码
+           u = u'世界'     # Unicode类型
+           s + u        # 会进行隐式转换，即s.decode('ascii') + u
+           Traceback (most recent call last):
+               File "<stdin>", line 1, in <module>
+           UnicodeDecodeError: 'ascii' codec can't decode byte 0xe4 in position 0: ordinal not in range(128)
+
+           s = '你好'                 # str 类型，utf-8 编码
+           u = u'世界'
+           s.decode('utf-8') + u     # 显示指定 'utf-8' 进行转换
+           u'\u4f60\u597d\u4e16\u754c'   # 注意这不是错误，这是 unicode 字符串
+
+           u_str = u'你好'
+           str(u_str)           # str()的参数只能是str类型
+           Traceback (most recent call last):
+               File "<stdin>", line 1, in <module>
+               UnicodeEncodeError: 'ascii' codec can't encode characters in position 0-1: ordinal not in range(128)
+       5——在cmd中的操作
+           a = '中国'             # str类型
+           b = u'中国'            # Unicode类型
+       6——常用编码类型
+           >>>a = '中国'
+           >>> a.decode('gbk')
+           u'\u4e2d\u56fd'                      # 中文Unicode的表现
+           >>> u'\u4e2d\u56fd'.encode('gbk')
+           '\xd6\xd0\xb9\xfa'                   # 中文gbk/gb2312的表现
+           >>> u'\u4e2d\u56fd'.encode('utf-8')
+           '\xe4\xb8\xad\xe5\x9b\xbd'           # 中文utf-8的表现
+           ps: 英文不受影响可以随意decode和encode，都能识别
+
+           >>> a = '中国'
+           >>> a
+           '\xd6\xd0\xb9\xfa'
+           >>> a.decode('gbk').encode('gbk')    # 在命令里运行的Python做的操作
+           '\xd6\xd0\xb9\xfa'
+
+           ascii——gb2312（多了中文等）——gbk（多了繁体等）——gb18030（多了少数民族字符等）

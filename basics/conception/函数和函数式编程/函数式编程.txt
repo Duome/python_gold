@@ -1,0 +1,73 @@
+一、定义
+
+    函数式编程是一种编程范式/模式
+    特性：
+       可以把函数当成变量使用
+二、高阶函数
+
+    1、定义
+        接受另一个函数作为参数的函数，称为高阶函数
+        eg: def a(g, x):
+                return [g(i) for i in x]
+            def g(x):
+                return 2 * x
+三、匿名函数
+
+    1、定义
+        使用关键字lambda，创建一个没有名称的函数
+    2、形式
+        lambda x : return
+        lambda——说明它是一个匿名函数
+        ：冒号前面——该匿名函数的参数
+        ：冒号后面——该匿名函数的返回值
+        eg: lambda x : 2 * x
+            (lambda x ： 2 * x)(8)   # 调用匿名函数
+            f = lambda x : 2 * x
+            f(8)                    # 将匿名函数赋予变量f，再用f调用函数
+    3、使用场景
+        适用于创造临时性、小巧的函数，运用于高阶函数的使用
+        eg: def func(g, arr):
+                return [g(x) for x in arr]
+            def add(x):
+                return x + 1
+            func(add, [1, 2, 3])        # 用def定义add函数，有点小题大作
+            func(lambda x : x + 1, [1, 2, 3])   # 可以用lambda表示简单的函数
+四、常用高阶函数
+
+    1、map函数
+        map(function, sequence)
+        将function作用在sequence的每一个元素，并把结果生成一个新的list
+        作用：解析列表，解析嵌套列表，将元祖解析后存入列表
+        eg: def square(x):
+                return x * x
+            map(square, [1, 2, 3])
+            map(lambda x : x * x, [1, 2, 3])    # 序列可以是元祖或字符串
+            map(str, [1, 2, 3])
+            ['1', '2', '3']
+            map(int, ['1', '2', '3'])
+            [1, 2, 3]
+            map(lambda x : sorted(x), [[2, 3, 1], [4, 2, 7, 5]])
+            ps: 还可以用函数名构成一个列表跟在后面，返回多个函数值组成的列表
+                lambda f : f(4) 同时执行参数为4的多个函数
+    2、reduce函数
+        reduce（func, sequence, initial）
+        将seq序列前两item传给func，返回值和下一item传给func，如此迭代，即func(func(item1, item2), item3)，如有initial，做初始值调用
+        作用：作序列元素连续运算
+        reduce(f, [1, 2, 3]) = f(f(1, 2), 3)
+        eg: reduce(lambda x, y : x * y, [1, 2, 3])  # (1*2)*3   # 该function应有两个参数，序列可以是元祖，不能是字符串
+            6
+            reduce(lambda x, y : x * y, [1, 2, 3],4)    # ((4*1)*2)*3
+            24
+            reduce(lambda x, y : x * 10 + y, [1, 3, 5, 7, 9])
+            13579
+    3、filter函数
+        filter(function bool, sequence)
+        将func作用于序列seq中每一个元素，筛除值为False，保留值为True的序列，该序列类型和sequence类型相同（在Python3中返回迭代器）
+        作用：过滤元素
+        eg: filter(lambda x : x % 2 == 0, [1, 2, 3, 4])
+            [2, 4]
+            filter(lambda x: x < 'g', 'hijack')     # 序列可以是元祖或字符串
+            'ac'
+            filter(lambda x : x and x.strip(), ['a', '', 'b', None, 'c'])
+            ['a', 'b', 'c']
+        ps: map()也可以将函数写出过滤作用，序列长度不变，不会筛除元素

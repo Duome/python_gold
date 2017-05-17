@@ -1,0 +1,54 @@
+字符串
+
+    1、特点
+        不可变序列
+    2、序列方法
+        index索引
+        count计数
+    3、常用方法
+        find查找——
+            'str'.find('substr',homeloc,endloc)
+            查找一个字符串中的子串
+            返回子串最左端索引,没有找到，返回-1（index直接报错）
+            可以规定起始位置和结束位置
+            eg: string = 'to be or not to be'
+                string.find('be')
+                3
+        split分割——
+            'str'.split('sepsym')
+            以分隔符为标志将字符串分割成序列，分隔符默认为所有空格
+            'this   is    a dog'.split()
+            ['this', 'is', 'a', 'dog']
+        join连接——
+            'sepsym'.join([list])
+            以分隔符为标志将列表连接成字符串
+            相当于split的逆方法，列表元素只能为字符串，不能是数字
+            eg: '/'.join(['1', '2', '3'])
+                '1/2/3'
+        strip移除——
+            'str'.strip('sym')
+            移除字符串两边的符号（包括字母），得到一个新字符，不包括内部，默认为空格
+            eg: '  hello!!!   '.strip()
+                'hello!!!'
+                '%%hello!!!  &&'.strip('%& ')
+                'hello!!!'
+        replace替换——
+            'str'.replace('oldstr', 'newstr')
+            替换字符串中的所有匹配项，得到一个新字符(类似sorted())
+            eg: str = 'TO be or not TO be'
+                nemstr = str.replace('TO', 'to')
+                nemstr
+                'to be or not be'
+        lower换小写——
+            'str'.lower()
+            将字符串中的大写替换成小写，得到一个新字符
+            eg: str = 'PYThow'
+                newstr = str.lower()
+                newstr
+                'python'
+        upper换大写——
+            'str'.upper()
+            将字符串中的小写替换程大写，得到一个新字符
+            eg: str = 'PYthon'
+                str.upper()
+                'PYTHON
