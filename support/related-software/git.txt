@@ -1,0 +1,20 @@
+**设置用户名
+    git config --global user.name "Your Name"
+**设置用户邮箱
+    git config --global user.email "email@exaample.com"
+**显示当前目录
+    pwd
+**把目录变成git可以管理的仓库
+    git init
+    文件中多了一个.git目录，用于跟踪管理版本库
+    .git目录默认为隐藏，用ls -ah命令可以看到
+**版本控制系统只能跟踪本文件的改动，无法跟踪图片和视频这些二进制文件
+    word也不行
+**添加readme.txt文件
+    文件存在才可以添加，不在当前目录需要写相对路径
+    git add readme.txt
+    Git is a nersion control system
+    Git is gree software
+**显示当前目录文件
+    ls
+    ls -ah      显示隐藏文件

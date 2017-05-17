@@ -1,0 +1,35 @@
+**创建版本库
+    1——在你想要创建版本库的界面中创建一个文件夹
+    2——进入文件夹，点击右键——Git Create repoditory here
+       不勾选Make it Bare(如果多个开发人员共用，要勾选)
+       生成一个隐藏文件.git文件夹
+    3——在文件夹里创建一个文件
+    4——选中文件，点击右键——tortoisegit——add——commit
+       对应——add to ignore list——添加的只在本地保存，不会提交在平台上
+    5——选中文件，点击右键——Git Commit -> "master"
+       add后点击ok，可通过以上操作提交文件到本地git
+    6——进入commit界面
+       在message内写入更改的内容
+       勾选set author date——显示更改时间
+       勾选set author——显示作者和邮箱
+       点击add signed-off-by——将以上内容添加到message内
+       点击ok——push或close以后再文件空白出右键点击push——上传到平台
+    7——获取平台库地址
+       登录GitHub
+       在我的头像下选择Your profile
+       点击你的profile或新建profile
+       绿色clone or download复制你的web URL
+    8——push到平台上
+       在push界面点击manage
+       在remote中URL粘贴你的web URL点击确定
+       回到push界面点击ok
+       输入用户名和密码
+**创建、切换分支
+    1——创建分支
+       右键——create branch
+       输入名字
+       点击HEAD
+       勾选Swich to new branch
+    2——切换分支
+       右键——Switch/Checkout
+    ps:分支之间相互独立

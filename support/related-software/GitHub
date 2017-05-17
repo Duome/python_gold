@@ -1,0 +1,8 @@
+1)克隆其他项目
+    点击Fork可以将项目克隆到自己账号下
+    在git上输入"git clone duomesiki@163.com:bootstrap.git"
+    在自己的账号下clone仓库才能推送修改
+2）删除项目
+    点击项目——settings——点击最下面Delete this repository
+3)希望官方接受你的修改
+    点击pull request
