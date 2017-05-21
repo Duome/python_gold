@@ -1,0 +1,15 @@
+项目分析：
+    界面实现：
+        Menu——菜单
+            tkFileDialog——文件保存链接
+            Toplevel——弹出一个新的对话框
+            tkMessageBox——弹出对话框
+        Toolbar——工具栏
+        Text——文本
+            lnlabel——行号
+            Text——文本框
+            Scrollbar——卷动条
+        StatusBar——状态栏
+    功能实现：
+        text相关操作
+        文件读写操作
