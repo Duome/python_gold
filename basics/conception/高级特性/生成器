@@ -1,0 +1,104 @@
+生成器
+
+    1、概念
+        定义————
+            一种迭代器，在每次迭代是返回一个值，知道抛出异常
+        构造方式————
+            生成器表达式: (x for x in range(5))   # 可以不带括号
+            生成器函数: 含有yield关键则的函数，调用函数后返回一个生成器
+    2、生成器函数
+        eg: def generator_func():    # 带有yield的函数就是生成器函数
+                print 'hello 1'
+                yield 1              # 没有return返回值，而是使用yield生出一个值
+                print 'hello 2'
+                yield 2
+                print 'hello'
+            g = generator_func()
+            g       # 函数没有立即执行，而是返回一个生成器，也是迭代器
+            <generator object g at 0x00BAE738>
+            g.next()        # 生成器当使用g.next()或next(g)开始执行，遇到yield暂停
+            hello 1
+            1
+            g.next()        # 从原来暂停的地方继续执行
+            hello 2
+            2
+            g.next()        # 没有yield抛异常
+            hello 3
+            抛异常
+        原理————
+            带有yield的函数是一个生成器函数，当使用yield时，自动创建了__iter__()和next()方法，并在没有数据时，抛异常
+        特点————
+            调用函数时不会执行代码，而是返回一个生成器
+            使用next()（for循环自动调next）作用于函数对象时，函数执行，遇到yield暂停，返回当前迭代值
+            再次使用next()，函数从原暂停地方继续执行，遇到yield暂停，没有yield抛异常
+        Fibanacci数列————
+            eg: def fib():
+                    a, b = 0, 1
+                    while True:
+                        a, b = b, a + b
+                        yield b
+                f = fib()
+                for i in f:
+                    if i > 10:
+                        break
+                    print i
+        作用————
+            方便处理大文件，构造固定长度的缓冲区来不断读取文件内容
+            eg: def a(file, size = 1024):
+                    while True:
+                        data = file.read(size)
+                        if not data:
+                            break
+                        yield data
+                f = open('test.txt')
+                for i in a(f):
+                    process_data(i)
+    3、进阶使用
+        ^^^send()发送消息————
+            简单说即，next()功能，加上传值给暂停的yield
+            def gfunc():
+                val1 = yield 0
+                print 'val1 is ', val1
+                val2 = yield 1
+                print 'val2 is ', val2
+                val3 = yield 3
+                print 'val3 is ', val3
+            g = gfunc()
+            g,next()        # 使函数开始执行，执行到yield暂停
+            0
+            g.send(2)       # 恢复生成器的运行，将发送的值赋给上次中断时yield表达式的执行结果
+            val1 is 2
+            1
+            g.send(3)
+            val2 is 3
+            2
+            g.send(4)
+            val3 is 4
+            抛异常
+        ^^^throw()发送异常————
+            简单说即，next()功能，加上传异常给yield
+            eg: def gfunc():
+                    try:
+                        yield 'Normal'
+                    except ValueError:
+                        yield 'Error'
+                    finally:
+                        print 'Finally'
+                g = gfunc()
+                g.next()
+                'Normal'
+                g.throw(ValueError)
+                'Error'
+                g.next()
+                Finally
+                抛异常
+        ^^^close()关闭生成器————
+            eg: def gfunc():
+                    yield 1
+                    yield 2
+                    yield 3
+                g = gfunc()
+                g.next()
+                g.close()       # 关闭生成器
+                g.next()
+                抛异常

@@ -1,0 +1,66 @@
+迭代器
+
+    1、概念
+        定义————遵循迭代器协议（iterator protocol）的对象
+        迭代————用循环遍历容器中的元素的遍历过程
+        可迭代对象————含有__iter__()方法或__getitem__()方法的对象
+        判断对象是否是可迭代的————hasattr()或isinstance()
+        eg: hasattr((), '__iter__')    # 判断前者是否有后者特性
+            True
+            isinstance((), Iterable)    # 判断前者是否是后者类型
+            True
+            ps: 元祖、列表、字典、字符串都是可迭代的
+    2、迭代器
+        迭代器协议————
+            指实现对象的__iter__()和next()方法，其中，__iter__()方法返会迭代器对象本身，next()方法返回容器的下一个元素，没有后续元素时抛异常
+        判断是否是迭代器————
+        eg: hasattr((), '__iter__')
+            True
+            hasattr((), 'next')     # 既要有__iter__方法，又要有next方法
+            False
+            isinstance((), Iterator)
+            False
+        iter()————
+            将可迭代对象转换成迭代器
+            isinstance(iter([1, 2, 3]), Iterator)
+            True
+        next()使用————
+            只有迭代器可以使用
+            next([1, 2, 3])
+            抛异常
+            next(iter([1, 2, 3]))   # 获得下一个元素
+            1
+        for循环原理————
+            先通过内置函数iter()获得迭代器，然后不断调用next()函数实现
+            eg: for i in [1, 2, 3]
+                    print i
+                等价于
+                it = iter([1, 2, 3])    # 获得iterator对象
+                while True:             # 循环
+                    try:
+                        i = next(it)    # 获得下一个值
+                        print i
+                    except StopIteration:   # 没有后续元素，退出循环
+                        break
+    3、斐波那契数列迭代器
+        自定义迭代器————
+        eg: from collections import Iterator
+
+            class Fib(object):
+                def __init__(self):
+                    self.a, self.b = 0, 1
+                def __iter__(self):     # 返回迭代器本身
+                    return self
+                def next(self):         # 返回容器下一个元素
+                    self.a, self.b = self.b, self.a + self.b
+                    return self.a
+            def main():
+                fib = Fib()
+                print 'isinstance(fib, Iterator):', isinstance(fib, Iterator)
+                for i in fib:
+                    if i > 10:
+                        break
+                    print i
+            if __name__ -- '__main__':
+                main()
+

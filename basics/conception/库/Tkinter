@@ -1,0 +1,312 @@
+一、TK和Tkinter
+http://effbot.org/tkinterbook/tkinter-index.htm#class-reference
+
+    1、定义————
+        TK————图形编程
+        Tkinter————python内置库，图形库，连接纽带
+
+
+    2、Hello Tkinter
+        eg: root = Tk()
+            label = Label(root, text='Hello world')
+            label.pack()
+            root.mainloop()
+
+        root——Tk类的实例，返回根窗体实例（最底层窗体实例）
+        label——Label类的实例，传入第一个参数为父窗体，label是其子对象，里面可以放子的UI元素
+        text——外观元素
+        label.pack()——让窗体自适应主键大小，并显示
+        root.mainloop()——死循环，循环到程序结束
+        返回——简单label ui主键的呈现
+
+
+    3、Hello Tkinter扩展
+        eg: from Tkinter import *
+            class App():
+                def __init__(self, master):     # 传入根窗体（root window）实例
+                    frame = Frame(master)       # UI主键（一块容器），传入根窗体
+                    frame.pack()
+
+                    self.button = Button(frame, text='Hello class', fg='red', command=frame.quit)
+                    self.button.pack()
+
+                    self.hiButton = Button(frame, text='Say Hi', command=self.say_hi)
+                    self.hiButton.pank()
+
+                def say_hi(self):       # 回调函数
+                    print 'Hi Duome, Thanks!'
+
+            root = Tk()
+            app = App(root)
+            root.mainloop()
+            root.destroy()  # 实例不能消亡是用到它来消亡实例
+
+            Frame——一个容器
+            Button——按钮
+            fg——前背景色
+            command——点击事件命令
+            frame.quit——退出
+            say_hi——回调函数，在App中作为一个参数
+
+
+    4、GUI类库设计架构-Tkinter架构分析
+        架构——
+            root window最底层容器，根作用
+                        |
+            容器UI（Frame）
+                        |
+            非容器UI（label、button、image）
+        分类——
+            widget(UI组件)（显示主键）
+            窗体显示和叠加（pack）（管理显示主键）
+            event事件（command）——
+                输入事件鼠标和键盘
+                状态事件S
+                管理事件M（窗体生命周期消亡）
+
+
+    5、widget外观配置config
+        前段忘了配置，可以用config进行配置
+            鼠标——
+            cursor划过它是鼠标样式
+            eg: label.config(cursor='gumby')
+            外观——
+            width宽度
+            height高度
+            fg前段颜色
+            bg背景色
+            eg: label.config(width=80, height=10, fg='yellow', bg='#343343') # 可以用RJB值
+            文字——
+            font字体（本身是一个list）
+            family字体系列——'times'（'courier' 'arial'等）
+            size大小——'28'
+            hit表示样式——'bold'
+            eg: label.config(font=('times', '28', 'bold'))
+
+
+    6、widget style组件外观属性
+        Colors颜色————
+            bg='green' 背景色
+            fg='red' 前景色
+        Fonts字体————
+            font=('Helvetica', 10, 'bold italic') 字体
+        Borders边界————
+            bd=8 边界
+            relief=RAISED 浮雕效果
+        Focus Highlights得到焦点的形式
+
+        Cursors鼠标————
+            cursor='gumby' 鼠标
+        pad布局————
+            padx=10 X轴的内部间距
+            pany=10 Y轴的内部间距
+
+
+    7、event事件
+        分类——
+            鼠标和键盘的点击事件
+            状态事件（按钮移进，移出）
+            窗体事件（关闭，获取窗体句柄）
+        实现方式——
+            command=回调函数（Button中的配置）    # 按钮级
+            bind()绑定具体事件                     # 按钮级
+            protocol监听窗口的管理，窗体的改变      # 系统级
+            eg: from Tkinter import *
+                root = Tk()
+                def button_click():
+                    print 'button clicked'
+                button = Button(text='hello', command=button_click)     # 只有Button有该属性
+                button.pack()
+                root.mainloop()
+
+                def callback(event):    # event是一个类
+                    print 'Button clicked'
+                frame = Frame(root, width=10, height=100)
+                frame.bind('<Button-1>', callback)  # 第一个参数表示具体的事件，即左键点击
+                frame.pack()
+                root.mainloop()
+        event——
+            event formats
+                <Button-1>——点击左键
+                <Button-2>——点击右键
+                <Button-3>——点击鼠标中键或左右键一起按
+                <B1-Motion>——点击左键移动
+                <ButtonRelease-1>——左键释放
+                <Double-Button-1>——双击左键
+                <Enter>——进入组件范围
+                <Leave>——离开组件范围
+                <FocusIn>——得到键盘焦点
+                <FocusOut>——失去键盘焦点
+                <Return>——回车键（F1，F2，F3，Delete）
+                <Key>——任意键
+                <a>——用户输入'a'
+                <shift-up>——按住shift的同事，按Up箭头
+                <Configure>——改变组件形状或位置
+            event Attributes
+                widget——产生事件的组件
+                x, y——x轴y轴
+                x_root, y_root
+                char——键盘输入什么字符
+                keycode——键盘代码
+                num——鼠标按钮数字
+                width, height——宽度高度
+                type——事件类型
+            eg: root = Tk()
+                def callback(event):
+                    frame.focus_set()
+                    print 'clicked at:', event.x, event.y
+
+                def key(event):
+                    print 'pressed', repr(event.char)
+
+                def closewindow():
+                    if tkMessageBox.askokcancel('Quit', 'Do you want to exit'):
+                        root.destroy()
+
+                frame = Frame(root, width=100, height=100)  # 这个代表root里的容器，设置的太小作用的部分就很小，所以尽量设大一点
+                frame.bind('<Button-1>', callback)
+                frame.bind('<Key>',key)
+                frame.pack()
+                root.protocol('WM_DELETE_WINDOW',closewindow)
+                root.mainloop()
+
+
+    8、UI组件
+        分类——
+            容器型的Frame
+            纯粹型的Label
+            窗体型的Toplevel
+            Messege相关的
+        basewindow——
+            toplevel
+                在root上在放一个窗口
+                root = Tk()
+                root.title('root')      # 设置标题名
+                top = Toplevel(bg='red')
+                top.title('top')
+                root.mainloop()
+        菜单Menu——
+            构造——父菜单，子菜单，分割线
+            add_command(label=string, command=callback)
+                添加标准菜单
+            add_sepatator()
+                添加分隔线
+            add_cascade(label=string, menu=menu instance)
+                添加子菜单，menu为其父菜单
+            eg: from Tkinter import *
+
+                def menu_call():
+                    print 'Thanks for using it!'
+
+                root = Tk()                                                 # 创建一个根窗口
+                menu = Menu(root)                                           # 在根窗口创建菜单对象
+                root.config(menu=menu)                                      # 给根窗口添加菜单属性
+                filemenu = Menu(menu)                                       # 定义子菜单（父菜单是menu）
+                menu.add_cascade(label='File', menu=filemenu)               # 在菜单上加一个子菜单
+                filemenu.add_command(label='New', command=menu_call)        # 在子菜单中添加元素
+                filemenu.add_command(label='open..', command=menu_call)
+                filemenu.add_sepatator()                                    # 添加下划线
+                filemenu.add_command(label='Exit', command=menu_call)
+                helpmenu = Menu(menu)                                       # 在定义一个子菜单
+                menu.add_cascade(label='Help', menu=helpmenu)
+                helpmenu.add_command(label='About..', command=menu_call)
+                root.mainloop()
+        工具栏Toolbar——
+            eg: root = Tk()
+                def callback():
+                    print 'clicked tool bar button'
+                toolbar = Frame(root)
+                b = Button(toolbar, text='new', width=6, command=callback)
+                b.pack(side=LEFT, padx=2, pady=2)
+                c = Button(toolbar, text='open', width=6, command=callback)
+                c.pack(side=LEFT, padx=2, pady=2)
+                toolbar.pack(side=TOP,fill=X)   # fill拉伸，双向拉伸both
+                root.mainloop()
+        弹出对话框Messagebox——
+            tkMessageBox三方库
+            eg: from Tkinter import *
+                import tkMessageBox
+                root = Tk()
+                def callback():
+                    if tkMassegeBox.askyesno('Sundy', 'Hi, Sundy')
+                        print 'Clicked Yes'
+                    else:
+                        print 'Clicked No'
+                button = Button(root, text='DUOME', command=callback)
+                button.pack()
+                root.mainloop()
+        状态栏StatusBar——
+            eg: from Tkinter import *
+                root = Tk()
+                status = Label(root, text='Ln20', bd=1, relief=SUNKEN, anchor=W)    # anchor左对齐
+                atatus.pack(side=BOTTOM, fill=X)
+                root.mainloop()
+
+                anchor对齐——
+                    W——左对齐（西）
+                    E——右对齐（东）
+                    N——上对齐（北）
+                    S——下对齐（南）
+                pack(side)位置——
+                    TOP——最上面
+                    BOTTOM——最下面
+        文件Text——
+            indexes索引格式——
+                line/column('line,column')   行和列
+                line end('line,end')     行和end
+                INSERT      插入
+                CURRENT     当前位置
+                END     结束位置
+                user-defined-marks      用户定义标签
+                user-defined tags（'tag.first', 'tag.last'）  标签的first和last
+                selection（SEL._FIRST, SEL,_LAST）    选择的头和尾
+                eg: 1.0     表示第1行第0列，即最开头
+                    text.insert(END, 'HELLO')       # 插入操作
+                    text.delete(1.0, END)           # 删除操作
+                    text.get(1.0, END)              # 得到值的操作
+                    text.mark_get('here', index)    # 得到某块值的操作
+                    text.search('o', start, stopindex-END)    # 查询操作
+        其他UI组件学习方法——
+            Button——按钮
+            Canvas——画布
+            Checkbutton——复选框
+            Entry——文本输入框
+            Frame——内置容器
+            Label——文本显示
+            LabelFrame——文本显示容器
+            Listbox——列表
+            Menu——菜单
+            Menubutton——菜单按钮
+            Message——
+            OptionMenu——可选菜单
+            Radiobutton——单选
+            Scale——分界滑动
+            Text——大段文本显示
+            Toplever——弹出的自定义面板
+    9、布局
+        分类——
+            Grid——表格布局
+            Pack——单一布局
+            Place——绝对布局
+        Grid——
+            eg: from Tkinter import *
+                root = Tk()
+                Label(root, text='First').grid(row=0)
+                Label(root, text='Second').grid(row=1)
+                e1 = Entry(root)
+                e2 = Entry(root)
+                e1.grid(row=0, column=1)
+                e2.grid(row=1, column=1)
+                Button(root. text='OK').grid(row=2)
+                root.mainlop()
+
+
+
+
+
+
+
+
+
+
+
