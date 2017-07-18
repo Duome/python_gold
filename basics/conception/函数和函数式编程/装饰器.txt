@@ -1,0 +1,129 @@
+装饰器————
+
+    函数作为对象的特征————
+
+        函数可以被赋值给其他变量
+        函数可以被删除
+        可以在函数里面再定义函数
+        函数可以作为参数传递给另外一个函数
+        函数可以作为另一个函数的返回
+    装饰器的来源————
+
+        闭包——
+        在不改变hello函数的情况下，将return的值转换
+        eg: def hello():
+                return 'hello world'
+            def add(func):
+                def inter_add():
+                    return '$%s%' % func()
+                return inter_add
+            hello = add(hello)
+            hello.__name__
+            >>>inter_add
+        装饰器——
+        一个高阶函数，以被装饰的函数为参数，并返回一个包装后的函数给被装饰函数
+        eg: @add
+            def hello():
+                return 'hello world'
+            相当于hello = add(hello)
+    装饰器形式————
+
+        一般形式——
+        eg：@decorator
+            def func():
+                pass
+
+            func = decorator(func)
+        可定义多个装饰器（离函数定义最近的先调用）——
+        eg: @decorator_one
+            @decorator_tow
+            def func():
+                pass
+        ps:decorator_one（decorator_tow(func)）
+            def makebold(func):
+                def wrapped():
+                return '<b>' + func() + '</b>'
+                return wrapped
+
+            def makeitalic(func):
+                def wrapped():
+                return '<i>' + func() + '</i>'
+                return wrapped
+                @makebold
+                @makeitalic
+                def hello():
+                    return 'hello world'
+                hello()
+                >>>'<b><i>hello world</i></b>'
+        多个参数的装饰器——
+        eg: @decorator(arg1, arg2)
+            def func():
+                pass
+            ps: func = decorator(arg1, arg2)(func)
+            def wrap_in_tag(tag):
+                def decorator(func):
+                    def wrapped(*args, **kwargs):
+                        ret = func(*args, **kwargs)
+                        return '<' + tag + '>' + ret + '</' + tag + '>'
+                    return wrapped
+                return decorator
+            makebold = wrap_in_tag('b')  # 根据 'b' 返回 makebold 生成器
+            @makebold
+            def hello(name):
+                return 'hello %s' % name
+
+            hello('world')
+            >>> '<b>hello world</b>'
+            # 更简洁的方式
+            @wrap_in_tag('b')
+            def hello(name):
+            return 'hello %s' % name
+
+
+        对带参数的函数进行装饰——
+        eg: (*args, **kwargs)
+            def hi(func):
+                # @wraps(func)
+                def inter_hi(**kwargs):
+                    ret = func(**kwargs)
+                    return '%s' % ret
+                return inter_hi
+
+            def hello(name1, name2):
+                return 'hello %s %s' % (name1, name2)
+
+            hello = hi(hello)
+            print hello(name2='world',name1='DUOME')
+        基于类的装饰器——
+        eg: class Bold(object):
+                def __init__(self, func):
+                    self.func = func
+
+                def __call__(self, *args, **kwargs):
+                    return '<b>' + self.func(*args, **kwargs) + '</b>'
+
+            @Bold
+            def hello(name):
+                return 'hello %s' % name
+
+            hello('world')
+            >>> '<b>hello world</b>'
+
+        装饰器的副作用——
+        被装饰的函数，它的函数名称已经不是原来的名称，可以使用wraps装饰器
+        eg: from functools import wraps
+
+            def makeitalic(func):
+                @wraps(func)       # 加上 wraps 装饰器
+                def wrapped():
+                    return "<i>" + func() + "</i>"
+                return wrapped
+
+            @makeitalic
+            def hello():
+                return 'hello world'
+
+            >>> hello.__name__
+            'hello'
+        ps: hello = makeitalic(hello) # wrapped
+            hello = makeitalic(hello) # wrapped = wraps(hello)(wrapped)

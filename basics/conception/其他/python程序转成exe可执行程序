@@ -1,0 +1,19 @@
+python程序转成exe可执行程序
+
+    将Python脚本转换成Windows上的可独立执行的可执行程序
+    1、安装py2exe
+        http://prdownloads.sourceforge.net/py2exe
+        双击安装即可
+    2、转换为exe可执行文件
+        （1）在需要转换的Python文件目录中新建setup.py文件，内容为
+            from distutils.core import setup
+            import py2exe
+            setup(windows=['my.py'])    # 可将windows换为console，生成的文件就会有cmd框
+        （2）在cmd中定位到当前目录，内容为
+            python setup.py py2exe
+
+            或当前目录新建txt文件，内容
+                python setup.py py2exe
+            将txt文件后缀改为bat
+            双击运行
+        （3）生成的exe文件在dist中

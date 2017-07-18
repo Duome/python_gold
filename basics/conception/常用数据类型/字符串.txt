@@ -1,54 +1,361 @@
 字符串
 
-    1、特点
-        不可变序列
+    1、字符串创建
+        表示方法——
+            单引号， 双引号， 三引号
+            单引号和双引号无区别，可声明一个字符串，三引号里的内容可以换行（双引号作三引号）
+            print不带引号的字符
+            调用变量，带有引号
+            str()   把列表转换成一个字符串
+        特点——
+            不可变序列
+        访问字符串中的值——
+            eg: val = 'hello'
+            访问一个值
+                val[1]       'e'
+            访问几个值
+                val[1:3]     'el'   #代表第1个至第2个值
+            访问第一个到第n个值
+                val[:3]      'hel'
+            访问第几个到最后一个值
+                val[2:]      'llo'
     2、序列方法
         index索引
         count计数
-    3、常用方法
-        find查找——
-            'str'.find('substr',homeloc,endloc)
-            查找一个字符串中的子串
-            返回子串最左端索引,没有找到，返回-1（index直接报错）
-            可以规定起始位置和结束位置
-            eg: string = 'to be or not to be'
-                string.find('be')
-                3
-        split分割——
-            'str'.split('sepsym')
-            以分隔符为标志将字符串分割成序列，分隔符默认为所有空格
-            'this   is    a dog'.split()
-            ['this', 'is', 'a', 'dog']
-        join连接——
-            'sepsym'.join([list])
-            以分隔符为标志将列表连接成字符串
-            相当于split的逆方法，列表元素只能为字符串，不能是数字
-            eg: '/'.join(['1', '2', '3'])
-                '1/2/3'
-        strip移除——
-            'str'.strip('sym')
-            移除字符串两边的符号（包括字母），得到一个新字符，不包括内部，默认为空格
-            eg: '  hello!!!   '.strip()
-                'hello!!!'
-                '%%hello!!!  &&'.strip('%& ')
-                'hello!!!'
-        replace替换——
-            'str'.replace('oldstr', 'newstr')
-            替换字符串中的所有匹配项，得到一个新字符(类似sorted())
-            eg: str = 'TO be or not TO be'
-                nemstr = str.replace('TO', 'to')
-                nemstr
-                'to be or not be'
-        lower换小写——
-            'str'.lower()
-            将字符串中的大写替换成小写，得到一个新字符
-            eg: str = 'PYThow'
-                newstr = str.lower()
-                newstr
-                'python'
-        upper换大写——
-            'str'.upper()
-            将字符串中的小写替换程大写，得到一个新字符
-            eg: str = 'PYthon'
-                str.upper()
-                'PYTHON
+        del val删除为列表的变量
+    3、內建函数
+        标准类型函数——
+            cmp()
+        序列类型函数——
+            len()           返回序列长度
+            max()           返回序列最大元素
+            min()           返回序列最小元素
+            enumerate()     返回包含（index, item）元祖的迭代器对象
+            zip()           返回（seq1元素，seq2元素）组成的列表
+            eg: s,, t = 'abc', '123'
+                zip(s, t)
+                >>>[('a', '1'), ('b', '2'), ('c', '3')]
+        字符串类型函数——
+            raw_input()     输入，只返回字符串格式
+            str()           转换为字符串类型
+            unicode()       字符串转换为Unicode类型
+            chr()           ASCII数字转换为字符
+            unichr()        数字转换为Unicode字符
+            ord()           字符转换为ASCII数值
+        字符串內建函数——
+            find查找——
+                'str'.find('substr',homeloc,endloc)
+                查找一个字符串中的子串
+                返回子串最左端索引,没有找到，返回-1（index直接报错）
+                可以规定起始位置和结束位置
+                eg: string = 'to be or not to be'
+                    string.find('be')
+                    3
+            split分割——
+                'str'.split('sepsym')
+                以分隔符为标志将字符串分割成序列，分隔符默认为所有空格
+                'this   is    a dog'.split()
+                ['this', 'is', 'a', 'dog']
+            join连接——
+                'sepsym'.join([list])
+                以分隔符为标志将列表连接成字符串
+                相当于split的逆方法，列表元素只能为字符串，不能是数字
+                eg: '/'.join(['1', '2', '3'])
+                    '1/2/3'
+            strip移除——
+                'str'.strip('sym')
+                移除字符串两边的符号（包括字母），得到一个新字符，不包括内部，默认为空格
+                eg: '  hello!!!   '.strip()
+                    'hello!!!'
+                    '%%hello!!!  &&'.strip('%& ')
+                    'hello!!!'
+            replace替换——
+                'str'.replace('oldstr', 'newstr')
+                替换字符串中的所有匹配项，得到一个新字符(类似sorted())
+                eg: str = 'TO be or not TO be'
+                    nemstr = str.replace('TO', 'to')
+                    nemstr
+                    'to be or not be'
+            lower换小写——
+                'str'.lower()
+                将字符串中的大写替换成小写，得到一个新字符
+                eg: str = 'PYThow'
+                    newstr = str.lower()
+                    newstr
+                    'python'
+            upper换大写——
+                'str'.upper()
+                将字符串中的小写替换程大写，得到一个新字符
+                eg: str = 'PYthon'
+                    str.upper()
+                    'PYTHON
+            capitalize首字母大写——
+                'str'.capitalize()
+                将字符串中的首字母大写，得到一个新字符
+                eg: nstr = 'hello'.capitalize()
+                    nstr
+                    >>>'Hello'
+            center居中——
+                'str'.center(width)
+                将字符串居中，总长度为width
+                eg: nstr = 'hello'.center(11)
+                    nstr
+                    >>>'   hello   '
+            decode解码——
+                'str'.decode(encoding='UTF-8')
+                将字符串解码为Unicode，默认解码对象为utf-8编码
+                eg: nstr = 'hello'.decode()
+                    nstr
+                    >>>u'hello'
+                    nstr = '中国'.decode(encoding='GBK')
+                    nstr
+                    >>>u'\u4e2d\u56fd'
+            encode编码——
+                'str'.encode(encoding='utf-8')
+                将字符串编码为默认的utf-8编码
+                eg: nstr = 'hello'.encode()
+                    nstr
+                    >>>'hello'
+            endswith检查后缀——
+                'str'.endswith(obj, beg=0, end=len('str'))
+                检查obj是否为'str'的结尾，是返回True，不是返回False
+                eg: 'hello'.endswith('o')
+                    >>>True
+                    'hello'.endswith('llo')
+                    >>>True
+            expandtabs转换空格——
+                'str'.expendtabs(tabsize=8)
+                将字符串中tab符号转换为空格，默认空格数为8
+                eg: '   hello'.expandtabs()
+                    >>>'        hello'
+                    '   hello'.expandtabs(1)
+                    >>>' hello'
+            isalnum判断字符/字符串为字母或数字——
+                'str'.isalnum()
+                至少有一个字符，所有字符为字母或数字，返回True，否则False
+                eg: 'hello'.isalnum()
+                    >>>True
+            isalpha判断字符/字符串为字母——
+                'str'.isdecimal()
+                至少有一个字符，所有字符为字母
+                eg: 'hello'.isalpha()
+                    >>>True
+            isdecimal判断字符/字符串十进制数字——
+                'str'.isdecimal()
+                字符串只包含十进制数字，只接受字符串格式为Unicode
+                eg: u'100'.isdecimal()
+                    >>>True
+            isdigit判断数字——
+                'str'.isdigit()
+                字符串只包含数字返回True
+                eg: '100'.isdigit()
+                    >>>True
+            isnumeric判断数字字符——
+                'str'.isnumeric()
+                字符串只包含数字字符，只接受字符串格式为unicode
+                eg: u'8786'.isnumeric()
+                    >>>True
+                ps: 一点区别
+                    num = "1"  #unicode
+                    num.isdigit()   # True
+                    num.isdecimal() # True
+                    num.isnumeric() # True
+
+                    num = "1" # 全角
+                    num.isdigit()   # True
+                    num.isdecimal() # True
+                    num.isnumeric() # True
+
+                    num = b"1" # byte
+                    num.isdigit()   # True
+                    num.isdecimal() # AttributeError 'bytes' object has no attribute 'isdecimal'
+                    num.isnumeric() # AttributeError 'bytes' object has no attribute 'isnumeric'
+
+                    num = "IV" # 罗马数字
+                    num.isdigit()   # True
+                    num.isdecimal() # False
+                    num.isnumeric() # True
+
+                    num = "四" # 汉字
+                    num.isdigit()   # False
+                    num.isdecimal() # False
+                    num.isnumeric() # True
+            isspace判断空格——
+                'str'.isspace()
+                字符串只包含空格
+                eg: '   '.isspace()
+                    >>>True
+            istitle判断标题化——
+                'str'.istitle()
+                字符串是标题化的（每个词的首字母为大写）
+                eg: 'This Is A Good Thing'.istitle()
+                    >>>True
+            isupper判断大小写——
+                'str'.isupper()
+                字符串中包含至少一个区分大小写的字符，全是大写
+                eg: 'HELLO'.isupper()
+                    >>>True
+            lstrip去左空格——
+                'str'.lstrip()
+                裁掉左边的空格
+                eg: '  hello'.lstrip()
+                    >>>'hello'
+            rjust右对齐——
+                'str'.rjust(width[,fillchar])
+                返回原字符串右对齐，默认填充字符（fillchar）为空格
+                eg: 'hello'.rjust(10, '0')
+                    >>>'00000hello'
+            rindex右搜索——
+                'str'.rindex()
+    5、操作符
+        标准类型操作符——
+            == < > <= >= != and or
+            按照ASCII值大小比较
+        运算操作符——
+            +               字符串连接
+            *               重复输出字符串
+            []              索引获取字符串中的字符
+            [:]             截取字符串中的一部分
+            in              成员运算符， 如果字符串中包含， 返回True
+            not in          成员运算符， 如果字符串中不包含， 返回True
+            r/R             原始字符串， 所有的字符串都直接按照字面意思来使用， 没有转义功能
+            %               格式化字符串
+        序列操作符——
+            成员操作符   in 、 not in
+            连接符 '+'
+        编译时字符串连接——
+            eg: a = 'Hello''world'
+                a
+                >>>'Helloworld'
+        普通字符串转化为Unicode字符串——
+            u'str'  字符串前加'u'
+        原始字符串操作符（r/R）——
+            r'str'  用于字符串中出现的特殊字符
+            eg: '\n'
+                >>>'\n'
+                print '\n'
+                >>>
+
+                r'\n'
+                >>>'\\n'
+                print r'\n'
+                >>>'\n'
+                f = open(r'C:\windows\temp\readme.txt', 'r')
+    Unicode字符串——
+        python2-分str字符串， 和Unicode字符串
+        只是在python2中区分
+            a = 'abc'
+            b = u'123'
+            type(a)
+            <type:str>
+            type(b)
+            <type:unicode>
+        unicode的好处是遇到中文不容易遇到乱码
+        相互转换
+            转
+            a = 'abc'
+            c = a.decode('gbk')
+            type c
+            <type:unicode>
+            转回去
+            c.encode('gbk')
+        ps:python3中也有encode的使用
+            转
+            a = 'abc'
+            c = a.encode('gbk')
+            type c
+            <class:'bytes'>是字节的类型
+            转回去
+            c.decode('gbk')
+    6、相关模块
+        string——
+            eg: import string
+                string.uppercase    # uppercase属性
+                >>>'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+                string.lowercase    # lowercase属性
+                >>>'abcdefghijklmnopqrstuvwxyz'
+                string.letters      # letters属性
+                >>>'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+                string.digits       # digits属性
+                >>>'0123456789'
+        Template——
+            字符串模板替代品，字典形式转换方便
+                from string import Template # Template对象（substitute()方法，safe_substitute()方法）
+                s = Template('${a} ${b}')
+                print s.substitute(a='hello', b='world!')
+                >>>'hello world!'
+                print s.safe_substitute(a='hello')  # sustitute()抛KeyError异常
+                >>>'hello ${b}'
+    7、字符串中转义特殊字符
+        \n换行，使其无意义显示出来\\n， 或在字符串前引号前+r（使字符串中的转义无意义）
+        eg:a = 'aaa\\nbbb'
+           a = r'aaa\nbbb'
+        \（行尾）        续行符
+        \\              反斜杠符号
+        \'              单引号
+        \"              双引号
+        \a              响铃
+        \b              退格Backspace
+        \e              转义
+        \000            空
+        \n              换行
+        \v              纵向制表符
+        \t              横向制表符
+        \f              换页
+        \oyy            八进制数，yy代表字符，eg: \o12代表换行
+        \xyy            十六进制数，yy代表的字符，eg: \x0a代表换行
+        \other          其他的字符以普通格式输出
+    8、格式化字符串
+        两种方式 一格式化操作符%百分号， 一个format函数
+        %：
+            %s          字符串占位符，优先用str()函数进行字符串转换
+                eg: a = 'hello, I am %s. I am %s years old.' % ('liming', '18')
+            %d/%i       整数占位符
+                eg: a = 'hello, I am %d years old.' % 18
+                    '%02d/%02d/%d' % (2, 15, 67)    # %02d即整数前加0，总共为2位
+                    >>>'02/15/67'
+            %r          优先用repr()函数进行字符串转换
+            %c          格式化字符（ASCII码）
+            %u          格式化无符号整型
+            %o          格式化无符号八进制数
+            %x/%X       格式化无符号十六进制数（或其大写）
+            %f/%F       格式化浮点数， 可指定小数点后的精度
+                eg: '%.2f' % 1.234
+                    >>>1.23
+            %e/%E       用科学计数法格式化浮点数
+            %g/%G       %f和%e的简写，%F和%E的简写
+            %p          用十六进制数格式化变量的地址
+            %%          输出%
+            格式化操作符辅助指令：
+            *           定义宽度或者小数点精度
+            -           用做左对齐
+            +           在正数前面显示加号（+）
+            <sp>        在正数前面显示空格
+            #           在八进制数前面显示零（'0'）， 在十六进制前面显示'0x'或者'oX'(取决于用的事'x'还是'X')
+            0           显示的数字前面填充'0'而不是默认的空格
+            %           '%%'输出一个单一的'%'
+            (var)       映射变量（字典参数）
+            m.n.        m是显示的最小总宽度， n是小数点后的位数
+                eg: print("%+10x" % 10)
+                    >>>          +a
+                    print("%04d" % 5)
+                    >>>0005
+                    print("%6.3f" % 2.3)
+                    >>>2.300
+                    print("%.*f" % (4, 1.2))
+                    >>>1.2000
+                    用元祖类型参数作转换——
+                    '%s %s' % ('hello', 'world!')
+                    用字典类型参数作转换——
+                    '%(a)s %(b)s' % {'a':'hello', 'b':'world!'}
+            调试工具作用——
+                可以用str(), repr()得到对象有关字符串
+        format:
+            {}-字符串占位符
+                eg：a = '{}, hello, I am {}. I am {} years old.'.format('Xiaoli', 'Liming', '18')
+            {0/1/2..}-可以取列表中第0/1/2..个字符
+                eg: a = '{1}, hello, I am {0}. I am {2} years old.'.format('Xiaoli', 'Liming', '18')
+            {2:d}-限制类型 位置:类型
+                eg: a = '{1}, hello, I am {0}. I am {2:d} years old.'.format('Xiaoli', 'Liming', 18)
+
+

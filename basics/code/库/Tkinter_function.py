@@ -64,7 +64,7 @@ def widget_config():
     """设置配置
     """
     root = Tk()
-    label = Label(root, text='Hello world')
+    label = Label(root, text='Hello world')     # label的父级不能是frame可以是root
     label.config(cursor='gumby')
     label.config(height=10, width=30, fg='yellow', bg='#343343')    # 这里的位置是可以变得
     label.config(font=('times', '28', 'bold'))      # 这里索引对应的设置是不变的
@@ -214,6 +214,32 @@ def UI_grid():
     Button(root, text='OK').grid(row=2)
     root.mainloop()
 
+def UI_entry():
+    root = Tk()
+    # e = Entry(root)
+    # e.pack()
+    #
+    # e.insert(0, "a default value")
+    # e.delete(0, END)
+    # print e.get()
+    # e.config(show='*')      # 输入内容显示为*，输密码时可以设置
+    v = StringVar()
+    e = Entry(root, textvariable=v)
+    e.pack()
+
+    v.set("a default value")
+    s = e.get()
+    print s
+    root.mainloop()
+
+def UI_cavens():
+    filename = u"C:\\Documents and Settings\\Administrator\\桌面\\tooopen_sy_127457023651.jpg"
+    root = Tk()
+    img = PhotoImage(file=filename)
+    label = Label(root, text="hello",image=img)
+    label.pack()
+    root.mainloop()
+
 if __name__ == '__main__':
     # hello_world()
     # hello_class()
@@ -226,4 +252,6 @@ if __name__ == '__main__':
     # UI_messagebox()
     # UI_statusBar()
     # UI_grid()
-    text()
+    # text()
+    # UI_entry()
+    UI_cavens()

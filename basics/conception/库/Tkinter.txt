@@ -75,7 +75,7 @@ http://effbot.org/tkinterbook/tkinter-index.htm#class-reference
             height高度
             fg前段颜色
             bg背景色
-            eg: label.config(width=80, height=10, fg='yellow', bg='#343343') # 可以用RJB值
+            eg: label.config(width=80, height=10, fg='yellow', bg='#343343') # 可以用RGB值
             文字——
             font字体（本身是一个list）
             family字体系列——'times'（'courier' 'arial'等）
@@ -93,13 +93,14 @@ http://effbot.org/tkinterbook/tkinter-index.htm#class-reference
         Borders边界————
             bd=8 边界
             relief=RAISED 浮雕效果
+            ps: FLAT  GROOVE  RAISED  RIDGE  SOLID  SUNKEN
         Focus Highlights得到焦点的形式
 
         Cursors鼠标————
             cursor='gumby' 鼠标
         pad布局————
             padx=10 X轴的内部间距
-            pany=10 Y轴的内部间距
+            pady=10 Y轴的内部间距
 
 
     7、event事件
@@ -222,6 +223,11 @@ http://effbot.org/tkinterbook/tkinter-index.htm#class-reference
                 c.pack(side=LEFT, padx=2, pady=2)
                 toolbar.pack(side=TOP,fill=X)   # fill拉伸，双向拉伸both
                 root.mainloop()
+            ps: pack是的方向————
+                TOP————最上面
+                BUTTON————最下面
+                LEFT————最左边
+                RIGHT————最右边
         弹出对话框Messagebox——
             tkMessageBox三方库
             eg: from Tkinter import *
@@ -238,7 +244,7 @@ http://effbot.org/tkinterbook/tkinter-index.htm#class-reference
         状态栏StatusBar——
             eg: from Tkinter import *
                 root = Tk()
-                status = Label(root, text='Ln20', bd=1, relief=SUNKEN, anchor=W)    # anchor左对齐
+                status = Label(root, text='Ln20', bd=1, relief=SUNKEN, lef)    # anchor左对齐
                 atatus.pack(side=BOTTOM, fill=X)
                 root.mainloop()
 
@@ -301,10 +307,183 @@ http://effbot.org/tkinterbook/tkinter-index.htm#class-reference
                 root.mainlop()
 
 
+        Label:
+            anchor——
+                设置文本显示位置
+                anchor='w'      文本左边显示
+                anchor='e'      文本右边显示
+            justify——
+                设置文字对齐方式
+                justify='left'  文字左对齐
+                justify='right' 文字右对齐
 
+        Button:
+            padx, pady
+            类型：距离；
+            说明：指定文本或图象与按钮边框的间距
+background(bg)
 
+Type: color
+说明：文本框的背景颜色
+#示例
+from Tkinter import *
 
+top = Tk()
 
+text = Entry(top, background = 'red')
+text.pack()
+
+mainloop()
+borderwidth(bd)
+
+Type: distance
+说明：文本框边框宽度
+#示例
+text = Entry(top, borderwidth = 3)
+cursor
+
+Type: cursor
+待定
+exportselection
+
+Type: flag
+待定
+font
+
+Type: font
+说明：文字字体。值是一个元祖，font = ('字体'，'字号'，'粗细')
+#示例
+text = Entry(top, font = ('Helvetica', '14', 'bold')
+foreground
+
+Type: color
+说明：文字颜色。值为颜色或为颜色代码，如：'red','#ff0000'
+#示例
+text = Entry(top, foreground = 'red')  #正确
+text = Entry(top, foreground = '#ff0000')  #正确
+text = Entry(top, foreground = 'ff0000') #错误，必须加上#号
+highlightbackground
+
+Type: color
+说明：文本框高亮边框颜色，当文本框未获取焦点时显示
+条件：highlightthickness设置有值
+#示例
+text = Entry(top, highlightbackground = 'red', hightlightthickness = 1)
+highlightcolor
+
+Type: color
+说明：文本框高亮边框颜色，当文本框获取焦点时显示
+条件：highlightthickness设置有值
+#示例
+text = Entry(top, highlightcolor = 'red', hightlightthickness = 1)
+highlightthickness
+
+Type: distance
+说明：文本框高亮边框宽度。（官网上说有默认值1或2，但如果不设置，实际上没有值，可能和操作系统有关系）
+#示例
+text = Entry(top, highlightcolor = 'red', hightlightthickness = 1)
+insertbackground
+
+Type: color
+说明：文本框光标的颜色
+#示例
+text = Entry(top, insertbackground = 'red')
+insertborderwidth
+
+Type: distance
+说明：文本框光标的宽度。（有问题，官网未有说明，待定）
+#示例
+text = Entry(top, insertborderwidth = 3)
+insertofftime
+
+Type: int
+说明：文本框光标闪烁时，消失持续时间，单位：毫秒
+#示例
+text = Entry(top, insertofftime = 50)
+insertontime
+
+Type: int
+说明：文本框光标闪烁时，显示持续时间，单位：毫秒
+#示例
+text = Entry(top, insertontime = 50)
+insertwidth
+
+Type: int
+说明：文本框光标宽度
+#示例
+text = Entry(top, insertwidth = 3)
+justify
+
+Type: const
+待定
+relief
+
+Type: const
+说明：文本框风格，如凹陷、凸起，值有：flat/sunken/raised/groove/ridge
+#示例
+text = Entry(top, relief = 'sunken')
+selectbackground
+
+Type: color
+说明：选中文字的背景颜色
+#示例
+text = Entry(top, selectbackground = 'red')
+text = Entry(top, selectbackground = '#ff0000')
+selectborderwidth
+
+Type: int
+说明：选中文字的背景边框宽度
+#示例
+text = Entry(top, selectborderwidth = 3)
+selectforeground
+
+Type: color
+说明：选中文字的颜色
+#示例
+text = Entry(top, selectforeground = 'red')
+text = Entry(top, selectforeground = '#ff0000')
+show
+
+Type: character
+说明：指定文本框内容显示为字符，值随意，满足字符即可。如密码可以将值设为*
+#示例
+text = Entry(top, show = '*')
+state
+
+Type: const
+说明：文框状态，分为只读和可写，值为：normal/disabled
+#示例
+text = Entry(top, state = 'normal')  #可操作
+text = Entry(top, state = 'disabled')  #不可操作
+takefocus
+
+Type: flag
+说明：是否能用TAB键来获取焦点，默认是可以获得
+#示例
+待定
+textvariable
+
+Type: variable
+说明：文本框的值，是一个StringVar()对象
+#示例
+default_value = StringVar()
+default_value.set('This is a default value')
+text = Entry(top, textvariable = default_value)
+width
+
+Type: int
+说明：文本框宽度
+#示例
+text = Entry(top, width = 50)
+xscrollcommand
+
+Type: callback
+说明：回调函数
+#示例
+def callback():
+	#code
+
+text = Entry(top, command = callback)
 
 
 

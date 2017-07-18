@@ -1,0 +1,31 @@
+partial
+
+    模块————
+
+        functools的模块，该模块为高阶函数提供支持，partial就是其中的一个函数
+        functools.partial(func[,*args][, **kwargs])
+    来源————
+
+        partial接收函数multiply作为参数，固定 multiply的参数y=2，并返回一个新的函数给double
+        eg: def multiply(x, y):
+                return x * y
+            def double(x, y=2):
+                return multiply(x, y)
+
+            from functools import partial
+            double = partial(multiply, y=2)
+    功能————
+
+        把一个函数的某些参数给固定住，返回一个新的函数
+    注意————
+        from functools import partial
+        double = partial(multiply, 2)
+        此时固定的是左边的值
+        eg: from functools import partial
+
+            def subtraction(x, y):
+                return x - y
+
+            f = partial(subtraction, 4)  # 4 赋给了 x
+            f(10)   # 4 - 10
+            >>> -6
