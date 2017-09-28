@@ -6,12 +6,13 @@
         index索引——
             [list].index(ele)
             找出元素位置，返回其索引，若有多个元素，返回第一个元素位置
+            找不到抛异常
             eg: nums = [1, 2, 4, 4]
                 nums.index(4)
                 2
         count计数——
             [list].count(ele)
-            统计某个元素出现的次数
+            统计某个元素出现的次数，没有则为0
             eg: nums.count(4)
                 2
         append追加——
@@ -33,11 +34,12 @@
                 a
                 [1, 2, 3, 4]
         insert插入——
-            [list].insert(index, cont)
+            [list].insert(index, ele)
             将某个元素插入到某个位置
             eg: nums = [1, 2, 3, 4]
                 nums.insert(1, 'a')
                 [1, 'a', 3, 4]
+            ps: index大于长度，加在最后一位上
         pop删位——
             [list].pop(index)
             将某位置的元素移除，返回移除的元素，默认是最后一个

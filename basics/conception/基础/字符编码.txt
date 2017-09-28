@@ -3,7 +3,7 @@
     1——常见字符集
        ASCII——包含显示字符（英文大小写字符、阿拉伯数字）和控制字符（空格键、回车）
        GB2312——中国国家标准的简体中文字符集（简化汉字、一般符号、数字）
-    Unicode——世界各国语言所使用的所有字符
+       Unicode——世界各国语言所使用的所有字符
     2——字符编码
        定义——将字符集中的字符编码为特定的二进制数
        常见编码——ASCII、UTF—8、GBK
@@ -29,14 +29,15 @@
        .decode('gbk')————已知是GBK编码，解码程Unicode
        .encode('utf-8')————编码程UTF-8的str
     4——错误根源
+       代码里面混合使用了str类型和Unicode类型的字符串
+       python会默认使用ASCII编码尝试对Unicode类型的字符串编码（encode），或对str类型的字符串解码（decode）
        ^^^UnicodeDecodeError
           同时存在str类型和Unicode类型的运算，Python2将把str解码decode成Unicode再运算
        ^^^UnicodeEncodeError
           当对象（函数/类）接受的是str类型，但传入的是Unicode，Python2将使用ASCII对其编码程str类型再运算
-       代码里面混合使用了str类型和Unicode类型的字符串
-       python会默认使用ASCII编码尝试对Unicode类型的字符串编码（encode），或对str类型的字符串解码（decode）
-       在同时包含str和Unicode类型的字符操作时，一律都把str解码（decode）成Unicode再运算，容易出现error
-       open方式打开的文件，只能写入str类型
+          ps: open方式打开的文件，只能写入str类型
+              str()使用str格式
+              raw_input()使用str格式
            import codecs
            codecs.open('test.txt', 'a', 'utf-8')
            指定一个编码打开文件，读取返回的为Unicode

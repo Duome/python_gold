@@ -7,6 +7,7 @@ __author__ = 'Duome'
     Gephi软件
 """
 
+
 import codecs
 import jieba
 import jieba.posseg as pseg

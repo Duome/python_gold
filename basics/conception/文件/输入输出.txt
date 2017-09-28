@@ -1,11 +1,11 @@
-ÊäÈëÊä³ö
+ï»¿è¾“å…¥è¾“å‡º
 
-    1¡¢raw_input()
-        ÎÞÂÛÊ±ºòÊäÈë×Ö·û¡¢ÊýÖµ¡¢±í´ïÊ½£¬¶¼Ö±½Ó·µ»ØÒ»¸ö×Ö·û´®
-    2¡¢input()
-        µ÷ÓÃinput()µÈÍ¬ÓÚµ÷ÓÃraw_input()ÔÙµ÷ÓÃevalº¯Êý£¨Ö´ÐÐ×Ö·û´®±í´ïÊ½£¬²¢·µ»ØÖµ£©
+    1ã€raw_input()
+        æ— è®ºæ—¶å€™è¾“å…¥å­—ç¬¦ã€æ•°å€¼ã€è¡¨è¾¾å¼ï¼Œéƒ½ç›´æŽ¥è¿”å›žä¸€ä¸ªå­—ç¬¦ä¸²
+    2ã€input()
+        è°ƒç”¨input()ç­‰åŒäºŽè°ƒç”¨raw_input()å†è°ƒç”¨evalå‡½æ•°ï¼ˆæ‰§è¡Œå­—ç¬¦ä¸²è¡¨è¾¾å¼ï¼Œå¹¶è¿”å›žå€¼ï¼‰
 
-        ***********ps: ÔÚÊäÈë×Ö·û´®ÊÇ±ØÐëÊäÈë''*********
+        ***********ps: åœ¨è¾“å…¥å­—ç¬¦ä¸²æ˜¯å¿…é¡»è¾“å…¥''*********
 
         eg: eval('1 + 2')
             3
@@ -24,19 +24,19 @@
             input('>')
             >'1+2'
             '1+2'
-    3¡¢Python3ÖÐµÄinput
-        Python3ÖÐµÄinput()Ïàµ±ÓÚPython2ÖÐµÄraw_input()
-        Python3ÖÐµÄeval(input())Ïàµ±ÓÚPython2ÖÐµÄinput()
-    4¡¢print
-        Python2ÖÐprintÊÇÒ»¸öÓï¾ä£¬Python3ÖÐprintÊÇÒ»¸öº¯Êý
-        Python2ÖÐprint¿ÉÒÔ¼ÓÀ¨ºÅ£¬Ò²¿ÉÒÔ²»¼ÓÀ¨ºÅ£¬Python3ÖÐprint±ØÐë¼ÓÀ¨ºÅ
-        printÓï¾äÊÇÄ¬ÈÏ»»ÐÐÊä³öµÄ£¬Èç¹û²»Ïë»»ÐÐ£¬¿ÉÒÔÔÚÄ©Î²¼ÓÉÏ','
-        Python3ÖÐ²»Ïë»»ÐÐ£¬¿ÉÒÔ¼ÓÒÔÒ»¸öend²ÎÊý£¬print£¨i, end = ' '£©
-    5¡¢¸ñÊ½»¯Êä³ö
-        ÓÃ%´úÌæÆäÔÚÓï¾äÖÐµÄÎ»ÖÃ
+    3ã€Python3ä¸­çš„input
+        Python3ä¸­çš„input()ç›¸å½“äºŽPython2ä¸­çš„raw_input()
+        Python3ä¸­çš„eval(input())ç›¸å½“äºŽPython2ä¸­çš„input()
+    4ã€print
+        Python2ä¸­printæ˜¯ä¸€ä¸ªè¯­å¥ï¼ŒPython3ä¸­printæ˜¯ä¸€ä¸ªå‡½æ•°
+        Python2ä¸­printå¯ä»¥åŠ æ‹¬å·ï¼Œä¹Ÿå¯ä»¥ä¸åŠ æ‹¬å·ï¼ŒPython3ä¸­printå¿…é¡»åŠ æ‹¬å·
+        printè¯­å¥æ˜¯é»˜è®¤æ¢è¡Œè¾“å‡ºçš„ï¼Œå¦‚æžœä¸æƒ³æ¢è¡Œï¼Œå¯ä»¥åœ¨æœ«å°¾åŠ ä¸Š','
+        Python3ä¸­ä¸æƒ³æ¢è¡Œï¼Œå¯ä»¥åŠ ä»¥ä¸€ä¸ªendå‚æ•°ï¼Œprintï¼ˆi, end = ' 'ï¼‰
+    5ã€æ ¼å¼åŒ–è¾“å‡º
+        ç”¨%ä»£æ›¿å…¶åœ¨è¯­å¥ä¸­çš„ä½ç½®
         eg: print 'my name is %s' % 'Duome'
-        ÏÞÖÆÐ¡ÊýµÄ¾«¶È
+        é™åˆ¶å°æ•°çš„ç²¾åº¦
         i = 3.12159
-        print '%10.3f' % i      # ×Ö¶Î¿í¶È10£¬¾«¶È3
-        print '%010.3f' % i     # ÓÃ0Ìî³ä¿Õ°×
-        print '%+f' % i         # ÏÔÊ¾Õý¸ººÅ£¬Ð¡ÊýÖ»±£Áô6Î»
+        print '%10.3f' % i      # å­—æ®µå®½åº¦10ï¼Œç²¾åº¦3
+        print '%010.3f' % i     # ç”¨0å¡«å……ç©ºç™½
+        print '%+f' % i         # æ˜¾ç¤ºæ­£è´Ÿå·ï¼Œå°æ•°åªä¿ç•™6ä½
