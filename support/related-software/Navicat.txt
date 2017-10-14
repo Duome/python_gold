@@ -1,0 +1,20 @@
+Navicat
+
+    直接打开——
+        文件-新建连接（SQLite）-数据库文件选择-确定
+    新建连接——
+        连接-mysql-连接名设置-密码（mysql密码）-连接-确定
+        ps: 密码不记得了
+            1. cmd   --> net stop mysql  (停用MySQL服务  没启动的可以省略)
+            2. 找到安装路径 MySQL Server 5.1下的my.ini
+            3. 打开my.ini，在[mysqld]下面加上skip_grant_tables （意思好像是 启动MySQL服务的时候跳过权限表认证  ）
+            4. 然后就启动数据库修改密码了
+               cmd   -->   net start mysql   (启动MySQL服务)--->   mysql  回车   (  如果成功，将出现MySQL提示符)
+            5. 输入use mysql; （连接权限数据库）。
+            6. 改密码：update user set password=password("123") where user="root";（别忘了最后加分号） 。
+            7. 刷新权限（必须步骤）：flush privileges;　。
+            8. 退出 quit。
+            9. 将第3 步的 my.ini里的 skip_grant_tables  去掉（启动MySQL服务的时候不能让他跳过权限表认证 ）
+            10. 重启MySQL ，再进入，使用用户名root和刚才设置的新密码123就可以登录了。
+    新建数据库——
+        选中连接点击右键-打开连接-再右键-新建数据库-输入数据库名-（utf8 -- UTF-8 Unicode）-（utf8_general_ci）

@@ -1,0 +1,333 @@
+CSS简介——
+    层叠样式表，样式通常存储在样式表中，解决内容与表现分离的问题
+
+CSS语法——
+    CSS规则构成部分——
+        选择器             需要改变样式的HTML元素
+        一条或多条声明      由一个属性和一个值生成，以大括号括起来，属性和值用冒号隔开
+    CSS注释——
+        /*  */            解释你的代码
+
+CSS id和class——
+    id选择器——
+        可以为标有特定id的HTML元素指定特定的样式
+        以id属性来设置id选择器,CSS 中 id 选择器以 "#" 来定义。
+        eg: <!DOCTYPE html>
+            <html>
+            <head>
+            <meta charset="utf-8">
+            <title>菜鸟教程(runoob.com)</title>
+            <style>
+            #para1
+            {
+                text-align:center;
+                color:red;
+            }
+            </style>
+            </head>
+            <body>
+            <p id="para1">Hello World!</p>
+            </body>
+            </html>
+        ps:  ID属性不要以数字开头
+    class选择器——
+        class 选择器有别于id选择器，class可以在多个元素中使用。
+        类选择器以一个点"."号显示
+        指定特定的HTML元素，元素.类名
+        eg: <style>
+            .center
+            {
+                text-align:center;
+            }
+            </style>
+            </head>
+
+CSS创建——
+    插入样式表的方法——
+        外部样式表——
+            适用于样式需要应用于很多页面
+            ps: 外部样式表文件不能包含任何的 html 标签
+                不要在属性值与单位之间留有空格(20 px)
+            eg: <head>
+                <link rel="stylesheet" type="text/css" href="mystyle.css">
+                </head>
+        内部样式表——
+            当单个文档需要特殊的样式时，就应该使用内部样式表。你可以使用 <style> 标签在文档头部定义内部样式表
+        内联样式——
+            将表现和内容混杂在一起，当样式仅需要在一个元素上应用一次时。
+            eg: <p style="color:sienna;margin-left:20px">这是一个段落。</p>
+        多重样式——
+            优先级：内联样式）Inline style > （内部样式）Internal style sheet >（外部样式）External style sheet > 浏览器默认样式
+            ps: 1.  内联样式表的权值最高 1000；
+                2.  ID 选择器的权值为 100
+                3.  Class 类选择器的权值为 10
+                4.  HTML 标签选择器的权值为 1
+                一些经验法则：
+                Always 要优化考虑使用样式规则的优先级来解决问题而不是 !important
+                Only 只在需要覆盖全站或外部 css（例如引用的 ExtJs 或者 YUI ）的特定页面中使用 !important
+                Never 永远不要在全站范围的 css 上使用 !important
+                Never 永远不要在你的插件中使用 !important
+                CSS 优先级法则：
+                 A 选择器都有一个权值，权值越大越优先；
+                 B 当权值相等时，后出现的样式表设置要优于先出现的样式表设置；
+                 C 创作者的规则高于浏览者：即网页编写者设置的CSS 样式的优先权高于浏览器所设置的样式；
+                 D 继承的CSS 样式不如后来指定的CSS 样式；
+                 E 在同一组属性设置中标有"!important"规则的优先级最大；
+    ps: 不要在属性值与单位之间留有空格
+        如果外部样式放在内部样式的后面，则外部样式将覆盖内部样式
+
+CSS背景——
+    定义HTML元素的背景
+    背景效果：   background-color
+                background-image
+                background-repeat
+                background-attachment
+                background-position
+    background-color——
+        背景颜色定义方式——
+            十六进制 - 如："#ff0000"
+            RGB - 如："rgb(255,0,0)"
+            颜色名称 - 如："red"
+    background-image——
+        背景图像，默认为平铺重复显示，以覆盖整个元素实体
+        eg: background-image:url('paper.gif')
+        ps: 默认情况下 background-image 属性会在页面的水平或者垂直方向平铺。
+    background-repeat——
+        图像平铺方向
+        repeat-x;       水平方向平铺
+        repeat-y;       垂直方向平铺
+        no-repeat       不重复
+    background-attachment——
+        背景图像是否固定或者随着页面的其余部分滚动。
+        fixed           固定的，背景图像是固定的
+        scroll          从上到下移动，默认，随页面的其余部分滚动
+    background-position——
+        背景图像起始位置
+        left top
+        left center
+        left bottom
+        right top
+        right center
+        right bottom
+        center top
+        center center
+        center bottom
+        ps: 如果仅指定一个关键字，其他值将会是"center"
+        x% y%           第一个值是水平位置，第二个值是垂直
+        px py           第一个值是水平位置，第二个值是垂直
+    background-size——
+        px py           第一个值是水平位置，第二个值是垂直
+        x% y%           水平伸展，垂直伸展
+    background-origin——
+        指定background-position属性应该是相对位置。指定了背景图像的位置区域。
+        padding-box	    背景图像填充框的相对位置
+        border-box	    背景图像边界框的相对位置
+        content-box	    背景图像的相对位置的内容框
+        ps: border-box包含padding-box包含content-box
+            如果背景图像background-attachment是"固定"，这个属性没有任何效果。
+    background-clip——
+        指定背景绘制区域，background-clip背景剪裁属性是从指定位置开始绘制。
+        border-box	    默认值。背景绘制在边框方框内（剪切成边框方框）。
+        padding-box	    背景绘制在衬距方框内（剪切成衬距方框）。
+        content-box	    背景绘制在内容方框内（剪切成内容方框）。
+    背景-简写属性——
+        顺序：color  image  repeat  attachment  position
+        eg: background:#ffffff url('img_tree.png') no-repeat right top;
+
+CSS文本格式——
+    文本颜色——
+        颜色属性被用来设置文字的颜色。
+    text-align（对齐）——
+        文本的对齐方式，文本排列属性是用来设置文本的水平对齐方式
+        right       右对齐
+        left        左对齐
+        center      居中
+        justify     适应窗口大小
+    text-decoration（装饰）——
+        设置或删除文本的装饰
+        none        无装饰
+        overline    文字上面横线
+        line-through文字中间横线
+        underline   文字下面横线
+    text-transform（转换）——
+        指定在一个文本中的大写和小写字母
+        uppercase   大写
+        lowercase   小写
+        capitalize  首字母大写
+    text-indent（缩进）——
+        指定文本的第一行的缩进。
+        px          缩进距离
+    letter-spacing（字符间距）——
+        px          字符间距
+    line-height（行高）——
+        指定在一个段落中行之间的空间，大多数浏览器的默认行高约为110%至120%。
+        %           行高
+    direction（方向）——
+        设置元素的文本方向
+        ltr         默认从左到右
+        rtl         从右到左
+    unicode-bidi（重写）——
+        与 direction 属性一起使用，来设置或返回文本是否被重写
+        bidi-override
+    word-spacing（词间距）——
+        设置一个段落中的单词之间的空白空间
+        px          词间距
+    white-space（文字环绕）——
+        禁用一个元素内的文字环绕。
+    vertical-align（图像和文本对齐）——
+        设置文本的垂直对齐图像
+        text-top    上对齐
+        text-bottom 下对齐
+    text-shadow（阴影）——
+        px          水平向右偏移程度
+        px          垂直向下偏移程度
+        #EEEEE      颜色
+
+CSS字体——
+    字型——
+        Serif	    Times New Roman
+                    Georgia	            Serif字体中字符在行的末端拥有额外的装饰
+        Sans-serif	Arial
+                    Verdana	            "Sans"是指无 - 这些字体在末端没有额外的装饰
+        Monospace	Courier New
+                    Lucida Console	    所有的等宽字符具有相同的宽度
+        ps: 在计算机屏幕上，sans-serif字体被认为是比serif字体容易阅读
+    font-family（字体系列）——
+        ps: 如果字体系列的名称超过一个字，它必须用引号，如Font Family："宋体"。
+            多个字体系列是用一个逗号分隔指明
+            多个字体系列，设置几个字体名称作为一种"后备"机制，如果浏览器不支持第一种字体，他将尝试下一种字体。
+    font-style（样式）——
+        normal      正常
+        italic      斜体
+        oblique     倾斜的字体（文字向一边倾斜）
+    font-size（大小）——
+        px          文本大小
+        em          1em的默认大小是16px。px/16=em
+        %           设置<body>元素的默认字体大小，允许所有浏览器缩放文本的大小。
+        ps: 默认大小和普通文本段落一样，是16像素（16px=1em）。
+            为了避免Internet Explorer 中无法调整文本的问题，许多开发者使用 em 单位代替像素。
+    font-variant（小型大写）——
+        small-caps  显示小型大写字母的字体
+    font-weight(字体粗细)——
+        normal      默认值
+        bold        粗体字符
+        bolder      更粗的字符
+        lighter     更细的字符
+
+CSS连接——
+    连接样式——
+        a:link      未访问过的链接
+        a:visited   已访问过的链接
+        a:hover     鼠标放在链接上
+        a:active    链接被点击时
+        ps: a:hover 必须跟在 a:link 和 a:visited后面
+            a:active 必须跟在 a:hover后面
+        color属性    字体颜色
+        text-decoration属性    设置连接中的下划线
+        background-color属性      背景颜色
+        font-size属性         字体大小
+        font-family         字体类型
+
+CSS列表——
+    list-style-type（标记）——
+        disc            圆点
+        circle          圆圈
+        square          方形
+        none            无标记
+        upper-roman     大写罗马
+        lower-alpha     小写ABC
+        cjk-ideographic 大写一
+        decimal         1
+        decimal-leading-zero    01
+        lower-greek     阿尔法 伽马
+    list-style-image（标记图像）——
+        url("URL")      自定义图像
+    list-style-position（标记位置）——
+        相对于对象的内容绘制列表项标记。
+        inside          在文本以内
+        outside         默认值，在文本左侧
+    属性缩写——
+        list-style-type
+        list-style-position (有关说明，请参见下面的CSS属性表)
+        list-style-image
+
+CSS表格——
+    border属性——
+        表格边框
+        px              边框粗细
+        solid           边框格式
+        black..         边框颜色
+        ps: 表和th/ td元素有独立的边界，所以是双边框
+    border-collapse属性——
+        被折叠成一个单一的边框或隔开
+        collapse        单边框
+    width属性——
+        设置边框宽度
+        px              宽度
+        %               填充比例
+    height属性——
+        设置边框高度
+        px              高度
+        %               填充比例
+    text-align属性——
+        表格文字对齐
+        right           右
+        left            左
+        center          中
+    vertical-align属性——
+        垂直对齐属性
+        top             顶部
+        bottom          底部
+        center          中间
+    padding属性——
+        表格填充
+        px              垂直方向大小
+        px              水平方向大小
+    background-color属性——
+        背景颜色设置
+    color属性——
+        表格文字颜色
+
+CSS盒子模型——
+    所有HTML元素可以看作盒子
+        Margin              边距
+        Border              边框
+        Padding             填充
+        Content             内容
+        width属性            内容的宽度（有些浏览器为全部的宽度）
+        height属性           内容的高度
+    CSS边框——
+        border-style属性——
+            边框样式
+            none            无边框
+            dotted          点线边框（星点）
+            dashed          虚线边框
+            solid           实线边框
+            double          两个边框
+            groove          3D沟漕边框（效果取决于边框的颜色）
+            ridge           3D脊边框（同上）
+            inset           2D嵌入边框（同上）
+            outset          3D突出边框（同上）
+            hidden          隐藏边框
+            单独设置个边——
+                border-top-style属性
+                border-bottom-style属性
+                border-left-style属性
+                border-right-style属性
+            设置多个边框属性
+                两个值         先上下，后左右
+                三个值         上，左右，下
+                四个值         上右底左
+                eg: border-style:dotted solid;
+        border-width属性——
+            指定边框宽度
+            px
+            em
+            thick
+            medium默认
+            thin
+            ps: CSS 没有定义 3 个关键字的具体宽度，所以一个用户可能把 thick 、medium 和 thin 分别设置为等于 5px、3px 和 2px，而另一个用户则分别设置为 3px、2px 和 1px。
+        border-color属性——
+            ps: border-color单独使用是不起作用的，必须得先使用border-style来设置边框样式。
+        边框简写——
+

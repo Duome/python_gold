@@ -1,0 +1,22 @@
+1、新建
+
+    新建工作簿（命名）————
+        eg: wb = Workbook()
+            create_filename = 'empty_book.xlsx'
+            wb.save(filename = create_filename)    # 新建工作簿后保存
+    新建表单（命名）————
+        eg: ws1 = wb.active     # 激活工作簿后建立表单
+            ws1.title = 'name'
+            ws2 = wb.create_sheet(title = 'data')   # 新建表单并命名
+
+
+
+2、编辑
+
+    获取表单信息————
+        eg: wb.get_sheet_names()    # 得到表单名组成的列表
+
+    获取数据信息————
+        eg: ws['A1'].value  # 得到ws表单A1位置的数据内容
+
+    编辑表单————

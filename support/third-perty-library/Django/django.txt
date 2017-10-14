@@ -1,0 +1,831 @@
+    目录说明：
+    HelloWorld: 项目的容器。
+    manage.py: 一个实用的命令行工具，可让你以各种方式与该 Django 项目进行交互。
+    HelloWorld/__init__.py: 一个空文件，告诉 Python 该目录是一个 Python 包。
+    HelloWorld/settings.py: 该 Django 项目的设置/配置。
+    HelloWorld/urls.py: 该 Django 项目的 URL 声明; 一份由 Django 驱动的网站"目录"。
+    HelloWorld/wsgi.py: 一个 WSGI 兼容的 Web 服务器的入口，以便运行你的项目。
+
+查询————
+
+    django-admin help
+    python manage.py help
+
+新建项目————
+
+    django-admin startproject hellodjango
+
+新建APP————
+
+    cd hellodjango
+    django-admin startapp hello
+    ps: 在项目文件中创建app
+
+数据库同步————
+
+    python manage.py makemigrations
+    python manage.py migrate
+
+设置超级用户————
+
+    python manage.py createsuperuser
+    ps: 设置用户名，邮箱，密码（复杂一点）
+
+修改密码————
+    python manage.py 
+
+模板位置设置————
+	static
+		STATICFILES_DIRS = (
+			os.path.join(BASE_DIR, 'static'),
+			'links',
+		)
+	templates
+		TEMPLATES = [
+			{
+				'BACKEND': 'django.template.backends.django.DjangoTemplates',
+				'DIRS': ['templates'],   # 加一个'templates'
+				'APP_DIRS': True,
+				'OPTIONS': {
+					'context_processors': [
+						'django.template.context_processors.debug',
+						'django.template.context_processors.request',
+						'django.contrib.auth.context_processors.auth',
+						'django.contrib.messages.context_processors.messages',
+					],
+				},
+			},
+		]
+
+url————
+
+    url() 函数——
+        Django url() 可以接收四个参数，分别是两个必选参数：regex、view 和两个可选参数：kwargs、name，接下来详细介绍这四个参数。
+        regex: 正则表达式，与之匹配的 URL 会执行对应的第二个参数 view。
+        view: 用于执行与正则表达式匹配的 URL 请求。
+        kwargs: 视图使用的字典类型的参数。
+        name: 用来反向获取 URL。
+    正则表达式——
+        url(r'^test/\d{2}/$', views.test)
+        url(r'^test/(?P<id>\d{2})/$', views.test)
+        url(r'^test/(?P<id>\d{2})/(?P<key>\w+)/$', views.test）
+
+views————
+    https://docs.djangoproject.com/en/1.9/ref/request-response/
+    http请求：request和response
+    在django.http中
+    HttpRequest   HttpResponse
+    HttpRequest常用方法————
+        path——
+            请求页面的全路径,不包括域名—例如, "/hello/"。
+        method——
+            请求中使用的HTTP方法的字符串表示。全大写表示。例如:
+            if request.method == 'GET':
+                do_something()
+            elif request.method == 'POST':
+                do_something_else()
+        GET——
+            包含所有HTTP GET参数的类字典对象。参见QueryDict 文档。
+        POST——
+            包含所有HTTP POST参数的类字典对象。参见QueryDict 文档。
+            服务器收到空的POST请求的情况也是有可能发生的。也就是说，表单form通过HTTP POST方法提交请求，但是表单中可以没有数据。因此，不能使用语句if request.POST来判断是否使用HTTP POST方法；应该使用if request.method == "POST" (参见本表的method属性)。
+            注意: POST不包括file-upload信息。参见FILES属性。
+        REQUEST——
+            为了方便，该属性是POST和GET属性的集合体，但是有特殊性，先查找POST属性，然后再查找GET属性。借鉴PHP's $_REQUEST。
+            例如，如果GET = {"name": "john"} 和POST = {"age": '34'},则 REQUEST["name"] 的值是"john", REQUEST["age"]的值是"34".
+            强烈建议使用GET and POST,因为这两个属性更加显式化，写出的代码也更易理解。
+        COOKIES——
+            包含所有cookies的标准Python字典对象。Keys和values都是字符串。参见第12章，有关于cookies更详细的讲解。
+        FILES——
+            包含所有上传文件的类字典对象。FILES中的每个Key都是<input type="file" name="" />标签中name属性的值. FILES中的每个value 同时也是一个标准Python字典对象，包含下面三个Keys:
+            filename: 上传文件名,用Python字符串表示
+            content-type: 上传文件的Content type
+            content: 上传文件的原始内容
+            注意：只有在请求方法是POST，并且请求页面中<form>有enctype="multipart/form-data"属性时FILES才拥有数据。否则，FILES 是一个空字典。
+        META——
+            包含所有可用HTTP头部信息的字典。 例如:
+            CONTENT_LENGTH
+            CONTENT_TYPE
+            QUERY_STRING: 未解析的原始查询字符串
+            REMOTE_ADDR: 客户端IP地址
+            REMOTE_HOST: 客户端主机名
+            SERVER_NAME: 服务器主机名
+            SERVER_PORT: 服务器端口
+            META 中这些头加上前缀HTTP_最为Key, 例如:
+            HTTP_ACCEPT_ENCODING
+            HTTP_ACCEPT_LANGUAGE
+            HTTP_HOST: 客户发送的HTTP主机头信息
+            HTTP_REFERER: referring页
+            HTTP_USER_AGENT: 客户端的user-agent字符串
+            HTTP_X_BENDER: X-Bender头信息
+        user——
+            是一个django.contrib.auth.models.User 对象，代表当前登录的用户。
+            如果访问用户当前没有登录，user将被初始化为django.contrib.auth.models.AnonymousUser的实例。
+            你可以通过user的is_authenticated()方法来辨别用户是否登录：
+            if request.user.is_authenticated():
+                # Do something for logged-in users.
+            else:
+                # Do something for anonymous users.
+            只有激活Django中的AuthenticationMiddleware时该属性才可用
+        session——
+            唯一可读写的属性，代表当前会话的字典对象。只有激活Django中的session支持时该属性才可用。 参见第12章。
+        raw_post_data——
+            原始HTTP POST数据，未解析过。 高级处理时会有用处。
+        request的方法————
+            __getitem__(key)	返回GET/POST的键值,先取POST,后取GET。如果键不存在抛出 KeyError。
+                                这是我们可以使用字典语法访问HttpRequest对象。
+                                例如,request["foo"]等同于先request.POST["foo"] 然后 request.GET["foo"]的操作。
+            has_key()	        检查request.GET or request.POST中是否包含参数指定的Key。
+            get_full_path()	        返回包含查询字符串的请求路径。例如， "/music/bands/the_beatles/?print=true"
+            is_secure()	        如果请求是安全的，返回True，就是说，发出的是HTTPS请求。
+        QueryDict对象————
+            在HttpRequest对象中, GET和POST属性是django.http.QueryDict类的实例。
+            QueryDict类似字典的自定义类，用来处理单键对应多值的情况。
+            QueryDict实现所有标准的词典方法。
+        ps: HttpRequest对象由django自动创建，HttpResponse对象由我们自己创建
+            每个views必须返回一个HttpResponse
+    HttpResponse常用方法——
+        https://docs.djangoproject.com/en/1.9/topics/http/shortcuts/
+        不用render的方式渲染模板——
+            eg: from django.template import loader
+                t = loader.get_template('table.html')
+                c = {'user_list': 'user_list'}   # 传递给模板的参数
+                return HttpResponse(t.render(c, request),   # 使用的是模板中的render属性
+                                    content_type='text/html')   # 内容类型
+        render——
+            返回一个HttpResponse对象
+            eg: response = HttpResponse('这是一个web的响应', mimetype='text/plain')
+                # 设置文本或plain类型
+                return response
+        render_to_response——
+            eg: from django.shortcuts import render_to_response
+                return render_to_response('table.html', {'user_list': user_list})
+                # 不用传request
+        redirect——
+            不是渲染模板，而是跳转
+            eg: from django.shortcuts import redirect
+                return redirect('http://www.baidu.com')
+    其他常用方法——
+        locals——
+            将当前作用域的变量都传递给模板，
+            eg: return render_to_response('table.html', locals())
+            ps: 多传递变量，造成浪费
+
+数据库配置————
+
+    https://docs.djangoproject.com/en/1.9/ref/databases/
+    django默认支持sqlite、mysql、oracle、postgresql
+    settings中的DATABASES配置项可以指定数据库的配置信息
+    django默认使用splite数据库
+    eg: DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',   # 可以导入mysql、oracle、postgresql
+                'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            }
+        }
+    mysql驱动——
+             mysqldb(mysql-python) 只支持Python2
+             mysq8lcient 以上分支，支持Python3
+             mysql
+             pymysql 纯Python
+    跟换数据库——
+        settings中设置DATABASES配置项——
+            DATABASES = {
+                'default': {
+                    'ENGINE': 'django.db.backends.mysql',
+                    'NAME': 'hello_django_db',
+                    'USER': 'root',
+                    'PASSWORD': '123456'
+                    # 以下两个可以选择的配置
+                    'HOST': ''   # 若有远程，需配置远程的IP
+                    'PORT': ''   # 默认是3306
+             }
+        启动数据——
+            运行中services.msc
+            启动mysql
+        在Navicat中打开——
+            打开连接
+            新建数据库——
+                数据库名    hello-django_db
+                字符集      utf-8...
+                排序规则    utf-8_general_ci
+        ps: mysql需要自己先将数据库建好，splite是自动建好的
+        在工程目录__init__.py下设置代码
+             import pymysql
+             pymysql.install_as_MySQLdb()
+        ps: django默认以为用的的mysqldb，会导入mysqldb的名字
+
+orm————
+
+    不用写sql语句，对象关系映射，用面向对象的方式去操作数据库
+    用于实现面向对象编程语言里不同类型系统的数据之间的转换
+    将orm语句翻译为sql语句
+    查看其生成的sql语句——
+        使用QuerySet中的query属性
+        eg: print user_list.query
+            复制生成的语句-到Navicat中查询中运行-得到数据记录
+    配置日志系统——
+        https://docs.djangoproject.com/en/1.9/topics/logging/
+        将显示到控制台，将下列代码配置到settings
+        LOGGING = {
+            'version': 1,   # 版本号
+            'disable_existing_loggers': False,   # 是否覆盖原有日志信息
+            'handlers': {   # 处理器
+                'console':{   # 输出到控制台
+                    'level':'DEBUG',
+                    'class':'logging.StreamHandler',
+                },
+            },
+            'loggers': {   # 日志器
+                'django.db.backends': {   # 记录数据库的backends
+                    'handlers': ['console'],   # 将日志内容输出到控制台上
+                    'propagate': True,
+                    'level':'DEBUG',
+                },
+            }
+        }
+        工具——
+            django_debug_toolbar
+        优点——
+            简单，避免效率和安全问题
+            禁使用select * from auth_user（*是通配符，先匹配有什么字段，再去匹配字段的信息，所以效率低）
+        缺点——
+            sql有orm进行封装，性能有所牺牲
+            ps: 解决方法：缓存，延迟加载，用惰性机制解决读取数据问题
+            无法完成复杂查询
+创建数据模型————
+
+    https://docs.djangoproject.com/en/1.9/ref/models/fields/
+    https://docs.djangoproject.com/en/dev/topics/db/models/
+    数据模型可能是一张表，存在一对多，多对多的关系
+    每个数据模型都是django.db.models.Model的子类
+    每个模型相当于单个数据库表
+        属性名对应字段名CharField————varchar
+    模型之间的三种关系：
+        一对一 OneToOneField（唯一）
+        一对多 ForeignKey（唯一）
+        多对多 ManyToManyField
+    在Navicat中选中一个数据表右键选择设计表可以看到每个栏位
+    在外键中字段里可以看出哪个栏位为外键字段
+    一对一     主外键关系，多了一个unique的约束，属性为unique
+    一对多     主外键关系，约束为Normal，不限制唯一
+    多对多     生成一个数据表
+    模型的常用字段类型：
+        BooleanField 布尔类型字段
+        CharField 字符串类型字段
+        DateField 日期字段
+        DateTimeField 日期时间字段
+        DecimalField （精确）小数字段
+        EmailField Email字段
+        FileField 文件字段
+        FloatField （浮点数）小数字段
+        ImageField 图片字段
+        IntegerField 整数字段
+        IPAddressField IP字段
+        SmallIntegerField 小整数字段
+        TextField 文本字段
+        URLField 网页地址字段
+    常用字段选项：
+        max_length 字段长度
+        null 字段的设置是否可以为空（数据库进行验证）
+        blank 字段是否为空（django中的表单去验证）
+        choices 设置数据范围，轻量级的配置字段可选属性的定义
+        default 字段的默认值
+        help_text 字段文字帮助
+        primary_key 一般情况不需要进行定义（是否主键，如果没有显示指明主键的话，django会自动增加一个默认主键）
+        unique 是否唯一
+        verbose_name 字段的详细名称，如果不指定该属性，默认使用字段的名称
+                     address = models.CharField(max_length=50, verbose_name='地址')
+                     或第一个属性为名字，
+                     address = models.CharField('地址', max_length=50)
+    在admin中导入模板——
+        from django.contrib import admin
+        from hello.models import *   # 导入模板
+
+        admin.site.register(Author)   # 将内容注册过去
+        admin.site.register(AuthorDetail)
+        admin.site.register(Publisher)
+        admin.site.register(Book)
+    通过内部类Meta给数据模型类增加扩展属性——
+        class Meta:
+            verbose_name = '名称'   # django会将其当做英文单词去处理，默认用复数形式
+            verbose_name_plural = verbose_name   # '名称负数形式'
+            ordering = ['排序字段']
+        扩展属性中添加方法——
+            使得添加数据后显示的名字不是对象名，而是name名字
+            def __str__(self):
+                return self.name
+            定义模型方法——
+                在数据模型添加内容，显示为你设置的内容
+                python2     __unicode__（）
+                python3     __str__()
+
+    字段类型和字段选项设置
+    https://docs.djangoproject.com/en/1.9/ref/models/fields/
+    扩展属性
+    https://docs.djangoproject.com/en/1.9/ref/models/options/
+
+数据库同步技巧————
+    APP下的migration目录——
+    存放数据库同步脚本（使用makemigrations时）
+    ps: 若使用makemigrations时出错，确认
+        1、APP下有没有migration目录
+        2、目录下必须有__init__.py文件
+    数据表django_migrations——
+        在Navicat中可以查到，记录数据库脚本的使用情况
+        字段信息——
+            app   名字
+            name   脚本的文件名称
+            applied   脚本执行的时间
+    数据库相关的命令——
+        flush   清空数据库，恢复数据库最初状态
+        mekemigrations   生成数据库同步的脚本（执行所有APP）
+                         mekemigrations hello只为hello建立脚本，不加则为所有的APP建立了脚本，
+        migrate   同步数据库（执行所有APP）（同上），将sql发送到数据库去执行
+        showmigrations   查看生成的数据库同步脚本，同步出错时可以看，前面打x号的是执行了的
+        sqlflush   查看生成清空数据库的脚本
+        sqlmigrate   查看数据库同步的sql语句
+        ps: 开发环境下，若出现数据库同步误操作——删migration中的文件（除__init__.py），在删除数据库（Navicat中），重新同步数据库
+            数据库清空的命令实际是执行TRUNCATE，TRUNCATE不记录日志，所以flush比较危险
+
+ORM常用操作————
+
+    https://doc.djangoproject.com/en/1.9/ref/models/querysets/
+    在python manage.py shell 中去操作（同py模块python代码中一致）
+    增加（create/save）——
+
+        save方法是model对象的方法
+        create——
+            from hello.models import *
+            Author.objects.create(name='胡大海')
+        save()——
+            >>> pub = Publisher()
+            >>> pub.name = '电子工业出版社'
+            >>> pub.address = '成都华阳'
+            >>> pub.city = '成都'
+            >>> pub.country = '中国'
+            >>> pub.state_province = '四川'
+            >>> pub.website = 'http"//www.maizizdu.com'
+            >>> pub.save()
+        一对一，有两种方法，id或实例（插入主外键关系时，可以用对象方式，或直接以关联id的方式）
+            _id——
+            >>> AuthorDetail.objects.create(sex=False, email='222@qq
+            , address='北京xxx', birthday='1999-1-2', author_id=1)   # id
+            实例对象——
+            >>> pub = Publisher()
+            >>> pub.name = '电子工业出版社'
+            >>> pub.address = '成都华阳'
+            >>> pub.city = '成都'
+            >>> pub.country = '中国'
+            >>> pub.state_province = '四川'
+            >>> pub.website = 'http"//www.maizizdu.com'
+            >>> pub.save()
+            >>> Book.objects.create(title='python实战', publisher=pub, publication_data='2009
+            -1-2')   # 实例pub
+
+        多对多，得到关系对应的实例，将其加入多对多的属性（插入多对多关系的时候要分布操作）
+            先使用一对一
+            再得到书籍对象
+                book = Book.objects.get(id=1)
+            获取作者对象
+            author = Author.objects.get(id=1)
+            将作者对象添加给书籍对象
+                book.authors.add(author)
+    objects——
+        model默认管理器，create是这个管理器里面的方法，该管理器可以自定义
+    修改（updata和save方法）——
+        save——
+            author = Author.objects.get(id=1)   # 获取作者对象
+            author.name = '叶良辰'
+            author.save()
+        update——
+            updata是QuerySet对象的方法（filter返回一个QuerySet对象）
+            Publisher.objects.filter(id=1).update(city='重庆',  website='http://www.gogle.com')
+            即，
+            pub = Publisher.objects.filter(id=1)   # 获取出版社对象
+            pub.update(city='重庆',  website='http://www.gogle.com')
+    ps: create是objects管理器的方法
+        save是model本身的方法
+        update是QuerySet对象的方法
+        delete是QuerySet对象的方法
+        get返回model的对象
+        filter返回QuerySet对象
+    查询（惰性机制）——
+        属性.objects.all()，只有当使用查询结果是才真正实现（即在代码中直接输入不会查询，若前加print则会查询，在控制台操作也会查询）
+        惰性机制：Publisher.objects.all()只是返回了一个QuerySet（查询结果集对象），并不会马上执行sql，而是当调用QuerySet的时候才执行
+        QuerySet对象（查询结果集）——
+            可迭代
+            可切片
+            ps: 方法在django.db.models.query.QuerySet中
+        常用API——
+            https://doc.djangoproject.com/en/1.9/ref/models/querysets/
+            get(**kwargs)——返回与筛选条件匹配的对象，返回model而不是QuerySet
+                有且只有一个时才是正常，否则抛异常
+            all()——查询所有结果，返回QuerySet
+                ps: 若有
+                    def __str__(self):
+                        return self.name
+                    返回名字为name，否则为object对象
+            filter(**kwargs)——包含与所有筛选条件匹配的对象，返回QuerySet
+            exclude(**kwargs)——包含与所有筛选条件不匹配的对象
+            order_by(*fields)——对查询结果排序
+                eg:  Publisher.objects.all().order_by('id')   以id升序排列
+            reverse()——对查询结果反向排序
+                eg: Publisher.objects.all().order_by('id').reverse()
+            distinct()——从返回结果中剔除重复记录
+                eg: Publisher.objects.values('city').distinct()
+            values(*fields)——返回ValuesQuerySet，返回可迭代字典序列
+                eg: Publisher.objects.values()   返回字典序列组成的列表，每个字典为一个Publisher内容
+                    Publisher.objects.filter(id=1).values()   返回id为1的字典序列
+                    Publisher.objects.filter(id=1).values('name', 'city')   返回id为1的内容包括名字和城市的字典序列
+                ps: values根据model中对象的属性类型查询所有内容的该属性内容
+                    filter根据给出属性的值查询所有内容属性为该值的内容
+            values_list(*fields)——操作同上，只是返回元祖序列
+            count()——返回数据库中匹配查询（QuerySet）的对象数量
+                eg: AuthorDetail.objects.filter(sex=False).count()
+            first()——返回第一条记录，等价于[:1][0]
+                eg: Author.objects.all().first()
+                    Author.objects.first()
+            last()——返回最后一条记录，等价于[::-1][0]
+            exists()——如果QuerySet包含数据，就返回True否则就返回False
+            eg: Publisher.objects.all().first()
+                Publisher.objects.all()[:1][0]
+                Publisher.objects.all().exists()
+                Book.objects.filter(id=1).values('title', 'publishtion_data')
+                Publisher.objects.all().order_by('id')   # 升序
+                Publisher.objects.all().order_by('-id')   # 降序
+                Publisher.objects.all().order_by('id').reverse()   # 降序
+                Publisher.objects.all().order_by('city')
+                Publisher.objects.all().values('city')
+                Publisher.objects.all().values('city').distinct()
+                AuthorDetail.objects.filter(sex=0).count()
+        查询谓词——
+            _gt
+            _lt
+            https://doc.djangoproject.com/en/1.9/ref/models/querysets/
+    删除（delete）——
+        delete是QuerySet对象的方法
+        Pulisher.objects.filter(id=1).delete()
+        Pulisher.objects.filter(city='成都').delete()
+        ps: django中的删除默认是级联删除
+
+多表关联查询————
+
+    查询外键——
+        eg: Publisher.objects.values('author')   # 返回author的id号
+            Publisher.objects.values('author__name')   # 返回外键name属性
+            Book.objects.filter(title='黑白').values('publisher__name')
+            Book.objects.values('publisher__name').filter(title='黑白')
+        ps: 查找的内容放在filter中，即唯一确定的数据，实际的内容
+    多个model中检索信息
+    eg: 获取作者的完整信息，涉及两个model
+        values()中加入多个属性，外键加两个下划线再加其属性
+            AuthorDetail.objects.values('sex', 'email', 'address', 'birthday', 'author__name')
+        有一个model中的属性，查询另一个model中的属性
+            Book.objects.filter(title='Python实战').values('authors__name')
+            Book.objects.filter(title='Python实战').values('publisher__name')
+        以另一个model中的属性（通过外键的属性），查询这个model中的属性
+            Book.objects.filter(authors__name='胡大海').values('title')
+        __连个下划线可以生产连接查询
+        _set提供对象访问相关联表数据的方法（只适合主键类访问外键类）
+            外键所在的类是外键类(eg: Book)
+            publisher = Publisher.objects.get(name='广东人民出版社')
+            publisher.book_set.all()   # 获取外键类的所有信息
+            publisher.book_set.all().values('title')
+聚集查询和分组查询————
+    QureySet函数——
+        annotate分组查询
+            分组条件用values定义
+        aggregate聚合查询
+        ps: 确定属性对象，最后找的是什么东西（书-Book）
+    聚合函数（分组函数）——
+        （位置：django.db.models）
+        Avg     返回所给字段的平均值
+        Count   根据所给的关联字段返回别关联model数量（不同于QeurySet中的API-count）
+        Max     返回所给字段的最大值
+        Min     返回所给字段的最小值
+        Sum     计算所给字段值的总和
+    eg: Publisher.objects.filter(name='广东人民出版社').count()
+        from django.db.models import *
+        Publisher.objects.filter(name='广东人民出版社').aggregate(Count('name'))   # 返回字典
+        >>>{'name_count' : 1}
+        Publisher.objects.filter(name='广东人民出版社').aggregate(mycount = Count('name'))
+        >>>{'mycount' : 1}
+        求一个作者书的总价
+        Book.objects.filter(authors__name='胡大海').aggregate(Sum('price'))
+        求所有作者数的总价，分组查询
+        Book.objects.values('authors__name').annotate(Sum('price'))
+        求出版社最便宜的书价
+        Book.objects.values('publisher__name').annotate(Min('price'))
+
+使用原生sql————
+
+    方法————
+        extra   提供额外查询机制
+        raw     执行原始SQL，返回实例
+        直接执行自定义SQL    灵活度最高
+    extra——
+        where属性——
+            查询条件扩展
+            eg: Book.objects.filter(publisher__name='广东人民出版社').extra(where=['price>50'])
+            ps: Book.objects.filter(publisher__name='广东人民出版社', price__gt=50)
+        select属性——
+            查询语句扩展
+            eg: Book.objects.extra(select={'count':'select count(*) from hello_book'})
+
+    raw——
+    直接跟SQL语句，还是要依赖model，最好用于查询，可以返回查询结果
+    eg: Book.objects.raw('select x from hello_book')   # 查询
+        Book.objects.raw('select x from hello_author')   # 可以对应其他表
+        book = Book.objects.raw("insert into hello_author(name) values('你看看')")   # 插入
+        ps: 惰性机制，用过之后才会执行
+            print book   # 之后才会在表中插入
+    执行自定义SQL——
+    适合增删改
+    eg: from django.db import connection
+        cursor = connection.cursor()   # 获得游标（cursor）对象
+        cursor.execute("insert into hello_author(name) values('郭敬明')")   # 插入操作
+        cursor.execute("update hello_author set name='韩寒' where name='郭敬明'")   # 更新操作
+        cursor.execute("delete from hello_author where name='韩寒'")   # 删除操作
+        cursor.execute('select * from hello_author')   # 查询操作
+        raw = cursor.fetchone()   # 返回结果行，游标指示信息
+        cursor.fetchall()   # 返回所有信息
+
+常用模板标签及过滤器————
+
+    https://docs.djangoproject.com/en/1.9/ref/templates/builtins/
+    模板组成——
+        HTML代码  逻辑控制代码
+        ps: 通过这两个代码将view中的数据渲染到页面上
+    逻辑控制代码组成——
+        变量  {{var_name}}
+        标签  {%load staticfiles%}
+        过滤器 {{ship_data|data:"F j,Y;"}}   # 格式化日期
+              ship_data是变量，|是类似Unix里的管道，data是过滤器名字，"F J,y"是参数
+    常用标签(tag)——
+    https://docs.djangoproject.com/en/1.9/ref/templates/builtins/
+        {% if %}   可以使用and, or, not（and和or不能同时出现）支持{% elif %}
+                   == >= <= in > <
+        {% ifequal %}   是否相等
+                        仅限简单类型，字符串，整数，小数，不支持列表，字典，元祖
+        {% ifnotequal %}   是否不相等
+        {% for %}   循环一个序列
+        {% cycle %}   循环是轮流使用给定的字符串列表中的值
+        {# #}   单行注释
+        {% comment %}   多行注释
+        {% csrf_token %}   生成标签，提交表单时常用验证
+        {% debug %}   调用调试信息
+        {% filter %}   将filter标签圈定的内容执行过滤器操作，标签中取调用过滤器
+        {% autoescape %}   自动转义设置
+        {% firstof %}   输出第一个值不等于False的变量
+        {% load %}   加载标签库
+        {% now %}   获取当前时间
+        {% spaceless %}   移除空格
+        {% url %}   引入路由配置的地址，
+            一般不写具体url地址，写别名，因为模板中可能多处需要调用url，这样方便修改
+            eg: {% url 'test' %}
+        {% verbatim %}   禁止render，
+
+        {% with %}   简化变量名
+            eg: {% with total=sgregthernytyjtrh %}
+                    {{ total }}
+                {% endwith %}
+            ps: 在作用域里可以调用
+    过滤器——
+        https://docs.djangoproject.com/en/1.9/ref/templates/builtins/#slice
+        方法——
+            {% filter %}——
+                可以使用过滤器，不常用
+                eg: {% filter force_escape|upper %}   # 转换为大写
+                        This text will be HTML-escaped
+                    {% endfilter %}
+                    {% filter force_escape|lower %}   # 转换为小写
+            {{ship_data|data:"F j,Y;"}}——
+                通过变量，变量名|过滤器名
+                eg: {{ value1|upper }}
+        过滤器名——
+            add   给变量加上响应的值
+                eg: {{ value|add:"2" }}   # 加2
+            addslashes   给变量中的引号前加上斜线
+            capfirst   首字母大写
+            cut   从字符串中移除指定的字符
+                eg: {{ valua|cut:" " ]}   # 去掉空格
+            date   格式化日期字符串
+                ps: 变量需为日期对象
+            default   如果只是Flase，就替换成设置的默认值，否则用本来的值
+                eg: {{ value|default: "nothing"} }}
+            default_if_none   如果值是None，就替换成设置的默认
+            dictsort   按照设定参数（key）对应的value对列表进行排序
+            divtsortreversed   和上相反
+            divisibleby   是否能够被某个数字整除，是返回True
+            escape   对字符串进行转义
+                django有自动转义
+                eg: value2 = "<a herf'http://www.baidu.com'>百度</a>"
+                    {{ value2 }}
+                    在模板中调用变量时，显示的是该段代码
+                    {% autoescape off %}
+                    {{ value2 }}
+                    {% endautoescape %}
+                在自动转义关闭的作用域中操作
+            escaprjs   替换value中的某些字符
+            filesizeformat   格式化文件大小显示
+            first   返回列表中的第一个值
+            last   返回列表中的最后一个值
+            floatformat   格式化浮点数
+            length   求字符串或者列表的长度
+            length_is   比较字符串或者列表的长度
+            urlencode   对URL进行编码处理，为传递信息安全，显示编码之后的结果
+            upper\lower   小写\小写
+            safe   对某个变量关闭自动转义
+            slice   切片操作
+                eg: {{ value|slice:":2" }}
+            time   格式化时间
+            timesince   格式化时间，距离现在时间相差多少时间的结果
+            truncatechars   按照字符截取字符串
+                eg: {{ value|truncatechars: 9 }}   # 截取九个字符长度
+                ps: 将结尾三个点算在内
+            truncatewords   按照单词截取字符串，即按照空格截取
+                ps: 没有将结尾三个点算在内
+            striptags   过滤掉html标签
+
+
+包含和继承————
+    包含——
+        {% include %}
+            在模板文件夹templates中设置一个子模板，在其他模板中通过include去包含字模板的内容
+        标签参数——
+            模板名称——
+            eg: {% include 'sub.html' %}
+                {% include 'aaa/sub.html' %}   # 可以用相对路径去导入
+            变量——
+            eg: {% include template_name %}   # 导入模板变量
+                from django.template import Template
+                value = Template("<a herf='http://www.baidu.com'>百度</a>")
+                {% include value3 %}
+                {% include 'sub.html' with name='Duome' %}
+                {{ name }}
+            ps: 引号只能用单引号
+                子模板不需要写html包庇的标签，只需要写包含的内容
+        https://docs.djangoproject.com/en/1.9/ref/templates/builtins/#include
+    继承——
+        目的——
+            解决共有的模块冗余问题，减少代码
+        定义——
+            先构造一个基础框架模板，而后在其子模板中对他所包含的共有部分和定义进行重载
+        {% block%}——
+            https://docs.djangoproject.com/en/1.9/ref/templates/language/#template-inheritance
+            定义块，定义共用部分，在子模板中可能会修改的部分
+            ps: 可以用{{block.super}}等到父模板中的块内容
+                不能在同一个模板定义多个同名block
+        {% extend %}——
+            继承父模板
+            ps: 若使用{% extend %}必须在模板的最上面
+        https://docs.djangoproject.com/en/1.9/ref/templates/builtins/#block
+        https://docs.djangoproject.com/en/1.9/ref/templates/builtins/#extend
+
+admin————
+    ModelAdmin——
+        管理界面的定制类，扩展特定的管理界面
+        list_display   指定要显示的字段
+            eg: list_display = ('name', 'country'，)
+        search_field   指定搜索的字段
+            eg: search_fields = ('name',)
+            ps: 必须为元祖，支持模糊查询
+        list_filter   指定列表过滤器
+            eg: list_filter = ('city',)
+        ordering   指定排序字段
+            eg: ordering = ('id',)
+            ps: 默认用的id的降序排列ordering = ('-id',)
+        fields\exclude   指定编辑表单需要\不需要的字段
+            eg: fields = ('name', 'city')
+        fieldsets   设置分组表单
+    注册model类到admin的方式——
+        register方法——
+            eg: admin.site.register(Publisher, PublisherAdmin)
+            ps: 管理类必须写在对应模型类后
+        register装饰器——
+            eg: @admin.register(Publisher)
+                class PublisherAdmin(admin.ModelAdmin):
+                    list_display = ('name', 'country')
+    https://docs.djangoproject.com/en/1.9/ref/contrib/admin/
+
+form————
+    表单——
+        所有表单类都作为django.form.Form的子类创建，包括ModelForm
+    表单系统——
+        基于django.forms.Form   所有表单类的父类
+        基于django.forms.ModelForm   可以和模型类绑定的Form
+    实例——
+        不适用DjangoForm——
+            eg: def add_publisher(request):
+                    if request.method == 'POST':
+                        name = request.POST['name']   # 名字是表单元素name属性的值
+                        address = request.POST.get('address')
+                        Publisher.objects.create(
+                            name=name,
+                            address=address
+                        )
+                        return HttpResponse("添加出版社信息成功")
+                    else:
+                        return render(request, 'add_publisher.html', locals())
+        使用Form——
+            先定义Form模块，我们自己定义的form需要从django的forms中取继承
+            eg: from django import forms
+                class PublisherForm(forms.Form):
+                    name = forms.CharField()
+                    address = forms.CharField()
+                    city = forms.CharField()
+                    state_province =forms.CharField()
+                    country = forms.CharField()
+                    website = forms.URLField()
+                views中
+                def add_publisher(request):
+                    if request.method == 'POST':
+                        publisher_form = PublisherForm(request, POST)   # 表单对象通过post的数据初始化
+                    else:
+                        publisher_form = PublisherForm()
+                模板中
+                {{ publisher_form.as_p }}
+            forms字段——
+                CharField
+                URLField
+                ps: 字段类models，字段选项不一样
+            forms字段选项——
+                label   名称，相当于models中的name
+                error_message   错误属性
+                max_length   最大长度
+            表单对象输出的方式——
+                as_p
+                as_table
+                as_ul
+
+        使用ModelForm——
+            forms.py——
+            from django import forms
+            from hello.models import Publisher
+            class PublisherForm(forms.ModelForm):
+                class Meta:
+                    model = Publisher
+                    exclude = ("id",)   # 设置字段id不显示
+            views.py
+            def add_publisher(request):
+                if request.method == 'POST':
+                    publisher_form = PublisherForm(request.POST)   # 表单对象通过post的数据初始化
+                    if publisher_form.is_valid():
+                        publisher_form.save()
+                        return HttpResponse("添加出版社信息成功")
+
+                else:
+                    publisher_form = PublisherForm()
+                return render(request, 'add_publisher.html', locals())
+            模板中——
+            {{ publisher_form.as_p }}
+    https://docs.djangoproject.com/en/1.9/ref/forms/api/
+    https://docs.djangoproject.com/en/1.9/ref/forms/fields/
+
+表单验证————
+
+    表单字段的验证器——
+        https://docs.djangoproject.com/en/1.9/ref/validators
+        eg: from django.core.exceptions import ValidationError
+            def validate_name(value):
+                try:
+                    Publisher.objects.get(name=value)   # 查到有数据了就带入validate_name函数，相当于回调
+                    raise ValidationError("%s的信息已经存在" % value)
+                except Publisher.DoesNotExist:
+                    pass
+
+            class PublisherForm(forms.ModelForm):
+                # 增加的字段和model中的字段重名之后不会重复添加
+                name = forms.CharField(label='名称', validators=[validate_name])
+                class Meta:
+                    model = Publisher
+                    exclude = ("id",)   # 设置字段id不显示
+    clean_filedname——
+        针对某个字段验证，filedname是可以改的
+        eg: class PublisherForm(forms.ModelForm):
+                def clean_name(self):   # 是PublisherForm的实例方法
+                    value = self.cleaned_data.get('name')   # 获取表单元素的值
+                    try:
+                        Publisher.objects.get(name=value)
+                        raise ValidationError("%s的信息已经存在" % value)
+                    except Publisher.DoesNotExist:
+                        pass
+                    return value   # 否则表单获取不到
+                class Meta:
+                    model = Publisher
+                    exclude = ("id",)   # 设置字段id不显示
+    clean——
+        对整个表单进行验证
+        eg: def clean(self):
+                # 父类中有一个clean方法，返回整个表单的数据
+                cleaned_data = super(PublisherForm, self).clean()
+                value = cleaned_data.get('name')
+                try:
+                    Publisher.objects.get(name=value)
+                    self._errors['name'] = self.error_class(["%s的信息已经存在" % value])
+                except Publisher.DoesNotExist:
+                    pass
+                return cleaned_data
+    ps: 又有clean_filedname又有clean，先验证前者，后验证后者
+        输入密码，验证密码，用clean，然后进行比较判断（对多个表单进行比较）

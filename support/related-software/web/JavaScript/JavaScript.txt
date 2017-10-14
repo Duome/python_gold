@@ -1,0 +1,258 @@
+HTML          定义网页的内容
+CSS           描述网页的布局
+JacaScript是  网页的行为
+
+JavaScript的主要功能————
+
+    直接写入HTML输出流
+    对事件的反应
+    改变HTML内容（文本、文本样式、图像）
+    验证输入
+    ps: 形式——
+        document.write
+        onclick="alert('欢迎！')"
+        function
+
+JavaScript的主要用法————
+
+    <script>标签——
+        标签之间包含JavaScript
+    <body>标签&<head>标签——
+        脚本放置位置，可同时存在于两个部分中，一般放在<head>标签中或者放在页面底部
+    ps: JavaScript用于某个事件发生时执行代码
+        还可以保存在外部脚本里面，外部脚本不能包含 <script> 标签。
+
+输出类型————
+
+    显示数据——
+        window.alet()   弹出警告框
+            eg: <script>
+                window.alert(5 + 6);
+                </script>
+                <script>
+                window.alert('a');
+                </script>
+        document.write()    将内容写入HTML文档
+            eg: <script>
+                document.write(Date());
+                </script>
+            ps: 如果在文档已完成加载后执行 document.write，整个 HTML 页面将被覆盖。
+                每次写完关闭之后重新调用该函数，页面会被重写。
+        innerHTML   写入HTML元素
+            eg: <p id='demo'>这是一个段落</p>
+                <script>
+                document.getElementById('demo').innerHTML = "段落已修改。";
+                </script>
+            ps: 代表该元素的html内容。
+                innerHTML很多情况下都优于document.write，其原因在于其允许更精确的控制要刷新页面的那一个部分。
+        console.log()   写入浏览器控制台
+            eg: <script>
+                a = 5;
+                b = 6;
+                c = a + b;
+                console.log(c);
+                </script>
+            ps: 浏览器中使用F12来启用调试模式，在调试窗口中点击 "Console" 菜单。
+                程序中调试是测试，查找及减少bug(错误)的过程。
+                相比alert的优点——
+                    输出内容结构化，alert只能看到对象，console可以看到对象的内容
+                    console不会打断页面操作，输出内容后还可以操作，alert弹出内容，页面则无法操作
+
+JavaScript语法————
+
+    程序语言，脚本语言，轻量级
+    字面量——
+        字面量一般为固定值
+        数字字面量——
+            整数、小数或科学计数
+            eg: 3.14
+                1001
+                123e5
+        字符串字面量——
+            单引号或双引号
+        表达式字面量——
+            用于计算
+            eg: 5 + 6
+        数组字面量——
+            eg: [1, 2, 3]
+        对象字面量——
+            eg: {firstName:"John", lastName:"Doe", age:50, eyeColor:"blue"}
+        函数字面量——
+            eg: function myFunction(a, b) {return a * b;}
+    变量——
+        var   定义变量
+        eg: var x, length
+            x = 5
+            length = 6
+        ps: 变量是一个名称，字面量是一个值
+            三种变量命名规则：
+            var firstName='king';//小驼峰
+            var FirstName='queen';//大驼峰
+            var first_name='maizi';//下划线法
+            并无绝对与强制，为的是增加识别和可读性。
+    操作符——
+        算术运算符   + * / ** -
+        赋值运算符   =
+        逻辑运算符   == != < >
+    语句——
+        语句由分号分隔
+    关键字——
+        abstract	else	instanceof	super
+        boolean	enum	int	switch
+        break	export	interface	synchronized
+        byte	extends	let	this
+        case	false	long	throw
+        catch	final	native	throws
+        char	finally	new	transient
+        class	float	null	true
+        const	for	package	try
+        continue	function	private	typeof
+        debugger	goto	protected	var
+        default	if	public	void
+        delete	implements	return	volatile
+        do	import	short	while
+        double	in	static	with
+    注释——
+        //  双斜杠后的内容会被浏览器忽略
+    数据类型——
+        数字 字符串 数组 对象
+    函数——
+        可以重复引用，引用一个函数 = 调用函数(执行函数内的语句)。
+    字母大小写——
+        对大小写敏感
+        ps: 常见的是驼峰法的命名规则，如 lastName (而不是lastname)。
+    字符集——
+        使用Unicode字符集
+
+语句————
+
+    作用——给浏览器发命令，告诉浏览器要做到的事情
+    分号——
+        分隔JavaScript语句，放在每条可执行语句结尾，用分号来结束语句是可选的
+    代码——
+        代码是语句的序列，浏览器按照编写顺序依次执行每条语句
+    代码块——
+        可以分批组合起来，写在{}里面，作用是一并执行语句序列
+    语句标识符——
+        语句通常以一个语句标识符开始，是保留关键字，不能作为变量名
+        break	用于跳出循环。
+        catch	语句块，在 try 语句块执行出错时执行 catch 语句块。
+        continue	跳过循环中的一个迭代。
+        do ... while	执行一个语句块，在条件语句为 true 时继续执行该语句块。
+        for	在条件语句为 true 时，可以将代码块执行指定的次数。
+        for ... in	用于遍历数组或者对象的属性（对数组或者对象的属性进行循环操作）。
+        function	定义一个函数
+        if ... else	用于基于不同的条件来执行不同的动作。
+        return	退出函数
+        switch	用于基于不同的条件来执行不同的动作。
+        throw	抛出（生成）错误 。
+        try	实现错误处理，与 catch 一同使用。
+        var	声明一个变量。
+        while	当条件语句为 true 时，执行语句块。
+    空格——
+        忽略多余空格，可向脚本添加空格，提高可读性
+    拆行——
+        使用反斜杠\对代码进行换行，只能换括号或引号包含的内容
+        eg: document.write \
+            ("你好世界!");   # 错误的
+    ps: JavaScript 是脚本语言。浏览器会在读取代码时，逐行地执行脚本代码。而对于传统编程来说，会在执行前对所有代码进行编译。
+
+注释————
+
+    单行注释——
+        //开始
+    多行注释——
+        */开始
+        */结尾
+
+变量————
+
+    把变量看做存储数据的容器
+    变量必须以字母开头
+    变量也能以 $ 和 _ 符号开头（不过我们不推荐这么做）
+    变量名称对大小写敏感（y 和 Y 是不同的变量）
+    一个好的编程习惯是，在代码开始处，统一对需要的变量进行声明。
+    一条语句中多个变量——
+        var lastname="Doe", age=30, job="carpenter";
+    变量重新声明——
+        重新声明变量，变量的值不会丢失
+
+数据类型————
+
+    字符串（String）、数字(Number)、布尔(Boolean)、数组(Array)、对象(Object)、空（Null）、未定义（Undefined）。
+    数组——
+        eg: var cars=new Array();
+            cars[0]="Saab";
+            cars[1]="Volvo";
+            cars[2]="BMW";
+        eg: var person=
+            {
+                firstname : "John",
+                lastname  : "Doe",
+                id        :  5566
+            };
+            document.write(person.lastname + "<br>");
+            document.write(person["lastname"] + "<br>");
+    声明变量类型——
+        new
+        eg: var carname=new String;
+            var x=      new Number;
+            var y=      new Boolean;
+            var cars=   new Array;
+            var person= new Object;
+
+对象————
+
+函数————
+
+作用域————
+
+事件————
+
+字符串————
+运算符————
+
+    比较运算符——
+    逻辑运算符——
+        &&   而且
+        ||   或者
+        ！   非
+    条件运算符——
+
+条件语句————
+    if
+    if  else
+    if  else if  else
+    switch——
+        eg: switch (n)
+            {
+                case 值1:
+                    执行代码块 1
+                    break
+                case 值2:
+                    执行代码块 2
+                    break
+                default:
+                    执行代码块3   # 匹配不存在时做的事情或不是值1、2的情况，可以没有
+            }
+
+循环语句——
+
+    for - 循环代码块一定的次数
+    for/in - 循环遍历对象的属性
+    while - 当指定的条件为 true 时循环指定的代码块
+    do/while - 同样当指定的条件为 true 时循环指定的代码块
+    for——
+        for (语句 1; 语句 2; 语句 3)
+        {
+            被执行的代码块
+        }
+        语句 1 （代码块）开始前执行，语句1初始化循环中所用的变量，可以省略
+        语句 2 定义运行循环（代码块）的条件，如果您省略了语句 2，那么必须在循环内提供 break。
+        语句 3 在循环（代码块）已被执行之后执行，语句 3 也可以省略，可写在循环内部
+    for in——
+        for (x in 对象)
+        {
+            执行代码块
+        }
+    while——

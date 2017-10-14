@@ -1,0 +1,6 @@
+命令————
+
+mysql -uroot -p                 登录mysql（在服务器启动的情况下）
+net start mysql56（服务名称）     开启服务
+net stop mysql56                关闭服务
+\s                              服务器状态

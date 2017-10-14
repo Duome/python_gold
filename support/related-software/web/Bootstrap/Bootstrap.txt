@@ -1,0 +1,63 @@
+Bootstrap————
+
+    简介————
+        前端框架，基于 HTML、CSS、JAVASCRIPT
+        包的内容——
+            基本结构   有网络系统、链接样式、背景
+            CSS   全局CSS设置、基本HTML元素样式、可扩展class、先进网络系统
+            组件   可重用，用于创建图像、下拉菜单、导航、警告框、弹出框等
+            JavaScript插件   自定义的 jQuery 插件
+            定制   定制 Bootstrap组件、LESS变量、jQuery插件
+    CSS————
+        概览（底层结构关键部分）——
+            HTML文档类型——
+                在使用Bootstrap开够包含：
+                <!DOCTYPE html>
+                <html>
+                ....
+                </html>
+            移动设备优先——
+                让 Bootstrap 开发的网站对移动设备友好：
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    width   确保它能正确呈现在不同设备上。
+                    initial-scale=1.0   以 1:1 的比例呈现，不会有任何的缩放
+                    ps: viewport meta 标签添加 user-scalable=no，禁用其缩放（zooming）功能
+                        maximum-scale=1.0 与 user-scalable=no 一起使用，禁用缩放功能，只能滚动屏幕
+            响应式图像——
+                <img src="..." class="img-responsive" alt="响应式图像">
+                通过添加 img-responsive class，使对响应式布局的支持更友好
+                    .img-responsive {
+                      display: block;
+                      height: auto;
+                      max-width: 100%;
+                    }
+            全局显示、排版、链接——
+                全局显示——
+                    body {
+                      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                      font-size: 14px;
+                      line-height: 1.428571429;
+                      color: #333333;
+                      background-color: #ffffff;
+                    }
+                排版——
+                    @font-family-base、 @font-size-base 和 @line-height-base 属性作为排版样式。
+                链接样式——
+                    通过属性 @link-color 设置全局链接的颜色
+            避免跨浏览器的不一致——
+                Normalize.css
+            容器——
+                .container {
+                   padding-right: 15px;
+                   padding-left: 15px;
+                   margin-right: auto;
+                   margin-left: auto;
+                }
+            Bootstrap浏览器/设备支持——
+
+        网络系统——
+            响应式、移动设备优先的流式网络系统
+            网络——
+                网页设计中的网格用于组织内容，让网站易于浏览，并降低用户端的负载。
+            Bootstrap网络系统——
+                从小屏幕设备开始，然后扩展到大屏幕设备

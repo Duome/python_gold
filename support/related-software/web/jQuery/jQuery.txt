@@ -1,0 +1,312 @@
+jQuery————
+
+    简介——
+        jQuery 是一个 JavaScript 库。
+        jQuery 库可以通过一行简单的标记被添加到网页中。
+        功能——
+            HTML元素选取
+            HTML元素操作
+            CSS操作
+            HTML事件函数
+            JavaScript特效和动画
+            HTML DOM遍历和修改
+            AJAX异步请求方式
+            Utilities
+        使用方法——
+            <head>
+            <script src="jquery-3.2.1.min.js"></script>
+            </head>
+            ps: 在 <script> 标签中不用使用 type="text/javascript"
+                因为JavaScript是HTML5 以及所有现代浏览器中的默认脚本语言
+            替代方案——
+                通过 CDN（内容分发网络） 引用它
+                <head>
+                <script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js">
+                </script>
+                </head>
+                ps: 站点用户是国内的，建议使用百度、又拍云、新浪等国内CDN地址，如果站点用户是国外的可以使用谷歌和微软。
+                    以上实例采用菜鸟教程CDN库
+                    百度：https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js
+                    又拍云：http://upcdn.b0.upaiyun.com/libs/jquery/jquery-2.0.2.min.js
+                    新浪：http://lib.sinaapp.com/js/jquery/2.0.2/jquery-2.0.2.min.js
+                    Google：http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js
+                    Microsoft：http://ajax.htmlnetcdn.com/ajax/jQuery/jquery-1.10.2.min.js
+
+    语法————
+        基础语法： $(selector).action()
+            美元符号定义 jQuery
+            选择符（selector）"查询"和"查找" HTML 元素
+            jQuery 的 action() 执行对元素的操作
+        文档就绪事件
+            防止文档在完全加载（就绪）之前运行 jQuery 代码，即在 DOM 加载完成后才可以对 DOM 进行操作。
+            $(document).ready(function(){
+               // 开始写 jQuery 代码...
+            });
+            $(function(){
+               // 开始写 jQuery 代码...
+            });
+
+    选择器————
+        元素
+        #id
+        .class
+        this
+        ：可以理解为种类的意思，如：p:first，p 的种类为第一个。
+        [] 很自然的可以理解为属性的意思，如：[href] 选取带有 href 属性的元素。
+
+    事件————
+        鼠标事件——
+            click   点击
+            dbclick   双击
+            mouseenter   鼠标指针穿过元素
+            mouseleave   鼠标指针离开元素
+            mousedown   鼠标指针移动到元素上方
+            mouseup   在元素上松开鼠标
+            hover   模拟光标悬停事件
+        键盘事件——
+            keypress
+            keydown
+            keyup
+        表单事件——
+            submit   提交
+            change
+            focus   获得焦点（点击选中元素或tab键定位）
+            blur   失去焦点
+        文档/窗口事件——
+            load
+            resize
+            scroll
+            unload
+
+    效果————
+
+        隐藏和显示——
+            $(selector).hide(speed,callback);   隐藏
+            $(selector).show(speed,callback);   显示
+            $(selector).toggle(speed,callback);   显示被隐藏内容，隐藏已显示内容
+            ps: 对于可选的 callback 参数，有以下两点说明：
+                1.$(selector)选中的元素的个数为n个，则callback函数会执行n次；
+                2.callback函数名后加括号，会立刻执行函数体，而不是等到显示/隐藏完成后才执行；
+                3.callback既可以是函数名，也可以是匿名函数；
+        淡入淡出——
+            fadeIn()   淡入
+            fadeOut()   淡出
+            fadeToggle()    淡入、淡出
+            fadeTo()    颜色变淡，不透明度（值介于 0 与 1 之间）
+        滑动——
+            slideDown()   滑下
+            slideUp()   拉起
+            slideToggle()   滑下、拉起
+        动画——
+            $(selector).animate({params},speed,callback);   自定义动画
+            ps: HTML 元素都有一个静态位置，且无法移动。需把元素的position属性设置为 relative、fixed 或 absolute
+                当使用 animate() 时，必须使用 Camel 标记法书写所有的属性名
+                paddingLeft 而不是 padding-left
+            使用相对值——
+                $("button").click(function(){
+                  $("div").animate({
+                    left:'250px',
+                    height:'+=150px',
+                    width:'+=150px'
+                  });
+                });
+            预定义的值——
+                动画值设置为 "show"、"hide" 或 "toggle"
+            队列功能——
+                var div=$("div");
+                div.animate({height:'300px',opacity:'0.4'},"slow");
+                div.animate({width:'300px',opacity:'0.8'},"slow");
+        停止动画——
+            $(selector).stop(stopAll,goToEnd);
+            ps: 适用于所有 jQuery 效果函数，包括滑动、淡入淡出和自定义动画。90
+                stopAll,goToEnd默认是都是false
+        Callback方法——
+            在当前动画 100% 完成之后执行。没有回调函数，警告框会在隐藏效果完成前弹出
+        链Chaining——
+            把动作/方法链接在一起
+            jQuery 语法不严格；您可以按照希望的格式来写，包含换行和缩进。
+
+    操作HTML————
+
+        获取内容和属性——
+            内容获取——
+                text() - 设置或返回所选元素的文本内容
+                eg: $("#test").text()
+                html() - 设置或返回所选元素的内容（包括 HTML 标记）
+                eg: $("#test").html()
+                val() - 设置或返回表单字段的值
+                eg: $("#test").val()  value表单内容
+            属性——
+                attr()
+        设置内容和属性——
+            内容设置——
+                text() - 设置或返回所选元素的文本内容   只设置文本内容
+                html() - 设置或返回所选元素的内容（包括 HTML 标记）  可包括文本和效果，执行新的HTML
+                val() - 设置或返回表单字段的值
+                回调函数——
+                    回调函数有两个参数：被选元素列表中当前元素的下标，以及原始（旧的）值。然后以函数新值返回您希望使用的字符串。
+            属性设置——
+                attr()
+                可以同时设置多个属性
+                    $("#runoob").attr({
+                        "href" : "http://www.runoob.com/jquery",
+                        "title" : "jQuery 教程"
+                    });
+                回调函数——
+                    回调函数有两个参数：被选元素列表中当前元素的下标，以及原始（旧的）值。然后以函数新值返回您希望使用的字符串。
+        添加元素——
+            里面跟的都是HTML语句
+            添加新元素内容——
+                append() - 在被选元素的结尾插入内容（与被选元素有关）
+                prepend() - 在被选元素的开头插入内容
+                after() - 在被选元素之后插入内容（与被选元素无关）
+                before() - 在被选元素之前插入内容
+            创建新元素——
+                元素可以通过text/HTML、jQuery或者JavaScript/DOM来创建
+        删除元素——
+            remove() - 删除被选元素（及其子元素）
+            empty() - 从被选元素中删除子元素
+            remove(".italic")   过滤class="italic"的所有元素
+        获取并设置css类——
+            addClass() - 向被选元素添加一个或多个类（css中的效果类名，可添加多个类）
+                eg: $("body div:first").addClass("important blue");
+            removeClass() - 从被选元素删除一个或多个类
+            toggleClass() - 对被选元素进行添加/删除类的切换操作
+            css() - 设置或返回样式属性
+                eg: $("p").css("background-color");   # 获取属性的值
+                    $("p").css("background-color","yellow");   # 指定属性的值
+                    $("p").css({"background-color":"yellow","font-size":"200%"});   # 设置多个属性
+        尺寸——
+            方法——
+                width()
+                height()
+                innerWidth()
+                innerHeight()
+                outerWidth()
+                outerHeight()
+            尺寸——
+                                    宽               高
+                element  内容      width()           height()
+                padding  内边距    innerWidth()      innerHeight()
+                border   边框      outerWidth()      outerHeight()
+                margin   外边距    outerWidth(true)  outerHeight(true)
+
+    遍历————
+
+        遍历关系——
+            根据其相对于其他元素的关系来"查找"（或选取）HTML 元素
+            <div> 元素是 <ul> 的父元素，同时是其中所有内容的祖先。
+            <ul> 元素是 <li> 元素的父元素，同时是 <div> 的子元素
+            左边的 <li> 元素是 <span> 的父元素，<ul> 的子元素，同时是 <div> 的后代。
+            <span> 元素是 <li> 的子元素，同时是 <ul> 和 <div> 的后代。
+            两个 <li> 元素是同胞（拥有相同的父元素）。
+            右边的 <li> 元素是 <b> 的父元素，<ul> 的子元素，同时是 <div> 的后代。
+            <b> 元素是右边的 <li> 的子元素，同时是 <ul> 和 <div> 的后代。
+        祖先向上遍历——
+            parent()    返回被选元素的直接父元素
+            parents()    返回被选元素的所有祖先元素，它一路向上直到文档的根元素 (<html>)。
+                $("span").parents("ul");   使用可选参数来过滤对祖先元素的搜索。
+            parentsUntil()    返回介于两个给定元素之间的所有祖先元素。
+                 $("span").parentsUntil("div");   返回介于 <span> 与 <div> 元素之间的所有祖先元素
+        后代向下遍历——
+            children   返回被选元素的所有直接子元素。（不包括孙子）
+                $("div").children("p.1")   使用可选参数来过滤对子元素的搜索。
+            find   回被选元素的后代元素，一路向下直到最后一个后代。
+                $("div").find("span");   返回属于 <div> 后代的所有 <span> 元素
+                $("div").find("*");   返回 <div> 的所有后代
+        同胞水平遍历——
+            siblings()   返回被选元素的所有同胞元素。
+                $("h2").siblings()   对同胞的操作，自己不变
+                $("h2").siblings("p")   返回属于 <h2> 的同胞元素的所有 <p> 元素
+            next()   返回被选元素的下一个同胞元素
+            nextAll()   返回被选元素的所有跟随的同胞元素
+            nextUntil()   返回介于两个给定参数之间的所有跟随的同胞元素
+                $("h2").nextUntil("h6");   边界不包含
+            prev()
+            prevAll()
+            prevUntil()
+                ps: prev(), prevAll() 以及 prevUntil()工作方式与上面的方法类似，只不过方向相反而已
+        过滤缩小范围——
+            基本过滤方法——
+                first()   返回被选元素的首个元素
+                    $("div p").first();   选取首个 <div> 元素内部的第一个 <p> 元素
+                last()   返回被选元素的最后一个元素
+                eq()   返回被选元素中带有指定索引号的元素
+                    $("p").eq(1);   索引号从 0 开始
+            其他过滤方法——
+                filter()   允许您规定一个标准。不匹配这个标准的元素会被从集合中删除，匹配的元素会被返回
+                    $("p").filter(".url");   返回带有类名 "url" 的所有 <p> 元素
+                not()   返回不匹配标准的所有元素，与 filter() 相反
+                    $("p").not(".url");   返回不带有类名 "url" 的所有 <p> 元素
+
+    AJAX————
+
+        简介——
+            什么是AJAX——
+                AJAX 是与服务器交换数据的技术，它在不重载全部页面的情况下，实现了对部分网页的更新。
+                在不重载整个网页的情况下，AJAX 通过后台加载数据，并在网页上进行显示。
+            jQuery与AJAX——
+                jQuery 提供多个与 AJAX 有关的方法
+                通过 jQuery AJAX 方法，能够使用 HTTP Get 和 HTTP Post 从远程服务器上请求文本、HTML、XML 或 JSON
+                同时您能够把这些外部数据直接载入网页的被选元素中
+        load()——
+            $(selector).load(URL,data,callback);   从服务器加载数据，并把返回的数据放入被选元素中
+                （必需的） URL 参数规定您希望加载的 URL。
+                （可选的） data 参数规定与请求一同发送的查询字符串键/值对集合。
+                （可选的） callback 参数是 load() 方法完成后所执行的函数名称。
+                eg: $("#div1").load("demo_test.txt");   加入整个内容
+                    $("#div1").load("demo_test.txt #p1");   加入指定内容（id="p1" 的元素）
+            回调函数——
+                参数——
+                responseTxt - 包含调用成功时的结果内容
+                statusTXT - 包含调用的状态
+                    statusTxt=="success"
+                    statusTxt=="error"
+                xhr - 包含 XMLHttpRequest 对象
+        get()——
+            通过HTTP GET请求从服务器请求数据
+            GET——
+                从指定的资源请求数据
+                用于从服务器获得（取回）数据，GET 方法可能返回缓存数据。
+            $.get(URL,callback);——
+                （必需的） URL 参数规定请求的 URL。
+                （可选的） callback 参数是请求成功后执行的函数名。
+            回调函数参数——
+                data   被请求页面的内容
+                state   状态success或error
+        post()——
+            通过HTTP POST请求从服务器请求数据
+            POST——
+                向指定的资源提交要处理的数据
+                也可用于从服务器获取数据，不过，POST 方法不会缓存数据，并且常用于连同请求一起发送数据。
+            $.post(URL,data,callback);——
+                （必需的） URL 参数规定您希望请求的 URL。
+                （可选的） data 参数规定连同请求发送的数据。
+                （可选的） callback 参数是请求成功后所执行的函数名。
+                eg: data:
+                    {
+                        name:"菜鸟教程",
+                        url:"http://www.runoob.com"
+                    }
+
+    其他————
+
+        noConflict()——
+            当其他 JavaScript 框架也使用$符号作为简写，
+            该方法会释放对 $ 标识符的控制，这样其他脚本就可以使用它
+            可以通过全名替代简写——
+                eg: jQuery(document).ready
+            创建自己的简写——
+                eg: ar jq = $.noConflict();
+            可以在函数内使用 $ 符号，把 $ 符号作为变量传递给 ready 方法，在函数外，依旧不得不使用 "jQuery"
+                eg: $.noConflict();
+                    jQuery(document).ready(function($){
+                      $("button").click(function(){
+                        $("p").text("jQuery 仍然在工作!");
+                      });
+                    });
+        JSONP——
+            定义——
+                json 的一种"使用模式"，可以让网页从别的域名（网站）那获取资料，即跨域读取数据。
+            同源策略——
+                是由Netscape提出的一个著名的安全策略，现在所有支持JavaScript 的浏览器都会使用这个策略。

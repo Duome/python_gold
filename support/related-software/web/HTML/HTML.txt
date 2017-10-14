@@ -1,0 +1,734 @@
+
+超文本标记语言
+
+定义——
+
+ps: 中文网页需要使用<meta charset="utf-8">
+    HTML中不支持 空格、回车、制表符，它们都会被解析成一个空白字符
+    HTML 不是一种编程语言，而是一种标记语言
+
+HTML标签——
+
+    由尖括号包围<html>
+    标签成对出现<b></b>
+    标签对中前者是开始标签（开放标签），后者是结束标签（闭合标签）
+    eg: <标签>内容</标签>
+    "HTML 标签" 和 "HTML 元素" 通常都是描述同样的意思
+
+HTML网页结构——
+    <html>
+    <head>
+    <title>   页面标题</title>
+    </head>
+    <body>
+    <h1>   这是一个标题<h1>（多个标题通过<h1> - <h6> 标签来定义的）
+    <p>   这是一个段落</p>
+    <p>   这是另外一个段落</p>
+    <a href='http://www.baidu.com'>这是一个链接使用了 href 属性</a>   超文本引用
+    <img src='/images/logo.png' width='258' height='39' />   相对路径或绝对路径
+    <br/>    就是没有关闭标签的空元素（<br> 标签定义换行）
+    </body>   元素定义HTML文档的主体，元素内容又有另一个HTML元素（p元素）
+    </html>   元素定义整个HTML文档
+    ps: doctype 声明是不区分大小写的，一般都用<!DOCTYPE html>
+        只有<body>区域,才会在浏览器中显示。
+        HTML 标签对大小写不敏感，推荐使用小写
+
+HTML属性——
+    属性一般描述于开始标签
+    属性总是以名称/值对的形式出现
+    属性和属性值对大小写不敏感。推荐使用小写
+
+HTML标题——
+    <h1> 定义最大的标题。 <h6> 定义最小的标题。
+    eg: <!DOCTYPE html>
+        <html>
+        <head>
+        <meta charset="utf-8">
+        <title>菜鸟教程(runoob.com)</title>
+        </head>
+        <body>
+
+        <h1>这是标题 1</h1>
+        <h2>这是标题 2</h2>
+        <h3>这是标题 3</h3>
+        <h4>这是标题 4</h4>
+        <h5>这是标题 5</h5>
+        <h6>这是标题 6</h6>
+
+        </body>
+        </html>
+    ps: 可以只使用h1和h5
+        确保将 HTML 标题 标签只用于标题。不要仅仅是为了生成粗体或大号的文本而使用标题
+        用户可以通过标题来快速浏览您的网页
+         h1 用作主标题（最重要的），其后是 h2（次重要的），再其次是 h3....
+
+HTML水平线——
+    <hr>标签   用于分隔内容
+        color属性   <hr color=#rrggbb />
+
+HTML注释——
+    <!-- 这是一个注释 -->   提高其可读性，浏览器会忽略注释，也不会显示它们
+
+HTML段落——
+    <p> 标签定义的段落，段落中可以放文本，图片，或链接
+        align属性   文本位置
+    ps: 浏览器会自动地在段落的前后添加空行
+        不要忘记结束标签
+    HTML拆行——
+        <br />元素是一个空的 HTML 元素
+        eg: <p>这个<br>段落<br>演示了分行的效果</p>
+
+HTML输出——
+       无法通过在 HTML 代码中添加额外的空格或换行来改变输出的效果
+       当显示页面时，浏览器会移除源代码中多余的空格和空行，所有连续的空格或空行都会被算作一个空格
+
+HTML格式化——
+
+    HTML文本格式化——
+        eg: <!DOCTYPE html>
+            <html>
+            <head>
+            <meta charset="utf-8">
+            <title>菜鸟教程(runoob.com)</title>
+            </head>
+            <body>
+
+            <b>加粗文本</b><br><br>
+            <strong>这个文本是加粗的</strong>
+            <i>斜体文本</i><br><br>
+            <em>这个文本是斜体的</em>
+            <code>电脑自动输出</code><br><br>
+            <small>这个文本是缩小的</small>
+            <big>这个文本字体放大</big>
+            这是 <sub> 下标</sub> 和 <sup> 上标</sup>
+
+            </body>
+            </html>
+        <b></b>         加粗bold
+        <i></i>         斜体italic
+        <code></code>   电脑自动输出
+        <sub></sub>     下标
+        <sup></sup>     上标
+        <small></small> 缩小
+        <big></big>     放大
+        <strong></strong>加粗
+        <em></em>       斜体
+        ps: 通常标签 <strong> 替换加粗标签 <b> 来使用, <em>替换<i>标签使用
+            <strong> 或者 <em>意味着你要呈现的文本是重要的
+
+    HTML预格式文本——
+        <pre></pre> 对空行和空格进行控制
+
+    HTML计算机输出标签——
+        <code></code>   计算机输出
+        <kbd></kbd>     键盘输入
+        <tt></tt>       打字机文本
+        <samp></samp>   计算机代码样本
+        <var></var>     计算机变量
+
+    HTML地址——
+        <address></address>字体不同
+        eg: <address>
+            Written by <a href="mailto:webmaster@example.com">Jon Doe</a>.<br>
+            Visit us at:<br>
+            Example.com<br>
+            Box 564, Disneyland<br>
+            USA
+            </address>
+
+    HTML缩写和首字母缩写——
+        <abbr title="etcetera">etc.</abbr>
+        <acronym title="World Wide Web">WWW</acronym>
+        ps: 仅对于IE 5中的acronym元素有效。
+            对于Netscape 6.2中的abbr和acronym元素都有效。
+
+    HTML文字方向——
+        <bdo dir="rtl">该段落文字从右到左显示。</bdo>
+
+    HTML块引用——
+        <p><q> </q></p>     短引用<q></q>内引用内容
+        <blockquote></blockquote>   长引用cite 属性规定引用的来源
+        eg: <blockquote cite="http://www.worldwildlife.org/who/index.html">
+            For 50 years, WWF has been protecting the future of nature. The worlds leading conservation organization,
+            WWF works in 100 countries and is supported by 1.2 million members in the United States and close to 5 million globally.
+            </blockquote>
+        HTML删除效果和插入效果——
+        <del></del>   删除
+        <ins></ins>   插入
+        eg: <p>My favorite color is <del>blue</del> <ins>red</ins>!</p>
+
+HTML超文本连接——
+
+    <a href='url'>链接文本</a>   超链接可以是一个字，一个词，或者一组词，也可以是一幅图像
+    链接在浏览器中的显示——
+        一个未访问过的链接显示为蓝色字体并带有下划线。
+        访问过的链接显示为紫色并带有下划线。
+        点击链接时，链接显示为红色并带有下划线。
+    style属性——
+        <a href="http://www.runoob.com/" style="text-decoration:none;">访问 runoob.com!</a>
+        style="text-decoration:none;"   无下划线
+    target属性——
+        定义被链接文档在何处显示
+        target='_blank'   在新窗口打开
+        eg: <a href="http://www.runoob.com/" target="_blank">访问菜鸟教程!</a>
+        _blank  	在新窗口中打开被链接文档。
+        _self	    默认。在相同的框架中打开被链接文档。
+        _parent 	在父框架集中打开被链接文档。
+        _top	    在整个窗口中打开被链接文档。
+        framename	在指定的框架中打开被链接文档。
+
+    id属性——
+    给一个单元(元素,标签)一个独一无二的标识或标记,让流览器在分析处理网页时找到id所在的地方.
+        <a id="tips">有用的提示部分</a>   # 在HTML文档中插入ID
+        <a href="#tips">访问有用的提示部分</a>   # 在HTML文档中创建一个链接到"有用的提示部分(id="tips"）"
+        <a href="http://www.runoob.com/html/html-links.html#tips">访问有用的提示部分</a>   # 从另一个页面创建一个链接到"有用的提示部分(id="tips"）"
+        ps: 请始终将正斜杠添加到子文件夹，href="http://www.runoob.com/html/"
+
+    图片链接——
+        <a href="http://www.runoob.com/html/html-tutorial.html">
+        <img  border="10" src="smiley.gif" alt="HTML 教程" width="32" height="32"></a>
+        border      边界
+        src         图片源
+        alt         替代文本（在图像无法显示或者用户禁用图像显示时，代替图像显示在浏览器中的内容）
+        width       宽度
+        height      高度
+
+    当前页面链接到指定位置——
+        <a href='#C'>查看章节4</a>
+        <a id='C'></a>
+    跳出框架——
+        <a href="http://www.runoob.com/" target="_top">点击这里!</a>
+    创建电子邮件链接——
+        <a href='mailto:duomesiki@163.com?Subject=hello%20world' target='_top'></a>
+        <a href="mailto:someone@example.com?cc=someoneelse@example.com&bcc=andsomeoneelse@example.com&subject=Summer%20Party&body=You%20are%20invited%20to%20a%20big%20summer%20party!" target="_top">发送邮件!</a>
+
+        Subject=   主题是
+                   ps: 单词之间空格使用%20
+        target='_top'   被连接文档在窗口上打开，不用打开新的窗口
+        ？   第一个
+        &    第二个以后
+        cc=  抄送
+        bcc  密件抄送
+        body 内容
+
+HTML头部——
+
+     <head>元素
+        <head> 元素包含了所有的头部标签元素，所有头部元素的容器
+        可以添加在头部区域的元素标签为: <title>, <style>, <meta>, <link>, <script>, <noscript>, <base>
+        必须包含文档的标题（title）
+     <title>元素——
+        <title> 标签定义了不同文档的标题
+        定义了浏览器工具栏的标题
+        当网页添加到收藏夹时，显示在收藏夹中的标题
+        显示在搜索引擎结果页面的标题
+        ps: 一个HTML文档有且只有一个title
+            遗漏title标签，HTML无效
+     <base>元素——
+        为页面上的所有的相对链接规定默认 URL 或默认目标。
+        ps: 最多有一个
+            必须具备 href 属性或者 target 属性或者两个属性都具备
+     <link>元素——
+        定义了文档与外部资源之间的关系
+        通常用于链接到样式表
+        eg: <link rel="stylesheet" type="text/css" href="styles.css">
+            </head>   # 通过styles.css渲染后显示的
+            rel   定义当前文档与被链接文档之间的关系
+            type  被链接文档的MIME类型
+            href  定义被链接文档的位置
+     <style>元素——
+        定义了HTML文档的样式文件引用地址
+        也可以直接添加样式来渲染 HTML 文档
+        eg: <style type="text/css">
+            body {background-color:yellow}
+            h1 {color:red;}
+            p {color:blue;}
+            </style>
+        ps: 没有使用 "scoped" 属性，则每一个 <style> 标签必须位于 head 头部区域。
+            只有 Firefox属性支持 scoped 属性 。
+            eg: <div>
+                <style type="text/css" scoped>
+                h1 {color:red;}
+                p {color:blue;}
+                </style>
+                <h1>这个标题是红色的</h1>
+                <p>这个段落是蓝色的。</p>
+                </div>
+     <meta>元素——
+        提供元数据.不显示在页面上，会被浏览器解析
+        指定网页的描述，关键词，文件的最后修改时间，作者，和其他元数据
+        没有提供 name 属性，那么名称/值对中的名称会采用 http-equiv 属性的值
+        定义搜索引擎关键词——
+            <meta name='keywords' content='HTML, CSS, XML, XHTML, JavaScript'>
+        定义网页描述内容——
+            <meta name='description' content='免费 Web & 编程 教程'>
+        定义网页作者——
+            <meta name='author' content='Duome'>
+        每30秒钟刷新当前页面——
+            <meta http-equiv='refresh' content='30'>
+        charset属性   定义文档的字符编码
+        content属性   定义与http-equiv或name属性相关的元信息
+        http—equiv属性   把content属性关联到HTTP头部
+        name属性   把content属性关联到一个名称
+     <script>元素——
+        用于加载脚本文件
+        既可包含脚本语句，也可以通过 "src" 属性指向外部脚本文件
+        eg: <script>
+            document.write("Hello World!")
+            </script>
+        ps: 如果使用 "src" 属性，则 <script> 元素必须是空的。
+
+HTML样式——
+    CSS为了更好的渲染HTML元素
+    CSS 可以通过以下方式添加到HTML中:
+        内联样式- 在HTML元素中使用"style" 属性
+        内部样式表 -在HTML文档头部 <head> 区域使用<style> 元素 来包含CSS
+        外部引用 - 使用外部 CSS 文件
+    最好的方式是通过外部引用CSS文件.
+    内联样式——
+    eg: <p style="color:blue;font-family:verdana;margin-left:20px;font-size:20px;text-align:center;width:50px;height:20px;float:left;">
+        This is a paragraph.</p>
+        color   字体颜色
+        background-color   背景颜色
+        font-family   字体
+        font-size   字体大小
+        margin-left   左边缘距离
+        text-align   文字对齐
+        width   宽度
+        height   高度
+        float   浮动
+    内部样式表——
+    eg: <head>
+        <style type="text/css">
+        body {background-color:yellow;}
+        p {color:blue;}
+        </style>
+        </head>
+    外部样式表——
+    eg: <head>
+        <link rel="stylesheet" type="text/css" href="mystyle.css">
+        </head>
+
+HTML图片——
+    插入动图的语法和静态图的语法是一样的
+    两个必需的属性：src 和 alt
+    eg: <img src="/images/chrome.gif" alt="Google Chrome" width="33" height="32"><p>一个来自菜鸟教程的图像:</p>
+        <img src="http://www.runoob.com/images/logo.png" alt="runoob.com" width="336" height="69">
+        其他文件夹或服务器的图片显示到网页中
+    src属性   源属性的值是图像的 URL 地址
+    alt属性   为图像定义一串预备的可替换的文本
+    height属性   设置图像的高度
+    width属性   设置图像的宽度
+    border属性   设置图像的边框
+    align属性——
+        排列图片
+        align="bottom"   默认，底部
+        align="middle"   中端
+        align="top"      顶端
+        eg: <p>这是一些文本。 <img src="smiley.gif" alt="Smiley face" align="bottom" width="32" height="32"> 这是一些文本。</p>
+        ps: 在HTML 4中 align 属性已废弃，HTML5 已不支持该属性，可以使用 CSS 代替。
+    float属性——
+        style="float:left"   浮动在文本的左边
+        style="float:right"   浮动在文本的右边
+        ps: 使用了 CSS "float" 属性
+    usemap属性——
+        创建带有可点击区域的图像地图。其中的每个区域都是一个超级链接。
+        map属性——
+            area元素永远嵌套在 map 元素内部。area 元素可定义图像映射中的区域
+            usemap属性可引用 <map> 中的 id 或 name 属性，<map>需同时添加 id 和 name 属性
+            area标签——
+                定义图像映射内部的区域
+                始终嵌套在 <map> 标签内部
+                shape   规定区域的形状
+                    shape="rect" corrds="x1,y1,x2,y2"  矩形，x1,x2一个角顶点坐标，y1,y2对角坐标
+                    shape="circ" coords="x,y,z"   圆形，x,y圆点位置，z是半径
+                    shape="poly"，coords="x1,y1,x2,y2,x3,y3,..."   多变型，每个x，y是一个顶点
+                coords  规定区域坐标
+                alt   规定区域的替代文本
+                href   规定区域的URL
+                target   规定何处打开URL
+                eg: <img src="planets.gif" width="145" height="126" alt="Planets" usemap="#planetmap">
+                    <map name="planetmap">
+                      <area shape="rect" coords="0,0,82,126" alt="Sun" href="sun.htm">
+                      <area shape="circle" coords="90,58,3" alt="Mercury" href="mercur.htm">
+                      <area shape="circle" coords="124,58,8" alt="Venus" href="venus.htm">
+                    </map>
+            ps: area 标签中的坐标和其他区域发生了重叠，会优先采用最先出现的area标签
+
+HTML表格——
+    table标签——
+        <th>标签   定义表头（效果常为粗体居中文本）
+            colspan属性   合并列
+            rowspan属性   合并行
+            bgcolor属性   背景颜色
+                <th bgcolor=#rrggbb>
+        <tr>标签   定义行（table row）
+            bgcolor属性   背景颜色
+        <tb>标签   定义列（table data）
+            bgcolor属性   背景颜色
+                   文本、图片、列表、段落、表单、水平线、表格
+        <caption>标签   定义表格的标题，标签必须直接放置到 <table> 标签之后
+            align属性   定义位置
+                align="left"        左
+                align="right"       右
+                align="bottom"      下
+                align="top"         上
+        <ul>标签   定义无序列表
+            <li>标签   定义列表
+        border属性   边界宽度
+        cellspacing属性   单元格间距
+        width="100%"   宽度适应页面宽度
+        height="100%"   高度适应页面高度
+
+    eg: <h4>单元格跨两格:</h4>
+        <table border="1">
+        <tr>
+          <th>Name</th>
+          <th colspan="2">Telephone</th>
+        </tr>
+        <tr>
+          <td>Bill Gates</td>
+          <td>555 77 854</td>
+          <td>555 77 855</td>
+        </tr>
+        </table>
+
+        <h4>单元格跨两列:</h4>
+        <table border="1">
+        <tr>
+          <th>First Name:</th>
+          <td>Bill Gates</td>
+        </tr>
+        <tr>
+          <th rowspan="2">Telephone:</th>
+          <td>555 77 854</td>
+        </tr>
+        <tr>
+          <td>555 77 855</td>
+        </tr>
+        </table>
+
+        <ul>
+         <li>apples</li>
+         <li>bananas</li>
+         <li>pineapples</li>
+        </ul>
+
+HTML列表——
+    HTML 支持有序、无序和定义列表
+    无序列表——
+        style属性   定义不同类型
+           style="list-style-type:disc"   圆点列表
+           style="list-style-type:circle"   圆圈列表
+           style="list-style-type:square"   正方形列表
+        <ul>
+           <li>Coffee</li>
+           <li>Tea</li>
+           <li>Milk</li>
+         </ul>
+    有序列表——
+        start属性   定义起始数
+        type属性   定义排序的类型（"A" "a" "I" "i"）
+        <ol start="50">
+          <li>Coffee</li>
+          <li>Tea</li>
+          <li>Milk</li>
+        </ol>
+    自定义列表——
+        <dl>标签   自定义列表
+        <dt>标签   自定义列表项
+        <dd>标签   自定义列表项的定义
+        <dl>
+        <dt>Coffee</dt>
+        <dd>- black hot drink</dd>
+        <dt>Milk</dt>
+        <dd>- white cold drink</dd>
+        </dl>
+    嵌套列表——
+        eg: <ul>
+              <li>Coffee</li>
+              <li>Tea
+                <ul>
+                  <li>Black tea</li>
+                  <li>Green tea</li>
+                </ul>
+              </li>
+              <li>Milk</li>
+            </ul>
+
+HTML区块——
+    通过<div>和<span>将元素组合起来
+    HTML区块元素——
+        定义为块级元素或内联元素，在浏览器显示时，通常会以新行来开始（和结束）。
+        <h1>, <p>, <ul>, <table>
+    HTML内联元素——
+        在显示时通常不会以新行开始
+    <div>元素——
+        块级元素，没有特定的含义，可用于组合其他 HTML 元素的容器
+        用于定义 HTML 文档中的一个分隔区块或者一个区域部分。以便通过 CSS 来对这些元素进行格式化。
+        ps: 使用 <table> 元素进行文档布局不是表格的正确用法。<table> 元素的作用是显示表格化的数据。
+            浏览器通常会在 <div> 元素前后放置一个换行符。然而，您可以通过使用 CSS 改变这种情况。
+        eg: <div style="color:#0000FF">
+              <h3>这是一个在 div 元素中的标题。</h3>
+              <p>这是一个在 div 元素中的文本。</p>
+            </div>
+    <span>元素——
+        内联元素，可作文本的容器，用于对文档中的行内元素进行组合
+        eg: <p>我的母亲有 <span style="color:blue">蓝色</span> 的眼睛。</p>
+
+HTML布局——
+    <div>元素——
+        margin-bottom:0   去除换行符
+        id属性——
+            id="container"
+            id="header"
+            id="menu"
+            id="content"
+            id="footer"
+        ps: table标签是不建议作为布局工具使用的 - 表格不是布局工具。
+
+HTML表单和输入——
+    表单——
+        包含表单元素的区域，允许用户在表单中输入内容
+        <form>标签   设置表单
+        action属性   规定提交表单信息时，向何处发送表单数据，即处理表单数据的目标地址
+                     什么都不写表示默认为当前页
+        eg: <form action="">
+            First name: <input type="text" name="firstname"><br>
+            Last name: <input type="text" name="lastname">
+            </form>
+    输入元素——
+        <input>标签
+            type属性  定义输入类型
+                type="button"       按钮
+                    value属性   按钮名
+                    onclick属性   点击时发生
+                type="color"        拾色器
+                type="date"         日期
+                type="month"        月年
+                type="number"       数字
+                    min属性   最小值
+                    max属性   最大值
+                    step属性   规定合法数字间隔。
+                    value属性   规定默认值
+                type="range"        用于精确值不重要的输入数字的控件
+                    min属性   最小值
+                    max属性   最大值
+                    step属性   规定合法数字间隔。
+                    value属性   规定默认值
+                type="reset"        重置
+                    value属性   名字
+                type="search"       搜索
+                    name属性
+                type="tel"          电话
+                type="time"         时间
+                type="url"          网址
+                type="week"         周
+                type="text"         文本（表单本身并不可见。同时，在大多数浏览器中，文本域的缺省宽度是20个字符）
+                    name属性   名字
+                    value属性   值
+                type="email"        邮件
+                type="password"     密码（密码字段字符不会明文显示，而是以星号或圆点替代）
+                    maxlength属性   密码的长度
+                type="radio"        单选按钮
+                    value属性  定义其值
+                type="checkbox"     复选框（选择中选取一个或若干选项。）
+                type="submit"       提交按钮（表单的内容会被传送到另一个文件）
+                type="hidden"       隐藏输入字段
+                type="file"         文件
+                    audio/*   接受所有声音文件
+                    video/*   接受所有视频文件
+                    image/*   接受所有图像文件
+                    eg: <form action="demo_form.php">
+                          <input type="file" name="pic" accept="image/*">
+                          <input type="submit">
+                        </form>
+                type="image"        图像
+                    alt属性   定义代替文本
+                    src属性   源数据
+                    width属性   宽度
+                    height属性   高度
+                name属性   规定名称，只有设置了 name 属性的表单元素才能在提交表单时传递它们的值
+                form属性   规定所属的一个或多个表单
+                    ps: IE 不支持 form 属性
+                    eg: <form action="demo-form.php" id="form1">
+                        First name: <input type="text" name="fname"><br>
+                        <input type="submit" value="提交">
+                        </form>
+                        Last name: <input type="text" name="lname" form="form1">
+                align属性   位置
+                    left	左对齐图像（默认）。
+                    right	右对齐对象。
+                    top	    上对齐图像。
+                    middle	居中对齐图像。
+                    bottom  下对齐图像
+                    ps: 只有 align 属性的 "left" 和 "right" 值能在所有主流浏览器中正常工作。
+                autocomplete属性   浏览器基于之前键入过的值，应该显示出在字段中填写的选项
+                    eg: <form action="demo-form.php" autocomplete="on">
+                          First name:<input type="text" name="fname"><br>
+                          Last name: <input type="text" name="lname"><br>
+                          E-mail: <input type="email" name="email" autocomplete="off"><br>
+                          <input type="submit">
+                        </form>
+                checked属性   规定在页面加载时应该被预先选中的 <input> 元素。
+                             适用于 <input type="checkbox"> 和 <input type="radio">
+                disabled属性   规定应该禁用的 <input> 元素，无法使用和无法点击，布尔属性，
+                    ps: disabled 属性不适用于 <input type="hidden">。
+                formaction属性   规定当表单提交时处理输入控件的文件的 URL
+                    ps: formaction 属性适用于 type="submit" 和 type="image"。
+                method属性   方法
+                    get   获取数据
+    表单标签——
+        <form>——
+            定义供用户输入的表单
+        <input>——
+            定义输入域
+            list属性          定义输入列表
+        <textarea>——
+            定义文本域
+            autofocus属性     自动获得焦点
+                eg: <textarea rows="4" cols="50" autofocus>
+                    在 runoob.com 你将学会如何制作网站。我们提供了最全的 web 技术教程。
+                    </textarea>
+            cols属性          规定文本区域的可见宽度
+            rows属性          规定文本区域的可见高度
+            disabled属性      禁用文本
+            form属性          表单外的区域，仍然属于form表单的一部分
+            maxlength属性     最大长度字符为单位
+            placeholder属性   占位符文本
+            readonly属性      只读，无法修改，通过tab键切换
+            required属性      必须填写
+            wrap属性          是否包含换行符
+                hard属性   包含
+                soft属性   不包含
+        <label>——
+            为 input 元素定义标注，点击文本，就会触发此控件
+            eg: <form action="demo_form.phpp">
+                  <label for="male">Male</label>
+                  <input type="radio" name="sex" id="male" value="male"><br>
+                  <input type="submit" value="提交">
+                </form>
+        <fieldset>——
+            将表单内的相关元素分组，在相关表单元素周围绘制边框
+            disabled属性      禁用文本
+            form属性          表单外的区域，仍然属于form表单的一部分
+            name属性          文本名字
+            <legend>标签      定义标题
+            eg: <form action="demo-form.php" method="get">
+                <fieldset name="personalia">
+                <button type="button" onclick="form.personalia.style.backgroundColor='yellow'">改变控件的背景颜色</button>
+                <input type="submit">
+                </form>
+        <select>——
+            创建下拉列表
+            <option>标签      定义列表的可用选项
+            eg: <select>
+                  <option value="volvo">Volvo</option>
+                  <option value="saab">Saab</option>
+                  <option value="opel">Opel</option>
+                  <option value="audi">Audi</option>
+                </select>
+        <optgroup>——
+            用于把相关的选项组合在一起
+            label属性         名字
+            eg: <select>
+                  <optgroup label="Swedish Cars">
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                  </optgroup>
+                </select>
+        <option>——
+            定义列表的可用选项
+            value属性         名字
+        <datalist>——
+            设置预先定义好的选项
+            eg: <form action="demo-form.php" method="get">
+                <input list="browsers" name="browser">
+                <datalist id="browsers">
+                  <option value="Internet Explorer">
+                  <option value="Firefox">
+                  <option value="Chrome">
+                  <option value="Opera">
+                  <option value="Safari">
+                </datalist>
+                <input type="submit">
+                </form>
+        <keygen>——
+            规定用于表单的密钥对生成器字段
+            eg: <form oninput="x.value=parseInt(a.value)+parseInt(b.value)">0
+                <input type="range" id="a" value="50">100
+                +<input type="number" id="b" value="50">
+                =<output name="x" for="a b"></output>
+                </form>
+            for属性           规定计算中使用的元素与计算结果之间的关系
+
+HTML框架——
+    <iframe>标签——
+        src属性               URL指向不同的网页
+        height属性            高度
+        width属性             宽度
+        frameborder属性       是否显示边框
+            eg: <iframe src="http://www.baidu.com" width="200" height="200" frameborder="0">
+                </iframe>
+        name属性              与target（规定何处打开URL）
+            eg: <iframe src="demo_iframe.htm" name="iframe_a"></iframe>
+                <p><a href="http://www.runoob.com" target="iframe_a">RUNOOB.COM</a></p>
+
+颜色表示方式——
+    #FFFF00                 通过十六进制设置背景颜色
+    rgb(255,255,0)          通过 rbg 值设置背景颜色
+    yellow                  通过颜色名设置背景颜色
+
+HTML脚本——
+    <script>标签——
+        定义客户端脚本，既可包含脚本语句，也可通过 src 属性指向外部脚本文件。
+    <noscript>标签——
+        无法使用脚本时的替代内容，只有在浏览器不支持脚本或者禁用脚本时，才会显示 <noscript> 元素中的内容
+    ps: JavaScript可以直接在HTML输出
+
+HTML全局属性——
+    accesskey属性——
+        访问元素的快捷键
+        eg: <a href="http://www.runoob.com/html/html-tutorial.html" accesskey="h">HTML 教程</a><br>
+        ps: 访问快捷键的方式：[Alt] + accesskey
+                        [alt][shift] + accesskey
+    class属性——
+        定义了元素的类名，用于指向样式表的类
+        eg: <style>
+            h1.intro {color:blue}
+            </style>
+            <body>
+            <h1 class="intro">标题1<h1>
+            </body>
+            .class *   有两个块的时候
+    contenteditable属性——
+        指定元素内容是否可编辑
+        eg: <p contenteditable="true">这是一个可编辑段落。</p>
+    contextmenu属性——
+        指定一个元素的上下文菜单。当用户右击该元素，出现上下文菜单
+    data属性——
+        用于存储页面的自定义数据
+    dir属性——
+        设置元素中内容的文本方向
+    draggable属性——
+        规定元素是否可拖动
+        eg: <p draggable="true">这是一段可移动的段落。请把该段落拖入上面的矩形。</p>
+    hidden属性——
+        规定对元素进行隐藏
+    id属性——
+        规定元素的id
+    lang属性——
+        规定元素内容的语言
+        eg: <p lang="fr">这是一个段落。</p>
+    spellcheck属性——
+        规定是否对元素内容进行拼写检查
+        eg: <p contenteditable="true" spellcheck="true">这是可编辑的段落。请试着编辑文本。</p>
+    style属性——
+        行内样式
+    tabindex属性——
+        使用 "tab" 键进行导航时元素的顺序。
+        eg: <a href="http://www.runoob.com//" tabindex="2"> runoob.com 菜鸟教程</a><br />
+            <a href="http://www.google.com/" tabindex="1">Google</a><br />
+            <a href="http://www.microsoft.com/" tabindex="3">Microsoft</a>
+    title属性——
+        规定关于元素的额外信息
