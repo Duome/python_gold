@@ -1,0 +1,26 @@
+1）cmd中的cd命令
+    cd\———————————————返回根目录
+    cd..——————————————返回上一层
+    cd "下一目录名"————进入下一层
+    cd c:—————————————显示C盘当前目录
+    c:————————————————进入C盘
+    c:**>cd d:\word
+    c:**>cd d:\———————将d驱动器上的默认目录改为d:\word，又改回来
+    c:**>d:
+    d:\>cd d:\word————进入d:\word目录
+
+    python.exe a.py
+    python a.py
+    a.py(可以跟参数，a.py也为参数)
+2）cmd中的基本操作
+    在命令cmd中切换搜狗拼音输入法——Ctrl+空格
+    在命令cmd中复制——点右键-选标记-拖左键-选复制内容-点enter
+                   或 点右键-选标记-拖左键-选复制内容-右键点击任务栏中的cmd-编辑中选复制
+    在命令cmd安装三方库——cd到解压文件地址，后跟Python setup.py install
+3）pycharm中多行操作
+    向右添加tab————选择多行 +　tab 键
+    向左删除tab————选择多行 + shift + tab
+    快速跳到函数定义位置————鼠标放在函数名上，Ctrl + 鼠标左键
+4）下载安装
+    国外————pip install virtualenv（名字）
+    国内————pip install virtualenv（名字） -i http://pypi.douban.com/simple

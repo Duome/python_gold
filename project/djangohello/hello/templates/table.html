@@ -1,0 +1,90 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>Bootstrap 实例 - 条纹表格</title>
+   <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+   <script src="{% static 'js/jquery.min.js' %}"></script>
+   <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</head>
+<body>
+
+<table class="table table-striped">
+   <caption>用户列表</caption>
+   <thead>
+      <tr>
+         <th>用户名</th>
+         <th>密码</th>
+         <th>First Name</th>
+         <th>Last Name</th>
+      </tr>
+   </thead>
+   <tbody>
+      {% for user in user_list %}
+      <tr>
+         <td>{{ user.name }}</td>
+         <td>{{ user.password }}</td>
+         <td>{{ user.first_name }}</td>
+         <td>{{ user.last_name }}</td>
+      </tr>
+      {% endfor %}
+   </tbody>
+</table>
+{#<form method="get" action="/hello/">#}
+{#{％csrf_token％}#}
+{#<input type="text" value="" name="key">#}
+{#<input type="submit" value="提交">#}
+{#</form>#}
+<form method="post" action={% url 'test' '22' 'ww' %}>
+{% csrf_token %}
+<input type="text" value="" name="name">
+<input type="submit" value="提交">
+</form>
+
+标签的使用：<br />
+if标签：<br />
+{% if athlete == '0' %}
+    athlete:0
+{% elif athlete == '1' %}
+    athlete:1
+{% else %}
+    unkown
+{% endif %}
+
+for标签<br />
+<ul>
+{% for athlete in athlete_list reversed %}
+{# 特殊变量 #}
+    <li>{{ forloop.counter }} - {{ athlete }}</li>
+{% empty %}
+    没有内容
+{% endfor %}
+csrf_token<br />
+{# 用表单form进行post提交时，为验证 #}
+{% csrf_token %}
+</ul>
+
+{% with total=sgregthernytyjtrh %}
+    {{ total }}
+{% endwith %}
+
+{% verbatim %}
+{{ ver }}
+{% endverbatim %}
+
+{% filter force_escape|upper %}
+    This text will be HTML-escaped
+{% endfilter %}
+<br />
+{{ value1|upper }}<br />
+{% autoescape off %}
+{{ value2 }}
+{% endautoescape %}
+{{ value2|safe }}
+{{ value1|truncatewords:2 }}
+{% include 'sub.html' with name='hello-django'%}
+{% include value3 %}
+</body>
+</html>

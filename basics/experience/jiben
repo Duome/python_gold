@@ -1,0 +1,1240 @@
+------------------------------------------------------------------------------------------------------------------------
+【基础】
+------------------------------------------------------------------------------------------------------------------------
+一、字符编码
+
+    1——常见字符集
+       ASCII——包含显示字符（英文大小写字符、阿拉伯数字）和控制字符（空格键、回车）
+       GB2312——中国国家标准的简体中文字符集（简化汉字、一般符号、数字）
+    Unicode——世界各国语言所使用的所有字符
+    2——字符编码
+       定义——将字符集中的字符编码为特定的二进制数
+       常见编码——ASCII、UTF—8、GBK
+       字节——计算机中存储数据的单元，一个8位（bit）二进制数
+       默认编码——python2（ASCII）、python3（UTF-8）
+       按照一定规则将字符储存在计算机中——编码，将储存在计算机中的二进制数解析显示出来——解码
+    3——字符类型
+       basestring
+           str——ASCII、gbk、utf-8……
+               ^        |
+               |encode  |decode
+               |编码，   |解码
+               |        v
+           Unicode——u'……'       # Unicode为编码的基础类型
+       utf-8——>Unicode
+           u'字符串'
+           '中文字符串'.decode('utf-8')
+           u'\u4e2d\u6587'
+       Unicode——>utf-8
+           u'中文字符串'.encode('utf-8')
+           '\xe4\xb8\xad\xe6\x96\x87'
+       Unicode是字符集，UTF-32/ UTF-16/ UTF-8是三种字符编码方案
+       .decode('gbk')————已知是GBK编码，解码程Unicode
+       .encode('utf-8')————编码程UTF-8的str
+    4——错误根源
+       ^^^UnicodeDecodeError
+          同时存在str类型和Unicode类型的运算，Python2将把str解码decode成Unicode再运算
+       ^^^UnicodeEncodeError
+          当对象（函数/类）接受的是str类型，但传入的是Unicode，Python2将使用ASCII对其编码程str类型再运算
+       代码里面混合使用了str类型和Unicode类型的字符串
+       python会默认使用ASCII编码尝试对Unicode类型的字符串编码（encode），或对str类型的字符串解码（decode）
+       在同时包含str和Unicode类型的字符操作时，一律都把str解码（decode）成Unicode再运算，容易出现error
+       open方式打开的文件，只能写入str类型
+           import codecs
+           codecs.open('test.txt', 'a', 'utf-8')
+           指定一个编码打开文件，读取返回的为Unicode
+       eg:
+           s = '你好'     # str类型，utf-8编码
+           u = u'世界'     # Unicode类型
+           s + u        # 会进行隐式转换，即s.decode('ascii') + u
+           Traceback (most recent call last):
+               File "<stdin>", line 1, in <module>
+           UnicodeDecodeError: 'ascii' codec can't decode byte 0xe4 in position 0: ordinal not in range(128)
+
+           s = '你好'                 # str 类型，utf-8 编码
+           u = u'世界'
+           s.decode('utf-8') + u     # 显示指定 'utf-8' 进行转换
+           u'\u4f60\u597d\u4e16\u754c'   # 注意这不是错误，这是 unicode 字符串
+
+           u_str = u'你好'
+           str(u_str)           # str()的参数只能是str类型
+           Traceback (most recent call last):
+               File "<stdin>", line 1, in <module>
+               UnicodeEncodeError: 'ascii' codec can't encode characters in position 0-1: ordinal not in range(128)
+       5——在cmd中的操作
+           a = '中国'             # str类型
+           b = u'中国'            # Unicode类型
+       6——常用编码类型
+           >>>a = '中国'
+           >>> a.decode('gbk')
+           u'\u4e2d\u56fd'                      # 中文Unicode的表现
+           >>> u'\u4e2d\u56fd'.encode('gbk')
+           '\xd6\xd0\xb9\xfa'                   # 中文gbk/gb2312的表现
+           >>> u'\u4e2d\u56fd'.encode('utf-8')
+           '\xe4\xb8\xad\xe5\x9b\xbd'           # 中文utf-8的表现
+           ps: 英文不受影响可以随意decode和encode，都能识别
+
+           >>> a = '中国'
+           >>> a
+           '\xd6\xd0\xb9\xfa'
+           >>> a.decode('gbk').encode('gbk')    # 在命令里运行的Python做的操作
+           '\xd6\xd0\xb9\xfa'
+
+           ascii——gb2312（多了中文等）——gbk（多了繁体等）——gb18030（多了少数民族字符等）
+
+二、输入输出
+
+    1、raw_input()
+        无论时候输入字符、数值、表达式，都直接返回一个字符串
+    2、input()
+        调用input()等同于调用raw_input()再调用eval函数（执行字符串表达式，并返回值）
+
+        ***********ps: 在输入字符串是必须输入''*********
+
+        eg: eval('1 + 2')
+            3
+            input('>')
+            >'Duome'
+            'Duome'
+            input('>')
+            >122
+            122
+            input('>')
+            >1 + 2
+            3
+            input('>')
+            >'1' + '2'
+            '12'
+            input('>')
+            >'1+2'
+            '1+2'
+    3、Python3中的input
+        Python3中的input()相当于Python2中的raw_input()
+        Python3中的eval(input())相当于Python2中的input()
+    4、print
+        Python2中print是一个语句，Python3中print是一个函数
+        Python2中print可以加括号，也可以不加括号，Python3中print必须加括号
+        print语句是默认换行输出的，如果不想换行，可以在末尾加上','
+        Python3中不想换行，可以加以一个end参数，print（i, end = ' '）
+    5、格式化输出
+        用%代替其在语句中的位置
+        eg: print 'my name is %s' % 'Duome'
+        限制小数的精度
+        i = 3.12159
+        print '%10.3f' % i      # 字段宽度10，精度3
+        print '%010.3f' % i     # 用0填充空白
+        print '%+f' % i         # 显示正负号，小数只保留6位
+------------------------------------------------------------------------------------------------------------------------
+【常用数据类型】
+------------------------------------------------------------------------------------------------------------------------
+一、序列
+
+    1、定义
+        Python最基本的数据结构
+        特点——根据索引来获取序列中的元素
+    2、通用操作
+        索引indexing——
+            从0开始，0代表第一元素，-1代表最后一元素
+            eg: nums = [1, 2, 3]    # 列表
+                nums[0]
+                1
+                s = 'abcd'          # 字符串
+                s[0]
+                a
+                a = (1, 2, 3)       # 元祖
+                a[0]
+                1
+
+        *************字符串可以直接使用索引操作，不需要一个变量来引用****************
+        a = raw_input()[3]
+        2005
+        a
+        '5'
+        分片sliceing——
+            需要提供两个索引作为边界，中间用冒号相隔
+            包含第一个索引，不包含第二个索引
+            包含最后一个元素，可将第二个索引置为空
+            复制整个序列，可将两个索引置为空
+            eg: nums = [1, 2, 3, 4, 5]
+                nums[0:2]      # 索引为0到1的数据
+                [1, 2]
+                nums[:2]
+                [1, 2]
+                nums[-5, -4]
+                nums[-3: -1]    # 希望分片包含最后一个元素，可将第二个索引置为空
+                [3, 4]
+                nums[-3:]
+                [3, 4, 5]
+                nums[:]
+                [1, 2, 3, 4, 5]
+                nums[-3:0]      # 左边索引的元素比右边索引出现的晚，返回空序列
+                []
+             使用步长
+             默认步长是1，使用[::步长]自定义步长，步长为负表示从右到左取元素,左边索引必须大于右边索引
+             eg: nums = [1, 2 ,3 ,4, 5]
+                 nums[0: 4]
+                 [1, 2, 3, 4]
+                 nums[0:4:1]
+                 [1, 2, 3, 4]
+                 nums[0:4:2]
+                 [1, 3]
+                 nums[4: 0: -1]
+                 [5, 4, 3, 2]
+        迭代litration——
+        加adding——
+            效果其实就是连接在一起
+            必须操作两种相同类型的序列
+        乘multiplying——
+            *x 效果相当 +x 次
+        ps: 判断是否属于序列成员，计算序列的长度
+            in 检查一个值是否在序列中
+            eg: 'he' in 'hello'
+                True
+    3、根据序列类型分类数据类型
+        序列类型——列表、元祖、字符串
+        映射类型——字典
+        特殊类型——集合（包含元素不可重复）
+二、列表
+
+    1、特点
+        列表是可变得（字符串和元祖不可变，可用list（）转换成列表）
+    2、常用方法
+        index索引——
+            [list].index(ele)
+            找出元素位置，返回其索引，若有多个元素，返回第一个元素位置
+            eg: nums = [1, 2, 4, 4]
+                nums.index(4)
+                2
+        count计数——
+            [list].count(ele)
+            统计某个元素出现的次数
+            eg: nums.count(4)
+                2
+        append追加——
+            [list].append(ele)
+            在列表末尾新增某元素
+            eg:nums.append(5)
+               [1, 2, 4, 4, 5]
+               b = [1, 2]
+               nums.append(b)
+               nums
+               [1, 2, 4, 4, 5, [1, 2]]
+               ps: 也可以接受列表，但该列表作为一个元素添加到原列表中
+        extend合并——
+            [list].extend([list])
+            将新列表的元素添加到原列表中
+            eg: a = [1, 2]
+                b = [3, 4]
+                a.extend(b)
+                a
+                [1, 2, 3, 4]
+        insert插入——
+            [list].insert(index, cont)
+            将某个元素插入到某个位置
+            eg: nums = [1, 2, 3, 4]
+                nums.insert(1, 'a')
+                [1, 'a', 3, 4]
+        pop删位——
+            [list].pop(index)
+            将某位置的元素移除，返回移除的元素，默认是最后一个
+            eg: nums = [1, 2, 3]
+                nums.pop()      # 默认最后一个
+                3
+                nums.pop(0)
+                1
+                nums
+                [2]
+        remove移除——
+            [list].remove(ele)
+            将某元素移除，若有多个，移除第一个
+            eg: nums = [1, 2, 3, 4, 5, 4]
+                nums.remove(4)
+                nums
+                [1, 2, 3, 5, 4]
+        reverse反转——
+            [list].reverse()
+            将列表中的元素反转
+        sort排序——
+            [list].sort() 原列表改变为新的列表
+            [newlist] = sorted([oldlist]) 返回一个排序后的列表,得到一个列表
+            默认排序-升序排序
+            可以通过制定排序参数，改为降序
+                添加reverse = True（反转）
+                   key = len（使用len作为键函数，根据元素长度排序）
+            eg: a = [2, 3, 1]
+                b = a.sort()
+                a
+                [1, 2, 3]
+                a = [2, 3, 1]
+                b = sorted(a)
+                b
+                [1, 2, 3]
+                a = [2, 1, 3]
+                a.sort(reverse = True)
+                /sorted(a, reverse = True)
+                a = ['a', 'aa', 'aaa']
+                a.sort(key = len)
+                /sorted(a, key = len)
+                a = (1, 3, 2)
+                sorted(a)
+                [1, 2, 3]
+        ps：以上那些直接在原列表基础上进行数据改变的，返回值都为None
+            其不能作为lambda冒号右边的值，否则返回None
+四、字符串
+
+    1、特点
+        不可变序列
+    2、序列方法
+        index索引
+        count计数
+    3、常用方法
+        find查找——
+            'str'.find('substr',homeloc,endloc)
+            查找一个字符串中的子串
+            返回子串最左端索引,没有找到，返回-1（index直接报错）
+            可以规定起始位置和结束位置
+            eg: string = 'to be or not to be'
+                string.find('be')
+                3
+        split分割——
+            'str'.split('sepsym')
+            以分隔符为标志将字符串分割成序列，分隔符默认为所有空格
+            'this   is    a dog'.split()
+            ['this', 'is', 'a', 'dog']
+        join连接——
+            'sepsym'.join([list])
+            以分隔符为标志将列表连接成字符串
+            相当于split的逆方法，列表元素只能为字符串，不能是数字
+            eg: '/'.join(['1', '2', '3'])
+                '1/2/3'
+        strip移除——
+            'str'.strip('sym')
+            移除字符串两边的符号（包括字母），得到一个新字符，不包括内部，默认为空格
+            eg: '  hello!!!   '.strip()
+                'hello!!!'
+                '%%hello!!!  &&'.strip('%& ')
+                'hello!!!'
+        replace替换——
+            'str'.replace('oldstr', 'newstr')
+            替换字符串中的所有匹配项，得到一个新字符(类似sorted())
+            eg: str = 'TO be or not TO be'
+                nemstr = str.replace('TO', 'to')
+                nemstr
+                'to be or not be'
+        lower换小写——
+            'str'.lower()
+            将字符串中的大写替换成小写，得到一个新字符
+            eg: str = 'PYThow'
+                newstr = str.lower()
+                newstr
+                'python'
+        upper换大写——
+            'str'.upper()
+            将字符串中的小写替换程大写，得到一个新字符
+            eg: str = 'PYthon'
+                str.upper()
+                'PYTHON
+五、字典
+
+    1、特点：
+        映射类型，有键（key）和值（value）构成
+        键必须是不可变类型，不可重复，值可变
+    2、基本操作
+        创建字典——
+            dict(key1 = 'value', key2 = value) # 注意此为调用函数，key为函数参数，只能是字母
+            dict([('key1', 'value'), ('key2, value)])
+            eg: dict(name = 'duome', age = 19)
+                {'name':'duome, 'age':19}
+                dict([(1, 'a'), ('b', 'c')])
+                {1:'a', 'b':'c'}
+        遍历字典——
+            for key in {dict}:    # 不能再其中删字典的某一项
+            for key in {dict}.key():     # 可以删除字典的某一项，dict.key()得到键的列表
+            ps: 建议不要在遍历的时候删元素的值
+        判断键存在性——
+            key in {dict}
+            返回True为存在，返回False为不存在
+    3、常用方法
+        clear清空——
+            {dict}.clear()
+            清空字典所有项，原地操作，无返回值，原字典变为空字典
+            eg: d = {'a':1, 'b':2}
+                a = d
+                d.clear()
+                d
+                {}
+                a
+                {}
+                d = {'a':1, 'b':2}
+                a = d
+                d = {}
+                a
+                {'a':1, 'b':2}
+        copy浅复制——
+            {newdict} = {olddict}.copy()
+            可变对象修改保持同步
+            不可变对象修稿保持独立
+            eg: dict = {'name':'duome, 'books':[1, 2, 3]}
+                dict2 = dict.copy()
+                dict['name'] = 'xiaofan'
+                dict['books'].remove(2)
+        get访问——
+            dict.get(key, 'default')
+            访问字典键的值，当不存在键时，使用默认值，无默认值时，返回None
+        setdefault初设置始——
+            {dict}.setdefault(key, default = None)
+            为字典设置键和值，不存在的值，更新后返回值，已存在的值，返回已有值
+        update合并——
+            {newdict}.update({dict})
+            将一个字典，添加到一个字典，变为一个新字典
+            存在相同键的，覆盖
+            eg: d = {}
+                d1 = {'a':1}
+                d.update(d1)
+                d
+                {'a':1}
+        pop移除——
+            {dict}.pop(key)
+            移除某键（和值），返回此键的值
+        popitem移除——
+            {dict}.popitem()
+            随机移除某键（和值），返回此键的键对（键和值），
+        keys/iterkeys——
+            {dict}.keys()
+            {dict}.iterkeys()
+            返回字典的键，key返回列表，iterkeys返回迭代器
+        value/itervalues——
+            {dict}.values()
+            {dict}.itervalues()
+            返回字典的值，values返回列表，iterkeys返回迭代器
+        items/iteritems——
+            {dict}.items()
+            {dict}.iteritems()
+            返回键值对（元祖形式），items返回列表，iteritems返回迭代器
+        fromkeys——
+六、集合
+
+    1、特点
+        一组key的集合，key不能重复
+    2、常用操作
+        创建集合——
+            {set} = set([list])
+            括号里可以是字符串，相当于list（字符串）
+        遍历集合——
+            for i in {set}：
+        添加元素——
+            {set}.add('ele')
+            元素可以是重复的，但是没有效果
+        删除元素——
+            {set}.remove('ele')
+            删除元素不存在是，显示错误
+        交集——
+            {set} & {set}
+        并集——
+            {set} | {set}
+        差集——
+            {set} -　{set}
+        子集判断——
+            {set1}.issubset({set2})
+            判断set1是否为set2的子集，是返回True，不是返回False
+        超集判断——
+            {set1}.issuperset(set2)
+            判断set1是否是set2的超集，是返回True，不是返回False
+------------------------------------------------------------------------------------------------------------------------
+【函数】
+------------------------------------------------------------------------------------------------------------------------
+一、定义函数
+
+    1、定义
+        def语句
+    2、构成
+        函数名
+        函数参数（可以没有）
+        函数返回值（return可以没有返回，默认为None）
+        ps:当返回多个值时，值的类型是元祖
+        eg: def hello(name):
+                return name
+            r = hello('duome')
+            r
+            duome
+            def hello():
+                print 'hello!'
+            r = greet()
+            'hello!'
+            r
+            None                 # 默认为None
+            def hello():
+                return 1, 2, 3
+            （回车结束函数内容）
+            r = hello()
+            type(r)
+            <type'tuple'>        # 返回多个值时，值类型为元祖
+二、函数参数
+
+    1、分类
+        必选参数
+        默认参数
+        可变参数
+        关键字参数
+    2、必选参数
+        调用函数是需要传入数量一致的参数
+        eg: def add(x, y):
+    3、默认参数
+        在定义函数时提供一些默认值，没传参数是，自动使用默认值
+        eg: def add(x, y, z = 1):
+            add(1, 2, 3)
+            add(1, 2)
+        ps: 默认参数在必选参数后面
+            默认参数为不可变参数（当其为可变参数时，调用没有传参数的函数时，若对参数值进行改变，下次使用默认值，使用的是改变后的默认值）
+    4、可变参数
+        定义函数时无法估计参数数量，可以使用可变参数，参数前加*
+        eg: def add(*args):
+            add(1)
+            add(1, 2)
+            def add(x, y, z):
+            a = [1, 2, 3]
+            b = (1, 2, 3)
+            add(a[0], a[1], a[2])
+            add(*a)
+            add(*b)
+    5、关键字参数
+        将不定长度的键值对，作为参数传递给函数
+        eg: def add(**kwargs):
+                return kwarge
+            add()
+            {}
+            add(x = 1, y = 2)
+            {'x':1, 'y':2}
+            dict = {'z':3, 'x':1, 'Y':2}
+            add(**dict)
+            def add(x, y, z):
+                return x + y + z
+            dict = {'z':3, 'x':1, 'Y':2}
+            add(dict['x'], dict['y'], dict['z'])
+            add(**dict)
+    6、参数组合
+        eg: def a(x, y, z = 1, *args, **kwargs):
+                print x
+                print y
+                print z
+                print args
+                print kwargs
+            b = (1, 2, 3)
+            c = {'u':5, 'v':6}
+            a(*b, **c)
+            1
+            2
+            3
+            ()
+            {'u':5, 'v':6}
+------------------------------------------------------------------------------------------------------------------------
+【函数式编程】
+------------------------------------------------------------------------------------------------------------------------
+一、定义
+
+    函数式编程是一种编程范式/模式
+    特性：
+       可以把函数当成变量使用
+二、高阶函数
+
+    1、定义
+        接受另一个函数作为参数的函数，称为高阶函数
+        eg: def a(g, x):
+                return [g(i) for i in x]
+            def g(x):
+                return 2 * x
+三、匿名函数
+
+    1、定义
+        使用关键字lambda，创建一个没有名称的函数
+    2、形式
+        lambda x : return
+        lambda——说明它是一个匿名函数
+        ：冒号前面——该匿名函数的参数
+        ：冒号后面——该匿名函数的返回值
+        eg: lambda x : 2 * x
+            (lambda x ： 2 * x)(8)   # 调用匿名函数
+            f = lambda x : 2 * x
+            f(8)                    # 将匿名函数赋予变量f，再用f调用函数
+    3、使用场景
+        适用于创造临时性、小巧的函数，运用于高阶函数的使用
+        eg: def func(g, arr):
+                return [g(x) for x in arr]
+            def add(x):
+                return x + 1
+            func(add, [1, 2, 3])        # 用def定义add函数，有点小题大作
+            func(lambda x : x + 1, [1, 2, 3])   # 可以用lambda表示简单的函数
+四、常用高阶函数
+
+    1、map函数
+        map(function, sequence)
+        将function作用在sequence的每一个元素，并把结果生成一个新的list
+        作用：解析列表，解析嵌套列表，将元祖解析后存入列表
+        eg: def square(x):
+                return x * x
+            map(square, [1, 2, 3])
+            map(lambda x : x * x, [1, 2, 3])    # 序列可以是元祖或字符串
+            map(str, [1, 2, 3])
+            ['1', '2', '3']
+            map(int, ['1', '2', '3'])
+            [1, 2, 3]
+            map(lambda x : sorted(x), [[2, 3, 1], [4, 2, 7, 5]])
+            ps: 还可以用函数名构成一个列表跟在后面，返回多个函数值组成的列表
+                lambda f : f(4) 同时执行参数为4的多个函数
+    2、reduce函数
+        reduce（func, sequence, initial）
+        将seq序列前两item传给func，返回值和下一item传给func，如此迭代，即func(func(item1, item2), item3)，如有initial，做初始值调用
+        作用：作序列元素连续运算
+        reduce(f, [1, 2, 3]) = f(f(1, 2), 3)
+        eg: reduce(lambda x, y : x * y, [1, 2, 3])  # (1*2)*3   # 该function应有两个参数，序列可以是元祖，不能是字符串
+            6
+            reduce(lambda x, y : x * y, [1, 2, 3],4)    # ((4*1)*2)*3
+            24
+            reduce(lambda x, y : x * 10 + y, [1, 3, 5, 7, 9])
+            13579
+    3、filter函数
+        filter(function bool, sequence)
+        将func作用于序列seq中每一个元素，筛除值为False，保留值为True的序列，该序列类型和sequence类型相同（在Python3中返回迭代器）
+        作用：过滤元素
+        eg: filter(lambda x : x % 2 == 0, [1, 2, 3, 4])
+            [2, 4]
+            filter(lambda x: x < 'g', 'hijack')     # 序列可以是元祖或字符串
+            'ac'
+            filter(lambda x : x and x.strip(), ['a', '', 'b', None, 'c'])
+            ['a', 'b', 'c']
+        ps: map()也可以将函数写出过滤作用，序列长度不变，不会筛除元素
+------------------------------------------------------------------------------------------------------------------------
+【类】
+------------------------------------------------------------------------------------------------------------------------
+一、特点
+
+    1、Polymorphism多态
+        不同类对象对同一消息会做不同的响应
+    2、Encapsulation封装
+        对外部隐藏对象的工作细节
+    3、Inheritance继承
+        对已有的类为基础建立专门的类对象
+二、类和实例
+
+    1、定义
+        类相当于具有相同属性和方法的对象的集合
+        实例是一个具体的对象
+    2、构成
+        class Animal(object):
+            pass
+        关键字——class
+        类名——Animal            # 通常类名的首字母大写，多单词时每个单词首字母都大写
+        所继承的类——(object)     # 所有类最终都会继承自object类
+        创建实例——animal = Animal()      # 创建实例对象
+        对象初始化——定义__init__方法     # 类似C++中的构造函数
+        eg: class Animal(object):
+                def __init__(self, name):
+                    self.name = name    # 特殊方法
+                def greet(self):
+                    print 'hello, %s.' % self.name    # 自定义的方法
+        方法的第一个参数都是self，指向实例本身，指其是和实例绑定的函数，即为方法
+    3、访问限制
+        可以在属性或方法的名称前面加上两个下划线
+        eg: class Animal(object):
+                def __init__(self, name):
+                    self.__name = name
+           animal = Animal('dog')
+           animal.__name    # 不能访问
+        ps: 以两个下划线开始并以此结尾的是特殊变量，可以直接访问
+           如果变量名前只有一个下划线，可以直接访问，但不要随意访问
+    4、获取对象信息
+        type(obj)————
+           type(animal)
+           __main__.Animal
+        isinstance(obj, type)————
+           isinstance(animal, Animal)
+           True
+        hasattr/getattr/setattr————
+           hasattr(obj, attr)——判断对象是否具有指定属性/方向
+           getattr(obj, attr[, default])——获取属性/方法的值，没有返回default值（若有）/抛AE异常
+           setattr(obj, attr, value)——设定属性/方法的值，似obj.attr = value
+           eg: hasattr(animal, 'name')
+                True
+                getattr(animal, 'name')
+                dog
+                setattr(animal, 'age', 12)
+                animal.age
+                12
+        dir————
+           dir(obj)
+           返回相应对象的所有属性和方法名的列表
+三、继承和多态
+
+    1、继承
+        定义——
+           创建一个类，希望添加或修改几个方法可以从原来的类派生出一个新的类
+           原来的类称为父类/基类，派生出的类称为子类，子类继承了父类的所有数据方法
+        使用——
+           将需要修改的或添加的加载子类中，object换为父类的类名
+    2、多态
+        定义——
+            对不同类型的变量进行相同的操作，根据对象/类的类型不同表现出不同的行为
+        特点——
+           不同类型的对象对同一消息会作出不同的响应
+    3、联系
+        继承可以得到父类的所有数据和方法，子类可以重写父类的方法，可新增自己特有的方法
+        有了继承，才有了多态，不同类的对象对同一消息会作出不同的相应
+四、类方法和静态方法
+
+    1、类方法
+        可以不用通过实例，直接调用类方法，使用classmethod装饰
+        obj.method()
+        eg: class A(object):
+               bar = 1
+               @classmethod
+               def class_foo(cls):      # 参数cls代表类本身
+               print 'hello', cls
+               print cls.bar
+
+               A.class_foo()
+               hello, (class '__main__'A)
+               1
+    2、静态方法
+        定义——
+        在类中，与类有关，但不会改变类和实例状态的方法，使用staticmethod装饰
+        eg: class A(object):
+               bar = 1
+               @statecmethod
+               def static_foo():
+                   print 'hello,',A.bar
+
+               a = A()
+               a.static_foo()
+               hello,1
+               A.static_foo()
+               hello,1
+五、定制类和魔法方法
+
+    1、魔法方法
+        以双下划线__包裹起来的方法，称为魔法方法/特殊方法
+    2、常用特殊方法
+        ^^^__new__返回实例
+            与__init__不同
+                __new__在__init__之前调用
+                __new__是类方法，__init__是实例方法
+                重写（覆写）__new__方法，需要返回类的实例
+                eg: class A(object):
+                        _dict = dict()
+                        def __new__(cls):
+                            if 'key' in A.dict:
+                                print 'Exists'
+                                return A.dict['key]
+                            else:
+                                print 'New'
+                                return object.__new__(cls)
+                        def __init__(self):
+                            print 'INIT'
+                            A._dict['key'] = self
+                        a1 = A()
+                        NEW
+                        INIT
+                        A2
+                        a2 = A()
+                        EXISTS
+                        INIT
+        ^^^__str__&__repr__显示字符串
+            例子——
+                class Foo(object):
+                    def __init__(self, name):
+                        self.name = name
+                print Foo('ethan')
+                <__main__.Foo object at 0x10c37aa50>
+            若想打印更多信息，需要在类中加入__str__
+                eg: class Foo(object):
+                        def __init__(self, name):
+                            self.name = name
+                        def __str__（self）:
+                            return 'Foo object(name: %s)' % self.name
+                    print Foo('ethan')              # 使用print
+                    Foo object (name:ethan)
+                    str(Foo('ethan'))               # 使用str
+                    'Foo object(name:ethan)'
+                    Foo('ethan')                    # 直接显示
+                    <__main__.Foo at 0x10c37a490>
+            若希望修改其输出，需要在类中加__repr__
+                eg: class Foo(object):
+                        def __init__(self, name):
+                            self.name = name
+                        def __str__（self）:
+                            return 'Foo object(name: %s)' % self.name
+                        def __repr__（self）:
+                            return 'Foo object(name: %s)' % self.name
+            综上精简——
+                eg: class Foo(object):
+                        def __init__(self, name):
+                            self.name = name
+                        def __str__（self）:
+                            return 'Foo object(name: %s)' % self.name
+                        __repr__ = __str__
+        ^^^__iter__迭代
+            使用情况——
+                希望实例对象可被用于for循环，迭代的原理
+                eg: class A(object):
+                        def __init__(self):
+                            self.a, self.b = 0, 1
+                        def __iter__(self):
+                            return self         # 返回迭代器本省
+                        def next(self):
+                            self.a, self.b = self.b, self.a + self.b
+                            return self.a       # 返回容器下一个元素
+                    a = A()
+                    for i in a:
+                        if i > 10:
+                            break
+                        print i
+        ^^^__getitem__取值
+            使用情况——
+                希望使用obj[n]方法对实例对象取值，[]取值的原理
+                eg: class A(object):
+                        def __geritem__(self, n):       #传入一个整数
+                            a, b = 1, 1
+                            for x in xrange(n):
+                                a, b = b, a + b
+                            return a
+                    a = A()
+                    A[0]，A[1], A[2],A[3]
+                    (1, 1, 2, 3,)
+                希望支持objectp[1:3]这种切片方法取值，[:]切片原理
+                eg: class A(object):
+                        def __getitem__(self, n):
+                            if isinstance(n, slice):        # 如果n是slice对象
+                                a, b = 1, 1
+                                start, stop = n.start, n.stop
+                                L = []
+                                for i in xrange(stop):
+                                    if i >= start:
+                                        L.append(a)
+                                    a, b = b, a + b
+                                    return L
+                            if isinstance(n, int):      # 如果n是int
+                                a, b = 1, 1
+                                for i in xrange(n):
+                                    a, b = b, a + b
+                                return a
+                ps: 这些操作没有对负数的处理，不支持带step参数的切片
+            其他类似操作——
+                __getitem__获取值
+                __setitem__设置值
+                __delitem__删除值
+                eg: class A(object):
+                        def __init__(self):
+                            self.coordinate = {}
+                        def __str__(self)：
+                            return 'point(%s)' % self.coordinate
+                        def __getitem__(self, key):
+                            return self.coordinate.get(key)
+                        def __setitem__(self, key, value):
+                            self.coordinate[key] = value
+                        def __delitem__(self, key):
+                            del self.coordinate[key]
+                            print 'delete %s' % key
+                        def __len__(self):
+                            return len(self.coordinate)
+                        __repr__ = __str__
+                        p = A()
+                        p['x'] = 2
+                        p['y'] = 5
+                        p
+                        point({'y':5,'x':2})
+                        len(p)
+                        2
+                        p['x']
+                        2
+                        p['y']
+                        5
+                        del p['x']
+                        delete x
+                        p
+                        point({'y':5})
+                        len(p)
+                        1
+        ^^^__getattr__获取属性
+            使用方法——
+                属性不存在时，使不抛异常
+                eg: class A(object):
+                        def __init__(self, x = 0, y = 0):
+                            self.x = x
+                            self.y = y
+                    p = A()
+                    p.z
+                    抛AttributeError
+                    class A(object):
+                        def __init__(self. x = 0, y = 0):
+                            self.x = x
+                            self.y = y
+                        def __getattr__(self, attr):
+                            if attr == 'z':
+                                return 0
+                    p = A()
+                    p.z
+                    0
+                    ps: 以上情况，只有属性为'z'时，返回0，其他属性，则返回None
+                只响应几个特定的属性，可加入异常
+                    def __gatattr__(self.attr):
+                        if attr == 'z'
+                            return 0
+                        raise AttributeError('Point object has no attribute %s' % attr)
+            其他类似的方法——
+                __setattr__
+                __delattr__
+                eg: class A(object):
+                        def __init__(self, x = 0, y = 0):
+                            self.x = x
+                            self.y = y
+                        def __gatattr__(self, attr):
+                            if attr == 'z':
+                                return 0
+                            raise AttibuteError('Point object has no attribute %s' % attr)
+                        def __setattr__(self, %args, **kwargs):
+                            print 'call func set attr (%s, %s)' % (args, kwargs)
+                            return object.__setattr__(self, *aegs, **kwargs)
+                        def __delattr__(self, *argd, **kwargs):
+                            print 'call func del attr (%s, %s)' % (args, kwargs)
+                             return object.__delattr__(self, *args, **kwargs)
+                    p = A(3, 4)
+                    call func set attr (('x', 3), {})
+                    call func set attr (('y', 4), {})
+                    p.z
+                    0
+                    p.w
+                    抛异常
+                    p.w = 8
+                    call func set attr(('w', 8), {})
+                    p.w
+                    8
+                    del p.w
+                    call func del attr (('w',), {})
+                    p.__dict__
+                    {'y':4, 'x':3, 'z':7}
+        ^^^__call__直接使用实例本身调用对象方法
+            使用方法——
+            eg: class A(object):
+                    def __init__(self, x, y):
+                        self.x, self.y = x, y
+                    def __call__(self, z):
+                        return self.x + self.y + z
+                p = A()
+                callable(p)     # 使用callable判断对象是否能被调用
+                True
+                p(6)            # 传入参数，对实例进行调用，对应p.__call__(6)
+                13
+六、slots魔法
+
+    设定一个固定集合的属性分配空间，使不能绑定新属性，可节约内存
+    eg: class A(object):
+            __slots__ = ('x', 'y')      # 只允许使用x和y
+            def __init__(self, x = 0, y = 0):
+                self.x = x
+                self.y = y
+        p = A()
+        p.z
+        抛异常
+    ps: __slots__设置的属性仅对当前类有效，对继承的子类无效
+七、使用@property
+
+    使用property装饰器将不想对外公开的属性封装起来，只提供方法给用户操作。
+    eg: class Exam(object):
+            def __init__(self, score):
+                self._score = score
+            @property       # 装饰器
+            def score(self):
+                return self._score
+            @score.setter       # 新的装饰器，可以把被装饰的方法变成属性来赋值
+            def score(self, val):       # 若无此项，score是只读属性，不能设置值
+                if val < 0:
+                    self._score = 0
+                elif val > 100:
+                    self._score = 100
+                else:
+                    self._score = val
+八、super
+
+    1、定义
+        子类中重定义了某个方法，希望同时实现父类的功能
+    2、使用方法
+    调用父类重定义方法————
+    eg: class A(object):
+            def __init__(self, name):
+                self.name = name
+            def greet(self):
+                print 'hello, %s.' % self.name
+        class D(A):
+            def greet(self):
+                super(D, self).greet()
+                print 'wangwang...'
+        d = D('dog')
+        d.greet()
+        hello, dog.
+        wangwang...
+    调用父类初始化方法————
+    eg: class A(object):
+            def __init__(self, a, b):
+                self.a = a
+                self.b = b
+        class B(A):
+            def __init__(self, a, b, c):
+                super(A, self).__init__(a, b)
+                self.c = c
+    super和父类没有实质性的关联————
+    eg: class Base(object):
+            def __init__(self):
+                print 'enter base'
+                print 'leave base'
+        class A(Base):
+            def __init__(self):
+                print 'enter a'
+                super(A, self).__init__()
+                print 'leave a'
+        class B(Base):
+            def __init_(self):
+                print 'enter b'
+                super(B, self).__init__()
+                print 'leave b'
+        class C(A, B):              # 菱形继承
+            def __init__(self):
+                print 'enter c'
+                super(C, self).__init__()
+                print 'enter c'
+        c = C()
+        enter C
+        enter A
+        enter B
+        enter Base
+        leave Base
+        leave B
+        leave A
+        leave C
+    MRO列表————
+    方法解析顺序列表，代表类继承的顺序
+    eg: C.mro()     # or C.__mro__ or C().__class__.mro()
+        [__main__.C, __mian__.A, __main__.B, __main__.Base, object]
+    原则
+    子类永远在父类前面
+    如果有多个父类，根据在列表的顺序被检查
+    如果对下一个雷存在两个合法选择，选择第一个父类
+    super工作原理————
+    def super(cls, inst):       # cls代表类，inst代表实例
+        mro = inst.__class__.mro()      # 获取inst的MRO列表
+        return mro[mro.index(cls) + 1]      # super的实质是获得cls在inst的MRO列表中的下一各类
+    当转到A时，self也是当前C的实例
+九、元类metaclass
+
+    1、类也是对象
+        Python中一切皆对象。类也是对象，
+        特点——
+            类可赋值给变量
+            类可作为函数参数进行传递
+            类可作为函数返回值
+            运行时动态创建类
+    2、type动态创建类
+        type(类名，父类和元祖（针对继承的情况，可以为空），包含属性和方法的字典（名称和值）)
+        最简单的情况——
+        eg: class A(object):
+                pass
+            A = type('A', (object, ), {})       # 使用type创建了一个类对象
+            'A'————类名
+            (object)————所有父类
+            {}————定义属性和方法       # 在这里没有属性和方法
+        有属性有方法的情况——
+        eg: class A(object):
+                a = True
+                def greet(self):
+                    print 'hello'
+                    print self.a
+                a = type('A', (object, ),{'a':True, 'greet':greet})
+        继承情况——
+        eg: class Base(object):
+                pass
+            class A(Base):
+                a = True
+            a = type('A', (Base, ), {'a':True})
+    3、元类metaclass
+        概念——
+            定义————元类是用来创建类（对象）的可调用对象
+            类与元类————类是实例对象的模板，元类是类的模板。type就是有一个元类
+            目的————控制类的创建行为
+        使用——
+            eg: ^^希望类的方法和属性名称前面加上my_，并加入echo方法
+                class A(object):
+                    name = 'a'
+                    def bar(self):
+                        print 'bar'
+                ^^定义一个元类（类名需以Metaclass结尾）
+                class PrefixMetaclass(type):
+                    def __new__(cls, name, bases, attrs):   # 给所有属性方法前加my_
+                        _attrs = (('my_' + name, value) for name, value in attr.items())
+                        _attrs = dict((name, value) for name, value in _attrs)  # 转化为字典
+                        _attrs['echo'] = lambda self, phrase:phrase    # 增加一个echo方法
+                        return type.__new__(cls, name, bases, _attrs)   # 返回创建后的类
+                ps: PrefixMetaclass类从type继承
+                    __new__用来创建对象并返回创建后对象
+                        cls————准备创建的类
+                        name————类的名字
+                        bases————类的父类集合
+                        attrs————类的属性和方法字典
+                ^^在类中使用PrefixMetaclass定制类
+                class A(object):
+                    __metaclass__ = PrefixMetaclass
+                    name = 'a'
+                    def bar(self):
+                        print 'bar'
+                class A(metaclass=PerfixMetaclass):    # python3中方法
+                    name = 'a'
+                    def bar(self):
+                        print 'bar'
+                a = A()
+                a.name      # name属性已经改变
+                抛异常
+                a.my_name
+                'a'
+                a.my_bar
+                bar
+                a.echo('hello')
+                'hello'
+                ps: 当继承时，也会根据定制类的模板，属性方法前面加上'my_'
+                    在执行子类是，会在子类中找__metaclass__，若没找到，会在所有父类中找__metaclass__，若都没有，会用type创建类
+------------------------------------------------------------------------------------------------------------------------
+【文件和目录】
+------------------------------------------------------------------------------------------------------------------------
+一、读写文本文件
+
+    1、读文件
+        步骤——
+            打开文件
+            读取内容
+            关闭文件
+        一般形式——
+            try:
+                f = open('/path/to/file', 'r')  # 打开文件
+                data = f.read()     # 读取文件内容
+            finally:                # 无论try里面的语句是否异常，都会执行，若用with as语句，可以不用考虑
+                if f :              # 只要变量内容不是None，都是True
+                    f.close()       # 确保任何情况下文件都能被关闭
+        常用模式——
+            r       读模式
+            w       写模式
+            a       追加模式
+            b       二进制模式（可添加到其他模式中使用）
+            +       读写模式（可添加到其他模式中使用）
+        with..as..——
+            可以自动调用close方法，出现异常的情况自动关闭文件
+            eg: with open('/path/to/file', 'r') as f:
+                    data = f.read()
+        方式——
+            读取所有内容      read()  readlines()
+            按字节读取        read(size)
+            按行读取          readline()
+    2、读取所有内容
+        read()
+        readlines()——
+            将文件读入一个字符串列表，列表中的每个字符串代表文件中的每一行
+            eg: 文件data.txt
+                10  1   9
+                6   3   2
+                with open('data.txt', 'r') as f:
+                    lines = f.readlines()
+                    print lines
+
+                ['10\t1\t9\n', '6\t3\t2]
+    3、按字节读取内容
+        对于文件大的内容，需要构造一个固定长度的缓冲区，来不断读取文件内容
+        read(size)
+        eg: with open('test.txt', 'r') as f:
+                while True:
+                    piece = f.read(1024)        # 每次读取1024个字节（1kb）内容
+                    if not piece:
+                        break
+                    print piece
+        结合yield使用
+        eg: def read_size(f, size = 1024):
+                while True:
+                    data = f.read(size)
+                    if not data:
+                        break
+                    yield data
+                with open('test.txt', 'r') as f:
+                    for piece in read(f):
+                        print piece
+    4、逐行读取
+        readline()——
+    5、文件迭代器
+        文件对象可迭代
+    6、写文件
+        write()——
+            eg: with open('test.txt', 'w') as f:
+                    f.write('one\n')    # 若文件已存在，会清空原内容并覆盖，若文件不存在，会新建一个存在
+
+        在已存在的文件追加内容，用'a'追加模式
+二、读写二进制文件
+
+    1、读取二进制文件
+        rb模式——
+            eg: with open ('test.txt', 'rb') as f:
+                    data = f.read()     # 格式为字节字符串格式，而不是文本字符串格式
+        可对字节字符串进行编码
+            base64编码
+            eg: import base64
+                with open('test.txt', 'rb') as f:
+                    data = f.read()
+                    base64_data = base64.b64encode(data)    # 使用base64编码
+                    print base64_data
+    2、写入二进制文件
+        wb模式——
+            eg: with open('test.txt', 'rb') as f:
+                    data = f.read()
+                with open('test1.txt', 'wb') as f:
+                    f.write(data)
+    3、os模块
+        常见文件和目录的操作
+        os.mkdir————创建目录
+        os.rmdir————删除目录
+        os.rename————重命名
+        os.remove————删除文件
+        os.getcwd————获取当前工作路径
+        os.walk————遍历目录
+        os.path.join————连接目录与文件名
+        os.path.split————分割文件名和目录
+        os.path.abspath————获取绝对路径
+        os.path.dirname————获取路径
+        os.path.basename————获取文件名或文件夹名
+        os.path.splitext————分离文件名与扩展名
+        os.path.isfile————判断给出路径是否是一个文件
+        os.path.isdir————判断给出路径是否是一个目录
+        eg: os.path.abspath('.')        # 当前目录的绝对路径
+            os.walk 返回一个包含3个元素的元素
+            dirpath（绝对路径），dirnames（每一个绝对路径下的文件夹名），filenames（以列表形式返回该路径所有文件名）
+
+------------------------------------------------------------------------------------------------------------------------
+【进程、线程、协程】
+------------------------------------------------------------------------------------------------------------------------
+一、操作系统的设计
+
+    多进程形式————多个任务可同时运行
+    多线程形式————单个任务可分为多个子任务运行
+    协调机制————防止冲突，允许共享资源
+二、进程
+
+    1、概念
+        定义——正在运行的程序的实例，一个程序可能产生多个进程
+        特点——独立：地址空间、内存、数据栈、其他辅助数据
+              共享：只能共享进程间通讯方法进行通信，不能直接共享信息
+    2、fork()
+        可用于判断进程是父进程还是子进程
+        fork函数调用时返回两次，对父进程，返回子进程的进程号pid，对于子进程，返回0
+        eg: import os
+            pid = os.fork()
+            if pid < 0:
+                print 'Fail to create process'
+            elif pid == 0:
+                print 'I am child process(%s) and my parent id (%s).' % (os.getpid(), os.getppid())
+            else:
+                print 'I(%s) just created a child process(%s).' % (os.geipid(), pid)
+    3、多进程
+------------------------------------------------------------------------------------------------------------------------
+【进程、线程、协程】
+------------------------------------------------------------------------------------------------------------------------
