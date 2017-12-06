@@ -1,0 +1,101 @@
+基本知识————
+
+简介——
+
+	redis定义——
+		key-value存储系统，称为数据结构服务器
+	值——
+		字符串  哈希  列表  集合  有序集合 等类型
+
+基本命令————
+
+	下载安装——
+		$ wget http://download.redis.io/releases/redis-2.8.17.tar.gz
+		$ tar xzf redis-2.8.17.tar.gz
+		$ cd redis-2.8.17
+		$ make
+		将变异后的redis服务放在src文件里
+		ps: tar本来只有归档功能呢个  z是.gz这种压缩格式，加了z才有压缩或解压的功能，
+			x是解压，f是强制，c是压缩，v是详细信息，这些网上一艘就有
+	启动服务端——
+		./redis-server
+		./redis-server ../redis.conf    # 启动redis使用默认配置
+	启动客户端——
+		./redis-cli
+	键——
+		新建——
+			set 键名 redis 
+		删除——
+			del 键名 
+		存在——
+			exists 键名 
+		修改——
+			renamenx 旧键名 新键名
+		值类型——
+			type 键名 
+	string——
+		新建——
+			set name string
+		获值——
+			get name 
+		值长度——	
+			strlen 键名
+	hash——
+		新建——
+			hmset 键名 哈希表（类字典）   # 新建哈希
+		插入——
+			hmsetnx key field value    
+		修改——
+			hmset key field value    # 键名不存在是，则为插入
+		查询——
+			hgetall 键名    # 查哈希表
+			hexists 键名 field    # 查字段是否存在
+			hget 键名 field    # 查字段的值
+		取字段——
+			hkeys 键名    # 获字段 
+			hlen 键名    # 获字段数量
+		获值——
+			hmget 键名 field...    # 获指定字段值， 必跟field
+			hvals 键名    # 获所有值
+		eg: hmset user:1 username duome password 1
+			hgetall user:1
+			1) "username"
+			2) "duome"
+			3) "password"
+			4) "1"
+	list——
+		新建——
+			lpush 键名 member 
+		查询——
+			lrange 键名 0 2    # 0-2的值， 必加
+			eg: lrange test 0 2			
+		取长度——
+			llen 键名
+		移除元素——
+			lpop 键名   # 第一个
+			rpop 键名   # 最后一个
+			lrem 键名 count value
+			eg: lrem 键名 1 redis 
+		修改——
+			lset 键名 index value
+		ps: 从前面开始加
+	set——
+		新建——
+			sadd 键名 menber
+		查询——
+			smenbers 键名
+			eg: smembers test 
+		差集——
+			sdiff 键1 键2
+		交集——
+			sinter 键1 键2 
+		并集——
+			sunion 键1 键2
+		存在——	
+			sismenber 键名 member
+	zset——
+		zadd 键名 score menber
+		zrangebyscore 键名 0 2    # 0-2的值，必加
+		eg: zadd test 0 redis
+			zadd test 1 mongodb
+				

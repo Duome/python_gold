@@ -1,0 +1,216 @@
+简介————
+	
+	本质	python库，python解释器
+	功能	从网页抓去数据，处理导航，搜索，修改分析树等功能
+
+安装————
+	
+	pip install beautiful soup4 -i https://pypi.douban.com/simple
+	
+四大对象种类————
+	
+	from bs4 import BeautifulSoup
+	
+	soup = BeautifulSoup(html)
+	Beautiful Soup将HTML文档换成一个复杂的树形结构
+	Tag——
+		HTML标签
+		eg: print soup.title	# title标签
+			print soup.head		# head标签
+			print soup.p		# p标签
+			print type(soup.a)  # 对象类型为Tag
+		属性name——
+			eg: print soup.head.name
+		属性attrs——
+			eg: print soup.p.attrs		# 打印所有属性的字典
+				print soup.p['class']	# 获取某个属性
+				print soup.p.get('class')	# 同上
+				soup.p['class'] = 'newClass'	# 修改属性
+				del soup.p['class']				# 删除属性
+			ps: 可以对属性进行修改和删除
+	NavigableString——
+		标签内容
+		eg: print soup.p.string		# p标签内部文字
+			print type(soup.p.string)	# 对象类型为NavigableString
+	BeautifulSoup——
+		文档内容
+		eg: print type(soup)		# 对象类型为BeautifulSoup
+			print type(soup.name)	# 文档名字类型
+			print soup.name			# 文档的名字
+			print soup.attrs		# 文档的属性
+	Comment——
+		特殊类型NavigableString，不包括注释符号
+		ps: 最好在使用前做判断，if type(soup.a.string)==bs4.element.Comment:
+		eg: print soup.a 
+			print soup.a.string
+			print type(soup.a.sting)
+			
+			<a class="sister" href="http://example.com/elsie" id="link1"><!-- Elsie --></a>
+			 Elsie 
+			<class 'bs4.element.Comment'>
+
+遍历文档树————
+	
+	子节点——
+		.contents——
+			将tag的子节点以列表的方式输出
+			若有多个tag，取第一个tag
+			若子节点有多个，以u'\n'分出列表的元素，包括u'\n'
+			eg: [u'\n', <p>1</p>, u'\n', <p >2</p>, u'\n']
+		.children——
+			将tag的子节点以生成器的方式输出
+			通过遍历获取所有子节点
+			eg: for child in soup.body.children:
+					print child
+	全部子孙节点——
+		.descendants——
+			对所有tag的子孙节点进行递归循环
+			eg: for child in soup.descendants:
+					print child
+	节点内容——
+		.string——
+			ps: tag包含多个子节点无法确定，则结果为None
+			eg: print soup.head.string
+				print soup.html.string    	# 为None
+	多个内容——
+		.strings——
+			eg: for string in soup.strings:
+					print string			# 包括换行符
+		.stripped_strings——
+			eg: for string in soup.stripped_strings:
+					print string			# 除去多余空白内容，包括空格和空行
+	父节点——
+		.parent——
+			eg: p = soup.p				# 使用tag获取父节点名字
+				print p.parent.name
+				content = soup.head.title.string	# 使用内容获取父节点名字
+				print content.parent.name
+	全部父节点——
+		.parents——
+			eg: content = soup.head.title.string
+				for parent in content.parents:
+					print parent.name
+	兄弟节点——
+		.next_sibling——
+			获取节点下一个兄弟节点
+		.previous_sibling——
+			获取节点上一个兄弟节点
+		ps: 无则返回None
+			空白或换行视作一个节点
+		eg: print soup.p.next_sibling.next_sibling
+			print soup.p.previous_sibling.previous_sibling
+	全部兄弟节点——
+		.next_siblings——
+			获取节点以下全部兄弟节点
+		.previous_siblings——
+			获取节点以上全部兄弟节点
+		eg: for sibling in soup.a.next_siblings:
+				print repr(sibling)
+	前后节点——
+		ps: 与兄弟节点不同，不分层次
+		.next_element——
+			获取前一个节点
+		.previous_element——
+			获取后一个节点
+		eg: print soup.head.next_element
+	所有前后节点——
+		.next_elements——
+			获取前面所有节点
+		.previous_elements——
+			获取后面所有节点
+		eg: for element in last_a_tag.next_elements:
+				print repr(element)
+
+搜索文档树————
+	
+	find_all(name, attrs, recursive, text, **kwargs)
+		ps: 返回列表
+			搜索当前节点所有子节点
+		name——
+			查找所有名字为name的tag，字符串对象自动忽略
+			传字符串——
+				字符串为tag标签名 
+				eg: soup.find_all('b')		# b标签
+					soup.find_all('body')	# body标签
+			传正则表达式——
+				搜索包含的内容，通过match()匹配内容
+				eg: import re
+					for tag in soup.find_all(re.compile('^b')):
+						print tag.name		# 查找以b开头的标签，<b><body>
+			传列表——
+				返回列表中匹配的内容
+				eg: soup.find_all(['a','b'])	# 返回<a><b>标签的内容
+			传True——
+				返回所有tag，不会返回字符串节点
+				eg: for tag in soup.find_all(True):
+					print tag.name
+			传方法——
+				返回方法匹配的内容
+				将tag带入方法，方法返回为True，则tag匹配成功
+				eg: def has_class_but_no_id(tag):
+						return tag.has_attr('class') and not tag.has_attr('id')
+					soup.find_all(has_class_but_not_id)		# 返回满足方法的结果
+		keyword——
+			参数名不为内置的参数(name, attrs, recursive, text, **kwargs)，则为tag属性
+			eg: soup.find_all(id='link')	# id为link的tag
+				soup.fing_all(href=re.compile('elsie'), id='link')	# 过滤多个属性
+				soup.find_all(class_='sister')	# class为python内部方法，使用后面加_
+				soup.find_all(attrs={'data-foo': 'value'})	# 不能搜索的属性，通过attrs参数定义
+		text——
+			接受字符串
+			eg: soup.find_all(text='elsie')		# 如果存在返回，[u'elsie']
+				soup.find_all(text=re.compile('dor'))	# 返回所有包含'dor'的字符串的列表
+		limit——
+			限制搜索结果数量
+			eg: soup.find_all('a', limit=2)		# 返回两个结果
+		recuursive——
+			搜索直接子节点
+			eg: soup.html.find_all('title', recursive=False)
+	find(name, attrs, recursive, text, **kwargs)
+		同上，直接返回结果，不返回列表
+	find_parents()和find_parent()
+		搜索当前节点的父辈节点
+	find_next_siblings()和find_next_sibling()
+		搜索当前节点之后的所有/后一个兄弟节点
+	find_previous_siblings()和find_previous_sibling()
+		搜索当前节点之前的所有/前一个兄弟节点
+	find_all_next()和find_next()
+		搜索当前节点之后的所有/后一个节点
+	find_all_previous()和find_previous()
+		搜素当前节点之前的所有/前一个节点
+
+CSS选择器————
+	ps: 返回列表
+	标签名查找——
+		soup.select('title')
+	类名查找——
+		soup.select('.sister')
+	id名查找——
+		soup.select('#sister')
+	组合查找——
+		soup.select('p #links')
+	属性查找——
+		soup.select('a[href='heep://example.com']')
+	获取select查找的内容——
+		for title in soup.select('title'):
+			print title.get_text()
+		
+			
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

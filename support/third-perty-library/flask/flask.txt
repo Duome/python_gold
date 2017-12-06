@@ -1,0 +1,46 @@
+flash基本操作————
+	
+	创建新工程——
+		建文件夹
+	新建虚拟环境——
+		virtualenv name --system-site-packages
+	进入虚拟环境，下载flask——
+		source name/bin/activate
+		name/bin/pip install flask==0.12.1 -i https://pypi.douban.com/simple
+	创建app——
+		mkdir app名				创建app
+		mkdir app/static		创建静态文件
+		mkdir app/templates		创建模板
+		mkdir controller		创建后台文件-view
+	为app包创建初始化脚本(__init__.py)——
+		创建项目对象
+		加载配置文件
+		导入模型
+		导入视图
+		eg: # -*- coding: utf-8 -*-
+
+			from flask import Flask
+			from flask_redis import FlaskRedis
+
+			#创建项目对象
+			app = Flask(__name__)
+
+			#加载配置文件内容
+			app.config.from_object('blog.setting')     #模块下的setting文件名，不用加py后缀
+
+			db = FlaskRedis(app)
+
+			from blog.model import model, user, article		# 导入模型
+			from blog.controller import blog_message  # 导入视图
+	编写视图——
+		eg: from app import app
+
+			@app.route('/')
+			@app.route('/index')
+			def index():
+			return "Hello, World!"
+	创建执行脚本(工程文件内容，与app同级)——
+		eg: #!flask/bin/python
+			from links.app import app
+			if __name__ == '__main__':
+				app.run(host='192.168.0.182', port=8000)

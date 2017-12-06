@@ -1,0 +1,6 @@
+{% extends "layout.html" %}
+{% block list %}
+    {% for ret in list_folder_ret %}
+        {{ ret.name }} <br>
+    {% endfor %}
+{% endblock %}

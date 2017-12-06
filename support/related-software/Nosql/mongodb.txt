@@ -1,0 +1,59 @@
+常用命令————
+数据库概念——
+	数据库	数据库 
+	集合	表
+	文档	行
+	域		字段
+	索引	索引
+	主键	主键
+数据库操作——
+	显示数据列表——
+		show dbs
+	显示数据库对象——
+		db 
+	连接数据库——
+		use 数据库名
+		eg: use local
+	新建数据库——
+		use 数据库名
+	插入数据——
+		db.数据库.insert()
+		eg: db.runoob.insert({"name":"菜鸟教程"})
+	删除数据库——
+		db.dropDatabase()    # D必须大写
+集合操作——
+	新建集合——
+		db.createCollection("集合名"，{属性})
+		db.集合名.insert(文档)   # 若集合名之前不存在，则为新建
+		eg: db.createCollection("mycoll", {capped:true, size:100000})
+			db.collection1.insert({"test":1})
+		ps: capped的集合中，能添加新的对象
+	删除集合——
+		db.集合名.drop()
+	显示所有集合——
+		show tables
+	显示集合数据——
+		db.集合名.find()
+		db.集合名.findOne()
+文档操作——	
+	ps: 文档是一组键值(key-value)对。文档不需设置相同字段，且相同字段不需相同数据类型
+		文档中的键/值对是有序的。
+		文档中的值不仅可以是在双引号里面的字符串，还可以是其他几种数据类型（甚至可以是整个嵌入的文档)。
+		MongoDB区分类型和大小写。
+		MongoDB的文档不能有重复的键。
+		文档的键是字符串。
+	插入文档——
+		db.集合.insert(document)
+		eg: db.col.insert({title:"菜鸟教程", a: "测试"})
+		ps: 可以将数据定义为变量
+			a = ({title:"菜鸟教程", a: "测试"});
+			db.col.insert(a)
+	更新文档——
+		db.集合.update({原文档},{$set:{新文档}})
+		eg: db.collection1.update({"title":"教程"},{$set:{"title":"菜鸟教程"}})
+	查看文档替换数据——
+		db.集合.find().pretty()
+		
+		
+	
+	

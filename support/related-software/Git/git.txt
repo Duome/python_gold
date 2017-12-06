@@ -1,0 +1,110 @@
+**设置用户名
+    git config --global user.name "Your Name"
+**设置用户邮箱
+    git config --global user.email "email@exaample.com"
+**显示当前目录
+    pwd
+**把目录变成git可以管理的仓库
+    git init
+    文件中多了一个.git目录，用于跟踪管理版本库
+    .git目录默认为隐藏，用ls -ah命令可以看到
+**版本控制系统只能跟踪本文件的改动，无法跟踪图片和视频这些二进制文件
+    word也不行
+**添加readme.txt文件
+    文件存在才可以添加，不在当前目录需要写相对路径
+    git add readme.txt
+    Git is a nersion control system
+    Git is gree software
+**显示当前目录文件
+    ls
+    ls -ah      显示隐藏文件
+	
+	
+**创建git仓库——					git init
+	eg: mkdir runoob
+		cd runoob/
+		git init
+		或
+		git init [project-name]		# 新建目录，将其初始化为git代码库
+		
+**拷贝git仓库——					git clone [url]
+	eg: git clone git@github.com:CcccFz/easy-ansible.git	# 以前上传过
+		git clone https://github.com/CcccFz/easy-ansible.git	# 空仓库克隆，以前没有传过
+		
+**git配置——
+	显示——					
+		git config --list
+		
+	编辑——						
+		git config -e [--global]
+		
+	设置提交代码时的用户信息——	
+		git config [--global] user.name "[name]"
+		git config [--global] user.email "[email address]"
+		eg: git config --global user.name "Duome"
+			git config --global user.email duomesiki@163.com
+								
+**git操作——
+
+	增加——
+	
+		git add file/dir/.		添加文件/目录/所有
+	删除——
+	
+		git rm -f file 			强制删除
+		git rm --cached file 	停止追踪文件，但文件回保留在工作取
+		ps: 作用add过的文件
+	查询——				
+	
+		查询历史版本——
+			git log					# 通过git log查询针ID
+			eg: commit 374ce8aeed5bc25df35f3ebab303ff527e64f0f1
+				Author: Duome <duomesiki@163.com>
+				Date:   Thu Nov 16 16:54:49 2017 +0800
+
+					linux下git上库
+		查询变更文件——
+			git status
+			ps: 也可以看分支
+		查看分支——
+			git branch
+
+	
+	代码退回——
+		git checkout git针ID	# 建立一个临时的分支切换到版本某个位置
+		eg: git checkout 374ce8    # 使用id前几位数就可以
+			git checkout master    # 切换到原来版本，374ce8临时分支就自动删除
+		git resert/revert --选项 git针ID
+		eg: git resert/revert --head 374ce8aeed5bc25df35f3ebab303ff527e64f0f1
+			
+	分支——
+	
+		新建分支——
+			git checkout -b 分支名    # 并且切换到该分支
+			
+		合并分支——
+			git merge 分支名    
+			ps: 一般在master中合并分支
+				若该分支分出到合并期间有其他分支已经合并到master——
+					git pull origin master
+					git merge 分支名
+				分支相当于复制一个master，但是分支和master之后的变化是独立的，之前的是共有的
+				分支commit不用加分支名，push时需要加分支名
+					git push origin 分支名
+
+
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

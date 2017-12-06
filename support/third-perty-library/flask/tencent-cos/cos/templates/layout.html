@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tecent CoS</title>
+</head>
+<body>
+    <a href="{{ url_for('list') }}">List</a>
+    <a href="{{ url_for('upload') }}">Upload</a>
+
+    <br><br>
+
+    <div>{% block list %}{% endblock %}</div>
+    <div>{% block upload %}{% endblock %}</div>
+
+</body>
+</html>

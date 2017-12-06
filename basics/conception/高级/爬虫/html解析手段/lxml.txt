@@ -1,0 +1,153 @@
+安装————
+
+	pip install lxml-i https://pypi.douban.com/simple
+
+XPath语法————
+
+	本质——
+		XML文档中查找信息的语言，对XML文档中的元素和属性进行遍历
+	
+	节点关系——
+		父（Parent）——
+			每个元素和属性都有一个父
+		子（Children）——
+			节点可有零个、一个、多个子
+		同胞（Sibliing）——
+			拥有相同父的节点
+		先辈（Ancestor）——
+			某节点的父、父的父等
+		子代（Descendant）——
+			某节点的子、子的子等
+	
+	选取节点——
+		通过沿着路径或step来选取的
+		nodename	此节点的所有节点
+		/			从根选取
+		//			从匹配的当前节点选择文档中的节点，不考虑他们的位置
+		.			当前节点
+		..			当前节点的父节点
+		@			选取属性
+		eg: bookstore			选取bookstore元素的所有子节点
+			/bookstore			选取根元素的bookstore
+			bookstore/book		选取bookstore子元素所有book元素
+			//book 				选取所有book元素
+			bookstore//book		选取属于bookstore后代的所有book
+			//@lang				选取名为lang的所有属性
+			
+	谓语——
+		查找某个特定的节点或包含指定值的节点时使用
+		在方括号中使用
+		eg: /bookstore/book[1]				选取bookstore子元素中第一个book元素
+			/bookstore/book[last()]			最后一个
+			/bookstore/book[last()-1]		倒数第二个
+			/bookstore/book[position()<3]	最前面两个
+			//title[@lang]					拥有lang属性
+			//title[@lang='eng']			拥有值为eng的lang属性
+			/bookstore/book[price>35]		拥有值大于35的price属性
+			/bookstore/book[prict>35]/title
+			
+	选取未知节点——
+		*	任何元素
+		@*	任何属性
+		node()	任何类型
+	
+	选取若干路径——
+		|	选取若干路径
+		eg: //book/title|//book/price
+		
+	XPath运算符——
+		|	两个节点集
+		+	加法
+		-	减法
+		* 	乘法
+		div	除法
+		=	等于
+		!=	不等于
+		<	小于
+		<=	小于等于
+		>	大于
+		>=	大于等于
+		or	或者
+		and	与
+		mod	取余
+		
+Lxml用法————
+	
+	ps: 自动修正html代码
+	初始化——
+		eg: from lxml import etree
+		
+			text = '''
+			<div>
+				<ul>
+					 <li class="item-0"><a href="link1.html">first item</a></li>
+					 <li class="item-1"><a href="link2.html">second item</a></li>
+					 <li class="item-inactive"><a href="link3.html">third item</a></li>
+					 <li class="item-1"><a href="link4.html">fourth item</a></li>
+					 <li class="item-0"><a href="link5.html">fifth item</a>
+				 </ul>
+			 </div>
+			'''
+			html = etree.HTML(text)		# 初始化 
+			result = etree.tostring(html)
+			print result
+	
+	文件读取——
+		eg: html = etree.parse('hello.html')
+			result = etree.tostring(html, pretty_print=True)
+			print result
+			
+	XPath操作——
+		eg:	from lxml import etree
+			
+			html = etree.parse('hello.html')   # 初始化
+		获取某种标签——
+			result = html.xpath('//li')
+			print result			# 所有li标签
+			print len(result)		# li标签的个数
+			print type(result)		# ElementTree类型
+			pting type(result[0])	# Element类型
+		获取某个标签——
+			使用谓语进行过滤
+			result = html.xpath('//li/a[@href="link1.html"]')
+		获取某种标签属性——
+			result = html.xpath('//li/@class')
+			print result			# li标签的所有class属性
+		获取某个标签属性——
+			result = html.xpath('//li[last()]/a/@href')
+		在标签下获取——
+			result = html.xpath('//li/span')	# li标签下的子span标签
+			result = html.xpath('//li//span')	# li标签下的所有span标签
+			result = html.xpath('//li/a//@class')	# li标签下的多有class，不包括li
+		获取元素内容——
+			result = html.xpath('//li[last()-1]/a')
+			print result[0].text	# 获取元素内容 
+		获取标签名——
+			result = html.xpath('//*[@class="bold"]')
+			print result[0].tag		# 获取标签名
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		

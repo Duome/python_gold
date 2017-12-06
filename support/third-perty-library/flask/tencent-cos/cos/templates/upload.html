@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block upload %}
+    <form action="{{ url_for('upload') }}" method="POST">
+        <label for="file"></label>
+        <input id="file" name="file" type="text">
+        <button type="submit">上传</button>
+    </form>
+
+    {% for message in get_flashed_messages() %}
+        <span style="color: #9C1A1C">
+        {{ message }}
+        </span>
+    {% endfor %}
+{% endblock %}

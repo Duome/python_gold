@@ -1,0 +1,124 @@
+PySpider————
+
+	功能——
+		抓取、更新调度多站点的特定的页面
+		需要对页面进行结构化信息提取
+		灵活可扩展，稳定可监控
+	需求——
+		定向抓去，结构化解析
+		灵活抓取，通过脚本控制抓取
+		去重调度、队列、抓取、异常处理、监控等功能框架
+		web编辑调试环境和web任务监控
+	设计基础——
+		以python脚本驱动的抓取模型爬虫
+		通过python脚本提取信息
+		通过web化的脚本编写调试环境
+		模型稳定，模块相互独立，通过消息对列连接，可扩展到多机分布
+	构架——
+		scheduler	调度器
+		fetcher		抓取器
+		processor	脚本执行
+		各组件间使用消息队列连结，scheduler单点，其他多实例分布式部署，scheduler负责整体调度控制
+		scheduler发起任务，fetcher抓取网页内容，processor执行预先编写的python脚本，输出结果或产生新的提链任务发往scheduler，形成闭环
+		可使用各种python库对页面进行解析，使用框架API控制下一步抓取动作，通过设置回调控制解析动作
+
+Scrapy————
+
+	功能——
+		数据挖掘
+		信息处理
+		储存历史数据
+		
+	用途——
+		数据挖掘、监测、自动化测试
+		
+	组件——
+		Scrapy引擎——
+			处理整个系统的数据流，触发事务（框架核心）
+		Scheduler调度器——
+			接受引擎发过来的请求，压入队列，在引擎再次请求是返回
+			由此决定下一个抓取的网址，同时去除重复网址
+		Downloader下载器——
+			下载网页内容，将网页内容返回给scrapy
+			建立在twisted异步模型上
+		Spiders爬虫——
+			从特定网页中提取自己需要的信息
+		Pipeline项目管道——
+			处理爬虫实体，持久化实体，验证实体有效性，清除不需要的信息
+			处理数据次序——
+				Downloader Middlewares下载器中间件——
+					引擎和下载器之间的框架，处理引擎与下载器之间的请求和响应
+				Spider Middlewares爬虫中间件——
+					引擎和爬虫之间，处理蜘蛛的响应输入和请求输出
+				Schedeler Middlewares调度中间件——
+					引擎和调度之间，从引擎发送调度的请求和响应
+	Scrapy运行流程——
+		引擎从调度器中取出一个链接URL用于接下来的抓取
+		引擎把URL封装成一个请求Request传给下载器，下载器把资源下载下来，并封装成应答包Response
+		爬虫解析Response
+		若解析出的实体Item交给实体管道进行处理
+		若解析出链接URL，则交给调度器等待抓取
+		
+	Scrapy基本操作——
+			
+		安装——
+			pip install Scrapy -i https://pypi.douban.com/simple
+			
+		创建项目——
+			scrapy startproject hello
+		
+		各项目文件作用——
+			hello文件夹		项目目录
+			spiders文件夹	用于放置爬虫
+			items.py		定义需要获取的字段
+			pipelines.py	定义存储
+			settings.py		各种配置
+			ps: 自己手动在项目根目录中新建entrypoint.py，可以在IDE中调试
+				内容：
+				from scrapy.cmdline import execute
+				execute(['scrapy', 'crawl', 'hello'])	# 修改第三个参数为自己的项目名称
+		
+		items.py——
+			定义字段，用于临时存储保存的数据
+			根据需要提取的内容定义
+			eg: 
+			
+		spiders——
+			在文件夹中编写自己的爬虫
+			
+		pipelines.py——
+			存储自己的数据
+			
+		settings.py——
+			调试之前取消注释
+			HTTPCACHE_ENABLED = True
+			HTTPCACHE_EXPIRATION_SECS = 0
+			HTTPCACHE_DIR = 'httpcache'
+			HTTPCACHE_IGNORE_HTTP_CODES = []
+			HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+			ps: 作用是缓存有的Requests，再次请求时，存在缓存文档则返回缓存文档，加快本地调试速度
+		
+			
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

@@ -1,0 +1,71 @@
+基本操作————
+
+下载安装ansible——
+	pip install ansible -i https://pypi.douban.com/simple
+
+测试ansible是否安装成功——
+	ansible -h 
+	
+配置ansible需要连接的远程机器——
+	mkdir /etc/ansible
+	touch /etc/ansible/hosts
+	vim /etc/ansible/hosts
+	~[test]
+	~120.78.58.71
+	
+建立认证互信——
+	创建私钥和公钥
+		ssh-keygen -t rsa -C root
+		一直按回车
+		cd ~/.ssh/  ll 查看目录
+		id_rsa		私钥
+		id_rsa.pub	公钥
+	将公钥传给远程机器——
+		ssh-copy-id -i ~/.ssh/id_rsa.pub root@120.78.58.71
+
+查看远程主机基本信息——
+	ansible 120.78.58.71 -m setup
+		
+连结远程机器——
+	ansible 120.78.58.71 -m ping
+
+在远程机器上使用linux命令——
+	shell模块——
+		ansible 120.78.58.71 -m shell -a “linux命令”
+		eg: ansible 120.78.58.71 -m shell -a 'pwd'
+			ansible 120.78.58.71 -m shell -a 'mkdir /home/duome/test'
+		ps: 只能用ls ll不行
+			与command不同的是，此模块可以支持命令管道，同时还有另一个模块也具备此功能
+	file模块——
+		ansible 120.78.58.71 -m file -a "变量"
+		group	定义组
+		mode	定义权限
+		owner	定义属主
+		path	定义路径
+		src		定义源路径
+		dest	定义被链接到的路径
+		state	状态
+			directory	目录
+			link		链接
+	copy模块——
+		ansible 120.78.58.71 -m copy -a "变量"
+		group	定义组
+		mode	定义权限
+		owner	定义属主
+		path	定义路径
+		src		定义源路径    # 本地路径
+		dest	定义被链接到的路径    # 远程路径
+	command模块——
+		
+	ps: -a    --args
+		-m	  模块名
+
+python ansible接口——
+	easy_ansible——
+		from easy_ansible import Command
+		Command(module_name='file', modele_args='dest=/root/test_19_file mode=644 owner=root group=root state=touch' pattern='120.78.58.71').run()
+		ps: 创建目录
+	
+
+		
+	

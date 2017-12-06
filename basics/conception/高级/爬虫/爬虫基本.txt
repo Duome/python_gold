@@ -1,0 +1,274 @@
+爬虫概念——
+
+	什么是爬虫——
+	
+		类似蜘蛛爬蛛网
+		分析、过滤html代码，获取文件、图片等资源
+	浏览页面过程——
+	
+		输入网址 DNS服务器 主机服务器 发送请求 服务器解析请求 发送文件给用户
+	url——
+	
+		资源定位符，即网址
+		协议+主机ip+具体地址
+urllib库基本使用——
+
+	简单的扒html——
+	
+		eg: import urllib2
+
+			response = urllib2.urlopen("http://www.baidu.com")
+			print response.read()
+	构造request的扒html——
+	
+		eg: import urllib2
+			 
+			request = urllib2.Request("http://www.baidu.com")
+			response = urllib2.urlopen(request)
+			print response.read()
+	需要登录的扒html——
+	
+		urlopen(url, data, timeout)
+			url    URL
+			data    访问是传送的参数， 默认为None
+			timeout    超时时间，默认socket._GLOBAL_DEFAULT_TIMEOUT
+		POST——
+			eg: import urllib2, urllib
+				values = ['username':'***', 'password':'***']
+				data = urllib.urlencode(values)
+				url = 'https://passport.csdn.net/account/login?from=http://my.csdn.net/my/mycsdn'
+				request = urllib2.Request(url, data)
+				response = urllib2.urlopen(request)
+				print response.read()
+		GET——
+			eg: import urllib2, urllib
+				
+				values = {}
+				values['username'] = '***'
+				values['password'] = '***'
+				data = urllib.urlencode(values)
+				url = 'https://passport.csdn.net/account/login?from=http://my.csdn.net/my/mycsdn'
+				geturl = url + '?' + data
+				request = urllib2.Request(geturl)
+				response = urllib2.urlopen(request)
+				print response.read()
+	有识别问题的网站（headers）——
+	
+		ps: 登录后界面不通，并不是一次性加载完成的，而是执行了多次请求
+		headers属性——
+			User-Agent    通过该值判断是否是浏览器发出的请求
+			Content-Type    通过该值确定HTTP Body中的内容该怎样解析
+			application/xml    在XML RPC调用时使用
+			application/json    在JSON RPC调用时使用
+			application/x-www-form-urlencoded    浏览器提交Web表单时使用
+		eg: import urllib, urllib2
+			url = 'http://www.server.com/login'
+			user_agent = 'Mozilla/4.0(compatible; MSIE 5.5; Windows NT)'
+			values = {'username': '***'; 'password: '***'}
+			headers = {'User-Agent': user_agent}
+			
+			# 对付反盗链（加referer）
+			headers = { 'User-Agent' : 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'  ,
+                        'Referer':'http://www.zhihu.com/articles' }  
+
+			data = urllib.urlencode(values)
+			request = urllib2.Request(url, data, headers)
+			response = urllib2.urlopen(request)
+			page = response.read()
+	禁止访问多次（proxy）——
+	
+		使用环境变量http_proxy设置HTTP Proxy，即设置代理服务器，每隔一段时间换一个代理就可以实现访问多次
+		eg: import urllib2
+			enable_proxy = True
+			proxy_handler = urllib2.ProxyHandler({'http': 'http://some-proxy.com:8080'})
+			null_proxy_handler = urllib2.ProxyHandler({})
+			if enable_proxy:
+				opener = urllib2.bulid_opener(proxy_handler)
+			else:
+				opener = urllib2.bulid_opener(null_proxy_handler)
+			urllib2.install_opener(opener)
+	网站响应过慢（timeout）——
+	
+		eg: import urllib2
+			response = urllib2.urlopen('http://www.baidu.com', timeout=10)
+			# 或
+			response = urllib2.urlopen('http://www.baidu.com', data, 10)
+	http的PUT和DELETE方法——
+	
+		http六种请求方法——
+			get head put delete post options
+		PUT——
+			和POST相似，html表单不支持，但PUT通常指定了资源的存放位置
+		DELETE——
+			删除某个资源
+		eg: import urllib2
+			request = urllib2.Request(url, data=data)
+			request.get_method = lambda: 'PUT'    # 或者 'DELETE'
+			response = urllib2.urlopen(request)
+	调试（DebugLog）——
+	
+		打开Debug Log，收发包的内容会在屏幕上打印出来，方便调试
+		eg: import urllib2
+			httpHandler = urllib2.HTTPHandler(debuglevel=1)
+			httpsHandler = urllib2.HTTPHandler(debuglevel=1)
+			opener = urllib2.build_opener(httpHandler, httpsHandler)
+			urllib2.install_opener(opener)
+			response = urllib2.urlopen('http://www.baidu.com')
+			
+requests三方库——
+
+	安装——
+		pip install requests -i https://pypi.douban.com/simple
+	引入——
+		import requests
+		 
+		r = requests.get('http://cuiqingcai.com')
+		print type(r)    		# 结果类型
+		print r.status_code		# 状态码
+		print r.encoding		# 编码方式
+		print r.text			# html内容
+		print r.cookies			# Cookies
+	基本请求——
+		requests.get()
+		requests.post()
+		requests.put()
+		requests.delete()
+		requests.head()
+		requests.options()
+	GET——
+		import requests
+		
+		# 基本get方法
+		r = requests.get('http://www.baidu.com')
+		
+		# 加入参数
+		payload = {'key1': 'value1', 'key2': 'value2'}
+		r = requests.get('http://www.baidu.com',params=payload)
+		print r.url
+		
+		# 加入headers
+		payload = {'key1': 'value1', 'key2': 'value2'}
+		headers = {'content-type': 'application/json'}
+		r = requests.get("http://httpbin.org/get", params=payload, headers=headers)
+		print r.url
+		
+		# 请求json文件
+		# 写JSON文件命名为a.json  
+			["foo", "bar", {
+			  "foo": "bar"
+			}]
+		r = requests.get("a.json")
+		print r.text
+		print r.json()
+		
+		# 获取来自服务器的原始套接字响应
+		r = requests.get('https://github.com/timeline.json', stream=True)
+		r.raw
+		>>> <requests.packages.urllib3.response.HTTPResponse object at 0x101194810>
+		r.raw.read(10)
+		>>> '\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\x03'
+	POST——
+		import requests
+		
+		# 传入参数
+		payload = {'key1': 'value1', 'key2': 'value2'}
+		r = requests.post("http://httpbin.org/post", data=payload)
+		print r.text
+		
+		# 传入JSON格式的数据
+		import json
+		url = 'http://httpbin.org/post'
+		payload = {'some': 'data'}
+		r = requests.post(url,data=json.dumps(payload))
+		print r.text
+		
+		# 传入文件
+		url = ‘http://httpbin.org/post’
+		files = {'file': open('a.txt', 'rb')}
+		r = requests.post(url, files=files)
+		print r.text
+		
+		# 流式上传
+		  允许发送大数据流或文件，不用读入内存，使用流式上传，即为请求提供一个类文件对象
+		with open('nassive-body') as f:
+			requests.post('http://some.url/streamed', data=f)
+	Cookies——
+		import requests
+		
+		# 利用cookies变量获取响应中包含的cookie
+		url = 'http://example.com'
+		r = requests.get(url)
+		print r.cookies
+		print r.cookies['example_cookie_name']
+		
+		# 利用cookies变量向服务器发送cookies信息
+		url = 'http://httpbin.org/cookies'
+		cookies = dict(cookies_are='working')
+		r = requests.get(url, cookies=cookies)
+		print r.text
+	超时配置Timeout——
+		requests.get('http://github.com', timeout=0.001)
+		ps: 仅对连接过程有效，对响应体的下载无关
+	回话对象session——
+		ps: 会话是一个全局变量，可以实现全局配置
+		import requests
+		
+		# 没有建立会话（每次请求相当于新的请求）
+		requests.get('http://httpbin.org/cookies/set/sessioncookie/123456789')
+		r = requests.get("http://httpbin.org/cookies")
+		print(r.text)
+		
+		# 建立会话（保持持久的会话）
+		s = requests.Session()
+		s.get('http://httpbin.org/cookies/set/sessioncookie/123456789')
+		r = s.get("http://httpbin.org/cookies")
+		print(r.text)
+		
+		# 全局配置（两个headers变量都配置成功）
+		s = requests.Session()
+		s.headers.update({'x-test': 'true'})
+		r = s.get('http://httpbin.org/headers', headers={'x-test2': 'true'})
+		print r.text
+	SSL证书验证verigy——
+		默认为True
+		import requests
+		
+		# 证书无效时，报错
+		r = requests.get('https://kyfw.12306.cn/otn/', verify=True)
+		print r.text
+		
+		# 证书有效时，正常输出
+		r = requests.get('https://github.com', verify=True)
+		print r.text
+		
+		# 证书无效时，效果证书验证，可以正常输出
+		r = requests.get('https://kyfw.12306.cn/otn/', verify=False)
+		print r.text
+	代理proxies——
+		import requests 
+		
+		# 通过proxies参数配置单个请求
+		proxies = {
+			'https': 'http://41.118.132.69:4433'
+		}
+		r = requests.post('http://httpbin.org/post', proxies=proxies)
+		print r.text
+		
+		# 通过环境变量配置代理
+		export HTTP_PROXY="http://10.10.1.10:3128"
+		export HTTPS_PROXY="http://10.10.1.10:1080"
+	
+	
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			

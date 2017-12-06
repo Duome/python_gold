@@ -331,3 +331,9 @@ CSS盒子模型——
             ps: border-color单独使用是不起作用的，必须得先使用border-style来设置边框样式。
         边框简写——
 
+常用需求————
+
+	博客主页显示部分内容————
+		width:150px;/*要显示文字的宽度*/
+		overflow:hidden; /*超出的部分隐藏起来。*/ 
+		white-space:nowrap;/*不显示的地方用省略号...代替*/
