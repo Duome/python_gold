@@ -3,7 +3,8 @@ import re
 import scrapy
 from bs4 import BeautifulSoup
 from scrapy.http import Request
-from hello.items import HelloItem
+from hello.mysqlpipilines.sql import Sql
+from hello.items import HelloItem, HcontentItem
 
 class Myspider(scrapy.Spider):
     name = 'hello'   # 该name为entrypoint.py第三个参数
@@ -44,4 +45,63 @@ class Myspider(scrapy.Spider):
         item['category'] = str(category).replace('/','')
         item['author'] = str(author).replace('/', '')
         item['name_id'] = name_id
+        yield item
+        yield Request(url=bash_url,callback=self.get_chapter, meta={'name_id': name_id})
+
+    def get_chapter(self, response):
+        urls = re.findall(r'<td class="L"><a href="(.*?)">(.*?)</a></td>', response.text)
+        num = 0
+        for url in urls:
+            num = num + 1
+            chapterurl = response.url + url[0]
+            chaptername = url[1]
+            rets = Sql.select_chapter(chapterurl)
+            if rets[0] == 1:
+                print '章节已经存在'
+            else:
+                yield Request(chapterurl, callback=self.get_chaptercontent, meta={'num': num
+                                                                                  'name_id': response.meta['name_id'],
+                                                                                  'chaptername': chaptername,
+                                                                                  'chapterurl': chapterurl
+                                                                                  })
+
+    def get_chaptercontent(self,response):
+        item = HcontentItem()
+        item['num'] = response.meta['num']
+        item['id_name'] = response.meta['name_id']
+        item['chaptername'] = str(response.meta['chaptername']).replace('\xa0', '')
+        item['chapterurl'] = response.meta['chapterurl']
+        content = BeautifulSoup(response.text, 'lxml').find('dd', id='contents').get_text()
+        item['chaptercontent'] = str(content).replace('\xa0', '')
         return item
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

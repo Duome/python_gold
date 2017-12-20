@@ -122,12 +122,12 @@ Lxml用法————
 		获取元素内容——
 			result = html.xpath('//li[last()-1]/a')
 			print result[0].text	# 获取元素内容 
+			//div[@class='main']/div[1]/h2/text()
 		获取标签名——
 			result = html.xpath('//*[@class="bold"]')
 			print result[0].tag		# 获取标签名
 			
-			
-			
+	
 			
 			
 			

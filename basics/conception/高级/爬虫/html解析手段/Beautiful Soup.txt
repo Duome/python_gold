@@ -168,6 +168,7 @@
 			eg: soup.html.find_all('title', recursive=False)
 	find(name, attrs, recursive, text, **kwargs)
 		同上，直接返回结果，不返回列表
+		ps: 有多个子节点就用find_all[]，只有一个就用find
 	find_parents()和find_parent()
 		搜索当前节点的父辈节点
 	find_next_siblings()和find_next_sibling()

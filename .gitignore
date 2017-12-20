@@ -3,4 +3,5 @@ venv/
 django_venv/
 db.sqlite3
 *.pyc
+.jpg
 migrations

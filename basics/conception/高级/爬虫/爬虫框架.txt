@@ -81,14 +81,66 @@ Scrapy————
 		items.py——
 			定义字段，用于临时存储保存的数据
 			根据需要提取的内容定义
-			eg: 
+			eg: import scrapy
+				class HelloItem(scrapy.Item):
+					# define the fields for your item here like:
+					# name = scrapy.Field()   # 定义字段 
 			
 		spiders——
 			在文件夹中编写自己的爬虫
-			
+			新建文件hello.py
+			eg: import re
+				import scrapy
+				from bs4 import BeautifulSoup
+				from scrapy.http import Request
+				from hello.items import HelloItem    # 导入失败时，把项目文件移动到根目录
+				class Myspider(scrapy.Spider):
+					pass
+					
 		pipelines.py——
 			存储自己的数据
-			
+			自定义MySQL的Pipeline
+			项目中新建mysqlpipelines文件夹，以下文件——
+				__init__.py 
+				pipelines.py	这个是我们写存放数据的文件
+				sql.py			需要的sql语句
+			建立MySQL表——
+				DROP TABLE IF EXISTS `dd_name`;
+				CREATE TABLE `dd_name` (
+				  `id` int(11) NOT NULL AUTO_INCREMENT,
+				  `xs_name` varchar(255) DEFAULT NULL,
+				  `xs_author` varchar(255) DEFAULT NULL,
+				  `category` varchar(255) DEFAULT NULL,
+				  `name_id` varchar(255) DEFAULT NULL,
+				  PRIMARY KEY (`id`)
+				) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4;
+				
+				DROP TABLE IF EXISTS `dd_chaptername`;
+				CREATE TABLE `dd_chaptername` (
+				  `id` int(11) NOT NULL AUTO_INCREMENT,
+				  `xs_chaptername` varchar(255) DEFAULT NULL,
+				  `xs_content` text,
+				  `id_name` int(11) DEFAULT NULL,
+				  `num_id` int(11) DEFAULT NULL,
+				  `url` varchar(255) DEFAULT NULL,
+				  PRIMARY KEY (`id`)
+				) ENGINE=InnoDB AUTO_INCREMENT=2726 DEFAULT CHARSET=gb18030;
+				SET FOREIGN_KEY_CHECKS=1;
+			settings.py——
+				MYSQL_HOSTS = '127.0.0.1'
+				MYSQL_USER = 'ROOT'
+				MYSQL_PASSWORD = '1'
+				MYSQL_PORT = '3306'
+				MYSQL_DB = 'hello'
+			sql.py——
+			settings.py——
+				# Configure item pipelines
+				# See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
+				ITEM_PIPELINES = {
+				   # 'hello.pipelines.HelloPipeline': 300,
+					'hello.mysqlpipelines.pipelines.HelloPipeline': 1
+				}
+				ps: 1为优先级，数值越低，优先级越高
 		settings.py——
 			调试之前取消注释
 			HTTPCACHE_ENABLED = True
