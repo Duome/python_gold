@@ -6,6 +6,9 @@
     创建虚拟环境——
         virtualenv diango_basic_venv --system-site-packages
 		ps: 使虚拟环境中的python可以使用系统的标准库
+		
+	创建虚拟环境时指定python版本号——
+		virtualenv -p D:\Python36\python.exe WechatBasic --system-site-packages
 
     切换虚拟环境——
         django_basic_venv\Scripts\activate（windows）
@@ -15,6 +18,9 @@
         pip install django(软件名)==1.9.5(版本)
 		pip install -r requirement.txt -i https://pypi.douban.com/simple
 		ps: 使用requirements.txt文件记录虚拟环境中下载的软件或三方库，方便下载准确和完整
+			requirement.txt 中的编辑如下：
+				django 2.0.6
+				
     查看目录下的软件安装情况——
         pip freeze
 
