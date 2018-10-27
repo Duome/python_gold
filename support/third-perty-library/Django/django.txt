@@ -8,8 +8,8 @@
 
 查询————
 
-    django-admin help
-    python manage.py help
+    django-admin help（windows）
+    python manage.py help（windows）
 
 新建项目————
 
